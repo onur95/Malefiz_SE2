@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class MyMalefizGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	// Yolo
 	
 	@Override
 	public void create () {
