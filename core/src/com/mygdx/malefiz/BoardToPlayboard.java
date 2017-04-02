@@ -40,18 +40,88 @@ public class BoardToPlayboard {
 
     public static void render(){
         if(Board.getSomethingChanged()) {
-//        float yTestOffset = 0.304666667F;
-            float yTestOffset = 0.190F;
             float tempXOffset;
-//            int testColumn = 3;
+            float yOffset = (float) (stage.getHeight()*0.015);
 
-            float yOffset = 14;
+            //erste Reihe
+            float tempXOffset1 = (float) (stage.getWidth() * 0.105);
+            float tempXOffset2 = (float) (stage.getWidth() * 0.187);
+            for (int i = 0; i < board[0].length; i++) {
+                Image field = null;
+                switch (board[0][i].getField_state()) {
+                    case PLAYER1:
+                        field = new Image(player1.getDrawable());
+                        break;
 
-            for(int column = 0; column < board.length; column++) {
+                    case PLAYER2:
+                        field = new Image(player2.getDrawable());
+                        break;
+
+                    case PLAYER3:
+                        field = new Image(player3.getDrawable());
+                        break;
+
+                    case PLAYER4:
+                        field = new Image(player4.getDrawable());
+                        break;
+                }
+                if (field != null) {
+                    MoveToAction action = new MoveToAction();
+                    if ((i == 1 || i == 5 || i == 9 || i == 13)) {
+                        action.setPosition(tempXOffset1, yOffset);
+                        tempXOffset1 += (float) (stage.getWidth() * 0.223);
+                    }
+                    else{
+                        action.setPosition(tempXOffset2, yOffset);
+                        tempXOffset2 += (float) (stage.getWidth() * 0.223);
+                    }
+                    field.addAction(action);
+                    stage.addActor(field);
+                }
+            }
+
+
+            //Zweite Reihe
+            yOffset = (float) (stage.getHeight()*0.096);
+            tempXOffset1 = (float) (stage.getWidth() * 0.078);
+            tempXOffset2 = (float) (stage.getWidth() * 0.212);
+            for (int i = 0; i < board[1].length; i++) {
+                Image field = null;
+                switch (board[1][i].getField_state()) {
+                    case PLAYER1:
+                        field = new Image(player1.getDrawable());
+                        break;
+
+                    case PLAYER2:
+                        field = new Image(player2.getDrawable());
+                        break;
+
+                    case PLAYER3:
+                        field = new Image(player3.getDrawable());
+                        break;
+
+                    case PLAYER4:
+                        field = new Image(player4.getDrawable());
+                        break;
+                }
+                if (field != null) {
+                    MoveToAction action = new MoveToAction();
+                    if ((i == 1 || i == 5 || i == 9 || i == 13)) {
+                        action.setPosition(tempXOffset1, yOffset);
+                        tempXOffset1 += (float) (stage.getWidth() * 0.223);
+                    }
+                    else{
+                        action.setPosition(tempXOffset2, yOffset);
+                        tempXOffset2 += (float) (stage.getWidth() * 0.223);
+                    }
+                    field.addAction(action);
+                    stage.addActor(field);
+                }
+            }
+
+            yOffset = (float) (0.143 * stage.getHeight());
+            for(int column = 2; column < board.length; column++) {
                 tempXOffset = stage.getWidth() * xOffset + lineOffset;
-
-//                yOffset = (column == 2) ? yTestOffset : yOffset+xOffset+lineOffset;
-//                System.out.println(yOffset);
 
                 for (int i = 0; i < board[column].length; i++) {
                     Image field = null;
@@ -77,8 +147,7 @@ public class BoardToPlayboard {
                     }
                     if (field != null) {
                         MoveToAction action = new MoveToAction();
-//                        action.setPosition(tempXOffset, stage.getHeight() * yTestOffset + lineOffset);
-                        action.setPosition(tempXOffset, yOffset);
+                      action.setPosition(tempXOffset, yOffset);
 
                         field.addAction(action);
                         stage.addActor(field);
