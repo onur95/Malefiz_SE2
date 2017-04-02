@@ -42,40 +42,50 @@ public class BoardToPlayboard {
         if(Board.getSomethingChanged()) {
 //        float yTestOffset = 0.304666667F;
             float yTestOffset = 0.190F;
-            float tempXOffset = stage.getWidth() * xOffset + lineOffset;
-            int testColumn = 3;
-            for (int i = 0; i < board[testColumn].length; i++) {
-                Image field = null;
-//            System.out.println(board);
-//            System.out.println(i);
-                switch (board[testColumn][i].getField_state()) {
-                    case PLAYER1:
-                        field = new Image(player1.getDrawable());
-                        break;
+            float tempXOffset;
+//            int testColumn = 3;
 
-                    case PLAYER2:
-                        field = new Image(player2.getDrawable());
-                        break;
+            float yOffset = 14;
 
-                    case PLAYER3:
-                        field = new Image(player3.getDrawable());
-                        break;
+            for(int column = 0; column < board.length; column++) {
+                tempXOffset = stage.getWidth() * xOffset + lineOffset;
 
-                    case PLAYER4:
-                        field = new Image(player4.getDrawable());
-                        break;
+//                yOffset = (column == 2) ? yTestOffset : yOffset+xOffset+lineOffset;
+//                System.out.println(yOffset);
 
-                    case BLOCK:
-                        field = new Image(block.getDrawable());
+                for (int i = 0; i < board[column].length; i++) {
+                    Image field = null;
+                    switch (board[column][i].getField_state()) {
+                        case PLAYER1:
+                            field = new Image(player1.getDrawable());
+                            break;
+
+                        case PLAYER2:
+                            field = new Image(player2.getDrawable());
+                            break;
+
+                        case PLAYER3:
+                            field = new Image(player3.getDrawable());
+                            break;
+
+                        case PLAYER4:
+                            field = new Image(player4.getDrawable());
+                            break;
+
+                        case BLOCK:
+                            field = new Image(block.getDrawable());
+                    }
+                    if (field != null) {
+                        MoveToAction action = new MoveToAction();
+//                        action.setPosition(tempXOffset, stage.getHeight() * yTestOffset + lineOffset);
+                        action.setPosition(tempXOffset, yOffset);
+
+                        field.addAction(action);
+                        stage.addActor(field);
+                    }
+                    tempXOffset += pointOffset;
                 }
-                if (field != null) {
-                    MoveToAction action = new MoveToAction();
-                    action.setPosition(tempXOffset, stage.getHeight() * yTestOffset + lineOffset);
-
-                    field.addAction(action);
-                    stage.addActor(field);
-                }
-                tempXOffset += pointOffset;
+                yOffset += pointOffset;
             }
 
             stage.act();

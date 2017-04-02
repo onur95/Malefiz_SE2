@@ -22,8 +22,8 @@ public class Board {
                         "..o...o...o...o..",
                         "BoooBoooBoooBoooB",
                         "o...o...o...o...o",
-//                        "ooooooooooooooooo",
-                        "oo4ooBoo1Bo2oo3oB",
+                        "ooooooooooooooooo",
+//                        "oo4ooBoo1Bo2oo3oB",
                         "..1...2...3...4..",
                         ".1.1.2.2.3.3.4.4.",
                         ".1.1.2.2.3.3.4.4."};
@@ -50,7 +50,9 @@ public class Board {
 
     private static void reverseBoardMeta(){
         for(int i=0;i<boardMeta.length/2;i++){
-            boardMeta[i] = boardMeta[boardMeta.length-i-1];
+            String a = boardMeta[boardMeta.length-i-1];
+            boardMeta[boardMeta.length-i-1] = boardMeta[i] ;
+            boardMeta[i] = a;
         }
     }
 
