@@ -27,12 +27,13 @@ public class Board {
                         "..1...2...3...4..",
                         ".1.1.2.2.3.3.4.4.",
                         ".1.1.2.2.3.3.4.4."};
-    private static boolean somethingChanged = false;
                 //G->Goal
                 //B->Block
                 //o->Normales Feld
                 //.->kein benutzbares Feld
                 //1-4->Player 1-4
+    private static boolean somethingChanged = false;
+    private static FieldPosition fieldActive;
 
 
     public static void init(){
@@ -44,7 +45,9 @@ public class Board {
                 boardArray[column][char_index] = new Field(boardMeta[column].charAt(char_index));
             }
         }
+        boardArray[15][0].setHighlighted(true);
         somethingChanged = true;
+//        setFieldActive(0,5);
 
     }
 
@@ -66,5 +69,24 @@ public class Board {
 
     public static void setSomethingChanged(boolean status){
         somethingChanged = status;
+    }
+
+    public static void setFieldActive(int column, int row){
+        System.out.println("set FieldActive");
+        fieldActive = new FieldPosition(column, row);
+    }
+
+    public static void moveTo(int column, int row){
+        System.out.println("hier");
+        Field temp = boardArray[column][row];
+        temp.setHighlighted(false);
+        boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
+
+        //Feld, auf dem der Spieler war, wird auf FIELD gesetzt
+        boardArray[fieldActive.getColumn()][fieldActive.getRow()] = new Field('.');
+
+        fieldActive = null;
+//        setSomethingChanged(true);
+//        BoardToPlayboard.setAnimation();
     }
 }
