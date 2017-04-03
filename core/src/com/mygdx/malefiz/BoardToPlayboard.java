@@ -135,7 +135,7 @@ public class BoardToPlayboard {
 
             case PLAYER2:
                 field = new Image(player2.getDrawable());
-                field.addListener(new PlayerClickListener(column, i, stage.getActors().size-1));
+                field.addListener(new PlayerClickListener(column, i, stage.getActors().size));
                 break;
 
             case PLAYER3:
@@ -176,7 +176,7 @@ public class BoardToPlayboard {
 
             case PLAYER2:
                 field = new Image(player2.getDrawable());
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size - 1));
+                field.addListener(new PlayerClickListener(column, row, stage.getActors().size));
                 break;
 
             case PLAYER3:
@@ -206,7 +206,7 @@ public class BoardToPlayboard {
 
             field = new Image(highlight.getDrawable());
             field.addAction(action);
-            field.addListener(new HighlightClickListener(column, row, stage.getActors().size - 1));
+            field.addListener(new HighlightClickListener(column, row, stage.getActors().size));
             stage.addActor(field);
         }
 
