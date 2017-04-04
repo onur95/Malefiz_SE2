@@ -127,25 +127,8 @@ public class BoardToPlayboard {
         }
         tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
 
-        Image field = null;
-        switch (board[column][i].getField_state()) {
-            case PLAYER1:
-                field = new Image(player1.getDrawable());
-                break;
+        Image field = getFieldType(column, i);
 
-            case PLAYER2:
-                field = new Image(player2.getDrawable());
-                field.addListener(new PlayerClickListener(column, i, stage.getActors().size));
-                break;
-
-            case PLAYER3:
-                field = new Image(player3.getDrawable());
-                break;
-
-            case PLAYER4:
-                field = new Image(player4.getDrawable());
-                break;
-        }
         if (field != null) {
             MoveToAction action = new MoveToAction();
             if (status == 0) {
@@ -163,33 +146,63 @@ public class BoardToPlayboard {
 
     }
 
-    private static void setField(int column, int row){
+    private static Image getFieldType(int column, int row){
         Image field = null;
-        if(column<2){
-            setFirstFields(column, row);
-            return;
-        }
         switch (board[column][row].getField_state()) {
             case PLAYER1:
                 field = new Image(player1.getDrawable());
+                if(Player.getNumber() == 1){
+                    setPlayerClickListener(field, column, row);
+                    //Zusätzlich weiters Image "Highlight" hinzufügen, dass angezeigt wird, wenn der Player dran ist
+                    //dieses auf visible none setzen und index in einem Array speichern
+                }
                 break;
 
             case PLAYER2:
                 field = new Image(player2.getDrawable());
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size));
+                if(Player.getNumber() == 2){
+                    setPlayerClickListener(field, column, row);
+                }
                 break;
 
             case PLAYER3:
                 field = new Image(player3.getDrawable());
+                if(Player.getNumber() == 3){
+                    setPlayerClickListener(field, column, row);
+                }
                 break;
 
             case PLAYER4:
                 field = new Image(player4.getDrawable());
+                if(Player.getNumber() == 4){
+                    setPlayerClickListener(field, column, row);
+                }
                 break;
 
             case BLOCK:
                 field = new Image(block.getDrawable());
+                break;
+
+            case GOAL:
+                //Goal hat einen Clicklistener
+                //Wenn es gehighlightet ist und man drauf klickt
+                field = new Image();
+                break;
         }
+        return field;
+    }
+
+    private static void setPlayerClickListener(Image field, int column, int row){
+        field.addListener(new PlayerClickListener(column, row, stage.getActors().size));
+    }
+
+    private static void setField(int column, int row){
+        Image field;
+        if(column<2){
+            setFirstFields(column, row);
+            return;
+        }
+        field = getFieldType(column, row);
 
         float tempXOffset = (stage.getWidth() * xOffset + lineOffset)+(row)*pointOffset;
         float yOffset = ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;

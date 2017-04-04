@@ -45,7 +45,10 @@ public class Board {
                 boardArray[column][char_index] = new Field(boardMeta[column].charAt(char_index));
             }
         }
+        /**Test-Data**/
         boardArray[15][0].setHighlighted(true);
+        Player.setNumber(2);
+        /**Test-Data**/
         somethingChanged = true;
 //        setFieldActive(0,5);
 
