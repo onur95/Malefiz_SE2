@@ -29,6 +29,13 @@ public class BoardToPlayboard {
     static Image highlight;
     static int actorActive;
     static Music yourTurn;
+//    static Music gameStart;
+    static Music kickPlayer;
+    static Music kickedPlayerMove;
+    static Music placeBlock;
+    static Music kickedOwnFigure;
+    static Music moveFigure;
+
 
     public static void init(){
         player1=new Image(new Texture("Player1-xl.png"));
@@ -40,7 +47,12 @@ public class BoardToPlayboard {
 //        yourTurn = Gdx.audio.newSound(Gdx.files.internal("soundeffects/Your turn.wav"));
         //mit Klasse "Sound" funktioniert es nicht nicht
         //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
-        yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/Your turn.mp3"));
+        yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
+        kickPlayer = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kick-player.wav"));
+        kickedPlayerMove = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
+        placeBlock = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/place-block.wav"));
+        kickedOwnFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
+        moveFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/move-figure2.wav"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
         float percentOffset =0.009333333F;
@@ -302,12 +314,12 @@ public class BoardToPlayboard {
 
     public static  void moveToPosition(int actorIndex){
         if(actorActive != -1) {
+            moveFigure.play();
             //Highlight wieder verschwinden lassen
             setPlayerFiguresHighlighted(false);
 
             MoveToAction action = getMoveToAction(actorIndex, 1F);
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
-
             stage.getActors().get(actorActive-1).addAction(action);
             stage.getActors().get(actorActive).addAction(action2);
             
