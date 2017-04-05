@@ -183,36 +183,18 @@ public class BoardToPlayboard {
         switch (board[column][row].getField_state()) {
             case PLAYER1:
                 field = new Image(player1.getDrawable());
-                if(Player.getNumber() == 1){
-                    setPlayerClickListener(field, column, row);
-//                    setPlayerHighlight(column, row, offsetX, offsetY);
-                    //Zusätzlich weiters Image "Highlight" hinzufügen, dass angezeigt wird, wenn der Player dran ist
-                    //dieses auf visible none setzen und index in einem Array speichern
-                }
                 break;
 
             case PLAYER2:
                 field = new Image(player2.getDrawable());
-                if(Player.getNumber() == 2){
-                    setPlayerClickListener(field, column, row);
-//                    setPlayerHighlight(column, row, offsetX, offsetY);
-                }
                 break;
 
             case PLAYER3:
                 field = new Image(player3.getDrawable());
-                if(Player.getNumber() == 3){
-                    setPlayerClickListener(field, column, row);
-//                    setPlayerHighlight(column, row, offsetX, offsetY);
-                }
                 break;
 
             case PLAYER4:
                 field = new Image(player4.getDrawable());
-                if(Player.getNumber() == 4){
-                    setPlayerClickListener(field, column, row);
-//                    setPlayerHighlight(column, row, offsetX, offsetY);
-                }
                 break;
 
             case BLOCK:
@@ -226,10 +208,6 @@ public class BoardToPlayboard {
                 break;
         }
         return field;
-    }
-
-    private static void setPlayerClickListener(Image field, int column, int row){
-//        field.addListener(new PlayerClickListener(column, row, stage.getActors().size));
     }
 
     public static void setPlayerFiguresHighlighted(){
@@ -260,12 +238,6 @@ public class BoardToPlayboard {
         }
 
         setHighlight(column, row, tempXOffset, yOffset);
-
-    }
-
-
-    private static void setPlayerFiguresHighlight(){
-
 
     }
 
