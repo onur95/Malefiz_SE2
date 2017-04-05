@@ -254,17 +254,24 @@ public class BoardToPlayboard {
             //Highlight wieder verschwinden lassen
             setPlayerFiguresHighlighted(false);
 
-            MoveToAction action = new MoveToAction();
-            action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());
-            action.setDuration(1f);
-            stage.getActors().get(actorActive-1).addAction(action);
-//            action.setDuration(0);
-            stage.getActors().get(actorActive).addAction(action);
+            MoveToAction action = getMoveToAction(actorIndex);
+            MoveToAction action2 = getMoveToAction(actorIndex);
 
+            stage.getActors().get(actorActive-1).addAction(action);
+            stage.getActors().get(actorActive).addAction(action2);
+            
             //Hier alle gehighlighteten Positionen löschen (außer die auf dem Spieler!!!)
             stage.getActors().get(actorIndex).remove();
             actorActive = -1;
+
         }
+    }
+
+    private static MoveToAction getMoveToAction(int actorIndex){
+        MoveToAction action = new MoveToAction();
+        action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());
+        action.setDuration(1F);
+        return action;
     }
 
     public static void setActorActive(int index){
