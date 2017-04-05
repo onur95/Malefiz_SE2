@@ -55,7 +55,7 @@ public class BoardToPlayboard {
 
             Board.setSomethingChanged(false);
             /**Test-Data**/
-            setPlayerFiguresHighlighted(true,-1);
+            setPlayerFiguresHighlighted(true);
             /**Test-Data**/
         }
 
@@ -207,16 +207,21 @@ public class BoardToPlayboard {
                 field = new Image();
                 break;
         }
+        if(board[column][row].getField_state().ordinal() == Player.getNumber()){
+            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+        }
         return field;
     }
 
-    public static void setPlayerFiguresHighlighted(boolean status, int stay){
+    public static void setPlayerFiguresHighlighted(boolean status){
         //stay ist der Index, der unverändert bleibt
         for(int index : Player.getHighlightedFiguresIndizes()){
-            if(index != stay) {
-                stage.getActors().get(index).setVisible(status);
-            }
+            setPlayerFigureHighlighted(index,status);
         }
+    }
+
+    public static void setPlayerFigureHighlighted(int index, boolean status){
+        stage.getActors().get(index).setVisible(status);
     }
 
     private static void setField(int column, int row){
@@ -247,7 +252,7 @@ public class BoardToPlayboard {
     public static  void deleteActor(int actorIndex){
         if(actorActive != -1) {
             //Highlight wieder verschwinden lassen
-            setPlayerFiguresHighlighted(false,-1);
+            setPlayerFiguresHighlighted(false);
 
             MoveToAction action = new MoveToAction();
             action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());

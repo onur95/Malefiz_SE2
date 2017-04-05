@@ -20,8 +20,21 @@ public class PlayerClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
-        Board.setFieldActive(this.column, this.row);
-        BoardToPlayboard.setPlayerFiguresHighlighted(false, actorIndex);
-        BoardToPlayboard.setActorActive(actorIndex);
+        if(Player.getHighlightedFiguresIndizes().contains(actorIndex) && isPlayersTurnHighlighted()) {
+            Board.setFieldActive(this.column, this.row);
+            BoardToPlayboard.setPlayerFiguresHighlighted(false);
+            BoardToPlayboard.setPlayerFigureHighlighted(actorIndex, true);
+            BoardToPlayboard.setActorActive(actorIndex);
+        }
+    }
+
+    private boolean isPlayersTurnHighlighted(){
+        boolean status = false;
+        for(int index : Player.getHighlightedFiguresIndizes()){
+            if(BoardToPlayboard.stage.getActors().get(index).isVisible()){
+                status = true;
+            }
+        }
+        return status;
     }
 }
