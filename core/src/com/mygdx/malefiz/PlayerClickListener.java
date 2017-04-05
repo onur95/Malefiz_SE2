@@ -21,6 +21,7 @@ public class PlayerClickListener extends ClickListener {
     public void clicked(InputEvent event, float x, float y)
     {
         Board.setFieldActive(this.column, this.row);
+        BoardToPlayboard.setPlayerFiguresHighlighted(false, actorIndex);
         BoardToPlayboard.setActorActive(actorIndex);
     }
 }

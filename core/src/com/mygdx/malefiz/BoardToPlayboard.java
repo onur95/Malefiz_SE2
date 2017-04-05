@@ -55,7 +55,7 @@ public class BoardToPlayboard {
 
             Board.setSomethingChanged(false);
             /**Test-Data**/
-            setPlayerFiguresHighlighted();
+            setPlayerFiguresHighlighted(true,-1);
             /**Test-Data**/
         }
 
@@ -128,7 +128,7 @@ public class BoardToPlayboard {
         }
         tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
         if(status > -1) {
-            Image field = getFieldType(column, row, status == 0 ? tempXOffset1 : tempXOffset2, yOffset);
+            Image field = getFieldType(column, row);
 
             if (field != null) {
                 MoveToAction action = new MoveToAction();
@@ -178,7 +178,7 @@ public class BoardToPlayboard {
         }
     }
 
-    private static Image getFieldType(int column, int row, float offsetX, float offsetY){
+    private static Image getFieldType(int column, int row){
         Image field = null;
         switch (board[column][row].getField_state()) {
             case PLAYER1:
@@ -210,9 +210,12 @@ public class BoardToPlayboard {
         return field;
     }
 
-    public static void setPlayerFiguresHighlighted(){
+    public static void setPlayerFiguresHighlighted(boolean status, int stay){
+        //stay ist der Index, der unverändert bleibt
         for(int index : Player.getHighlightedFiguresIndizes()){
-            stage.getActors().get(index).setVisible(true);
+            if(index != stay) {
+                stage.getActors().get(index).setVisible(status);
+            }
         }
     }
 
@@ -226,7 +229,7 @@ public class BoardToPlayboard {
         float tempXOffset = (stage.getWidth() * xOffset + lineOffset)+(row)*pointOffset;
         float yOffset = ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
 
-        field = getFieldType(column, row, tempXOffset, yOffset);
+        field = getFieldType(column, row);
 
         if (field != null) {
             MoveToAction action = new MoveToAction();
@@ -244,7 +247,7 @@ public class BoardToPlayboard {
     public static  void deleteActor(int actorIndex){
         if(actorActive != -1) {
             //Highlight wieder verschwinden lassen
-            stage.getActors().get(actorActive).setVisible(false);
+            setPlayerFiguresHighlighted(false,-1);
 
             MoveToAction action = new MoveToAction();
             action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());
