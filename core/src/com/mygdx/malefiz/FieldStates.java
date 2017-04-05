@@ -5,5 +5,5 @@ package com.mygdx.malefiz;
  */
 
 public enum FieldStates {
-    NOFIELD, BLOCK, FIELD, GOAL, PLAYER1, PLAYER2, PLAYER3, PLAYER4
+    NOFIELD, PLAYER1, PLAYER2, PLAYER3, PLAYER4, BLOCK, FIELD, GOAL
 }
