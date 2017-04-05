@@ -56,12 +56,13 @@ public class BoardToPlayboard {
             Board.setSomethingChanged(false);
             /**Test-Data**/
             setPlayerFiguresHighlighted(true);
+            setHighlight(15,0);
             /**Test-Data**/
         }
 
     }
 
-    private static void setFirstFields(int column, int row){
+    private static float setFirstFields(int column, int row, boolean onlyCalculateAndReturn){
         float yOffset, tempXOffset1, tempXOffset2;
         int status = -1; //0--> erste Zeile; 1--> zweite Zeile; -1 --> keine von beiden
         if(column == 0){
@@ -75,33 +76,84 @@ public class BoardToPlayboard {
             tempXOffset2 = (float) (stage.getWidth() * 0.212);
         }
 
-        float result;
-        switch (row){
-            case 1:
-                result = 0;
-                break;
+        float result = getResultFirstRowsOdd(row);
 
-            case 5:
-                result = 1;
-                break;
-
-            case 9:
-                result = 2;
-                break;
-
-            case 13:
-                result = 3;
-                break;
-
-            default:
-                result = -1;
-        }
         if(result > -1){
             status = 0;
         }
 
         tempXOffset1 += (float) (stage.getWidth() * 0.223)*result;
 
+        result = getResultFirstRowsEven(row);
+
+        if(result > -1){
+            status = 1;
+        }
+        tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
+        if(status > -1) {
+            Image field = getFieldType(column, row);
+
+            if (field != null) {
+                MoveToAction action = new MoveToAction();
+                if (status == 0) {
+                    if(!onlyCalculateAndReturn) {
+                        action.setPosition(tempXOffset1, yOffset);
+                        field.addAction(action);
+                        stage.addActor(field);
+
+                        setPlayerHighlight(column, row, tempXOffset1, yOffset);
+                    }
+                    else{
+                        //Return wird nur für das Highlight gebraucht
+                        return tempXOffset1;
+                    }
+                } else if (status == 1) {
+                    if(!onlyCalculateAndReturn) {
+                        action.setPosition(tempXOffset2, yOffset);
+                        field.addAction(action);
+                        stage.addActor(field);
+
+                        setPlayerHighlight(column, row, tempXOffset2, yOffset);
+                    }
+                    else{
+                        //Return wird nur für das Highlight gebraucht
+                        return tempXOffset2;
+                    }
+                } else {
+                    //Wenn die Position nicht im Startbereich liegt
+                    return -1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private static void setField(int column, int row){
+        Image field;
+        //Falls die ersten zwei Reihen: anders generieren
+        if(column<2){
+            setFirstFields(column, row, false);
+            return;
+        }
+        //sonst normal
+
+        float tempXOffset = getOffsetXNormal(row);
+        float yOffset = getOffsetYNormal(column);
+
+        field = getFieldType(column, row);
+
+        if (field != null) {
+            MoveToAction action = new MoveToAction();
+            action.setPosition(tempXOffset, yOffset);
+
+            field.addAction(action);
+            stage.addActor(field);
+            setPlayerHighlight(column, row, tempXOffset, yOffset);
+        }
+    }
+
+    private static int getResultFirstRowsEven(int row){
+        int result;
         switch (row){
             case 3:
                 result = 0;
@@ -123,46 +175,57 @@ public class BoardToPlayboard {
                 result = -1;
                 break;
         }
-        if(result > -1){
-            status = 1;
+        return result;
+    }
+
+    private static int getResultFirstRowsOdd(int row){
+        int result;
+        switch (row){
+            case 1:
+                result = 0;
+                break;
+
+            case 5:
+                result = 1;
+                break;
+
+            case 9:
+                result = 2;
+                break;
+
+            case 13:
+                result = 3;
+                break;
+
+            default:
+                result = -1;
         }
-        tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
-        if(status > -1) {
-            Image field = getFieldType(column, row);
-
-            if (field != null) {
-                MoveToAction action = new MoveToAction();
-                if (status == 0) {
-                    action.setPosition(tempXOffset1, yOffset);
-                    field.addAction(action);
-                    stage.addActor(field);
-
-                    setPlayerHighlight(column, row, tempXOffset1, yOffset);
-                } else if (status == 1) {
-                    action.setPosition(tempXOffset2, yOffset);
-                    field.addAction(action);
-                    stage.addActor(field);
-
-                    setPlayerHighlight(column, row, tempXOffset2, yOffset);
-                } else {
-                    //Wenn die Position nicht im Startbereich liegt
-                    return;
-                }
-            }
-        }
-
-
+        return result;
     }
 
     private static void setHighlight(int column, int row, float offsetX, float offsetY){
-        if (board[column][row].isHighlighted()) {
-            MoveToAction action = new MoveToAction();
-            action.setPosition(offsetX, offsetY);
-            Image field = new Image(highlight.getDrawable());
-            field.addAction(action);
-            field.addListener(new HighlightClickListener(column, row, stage.getActors().size));
-            stage.addActor(field);
+        MoveToAction action = new MoveToAction();
+        action.setPosition(offsetX, offsetY);
+        Image field = new Image(highlight.getDrawable());
+        field.addAction(action);
+        field.addListener(new HighlightClickListener(column, row, stage.getActors().size));
+        stage.addActor(field);
+    }
+
+    public static void setHighlight(int column, int row){
+        float yOffset;
+        float tempXOffset = setFirstFields(column, row, true);
+        if(column == 0){
+            yOffset = (float) (stage.getHeight()*0.015);
         }
+        else if(column == 1){
+            yOffset = (float) (stage.getHeight()*0.096);
+        }
+        else{
+            tempXOffset = getOffsetXNormal(row);
+            yOffset = getOffsetYNormal(column);
+        }
+        setHighlight(column, row, tempXOffset, yOffset);
     }
 
     private static void setPlayerHighlight(int column, int row, float offsetX, float offsetY){
@@ -208,13 +271,14 @@ public class BoardToPlayboard {
                 break;
         }
         if(board[column][row].getField_state().ordinal() == Player.getNumber()){
+            //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
+            //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
             field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
         }
         return field;
     }
 
     public static void setPlayerFiguresHighlighted(boolean status){
-        //stay ist der Index, der unverändert bleibt
         for(int index : Player.getHighlightedFiguresIndizes()){
             setPlayerFigureHighlighted(index,status);
         }
@@ -224,57 +288,44 @@ public class BoardToPlayboard {
         stage.getActors().get(index).setVisible(status);
     }
 
-    private static void setField(int column, int row){
-        Image field;
-        if(column<2){
-            setFirstFields(column, row);
-            return;
-        }
-
-        float tempXOffset = (stage.getWidth() * xOffset + lineOffset)+(row)*pointOffset;
-        float yOffset = ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
-
-        field = getFieldType(column, row);
-
-        if (field != null) {
-            MoveToAction action = new MoveToAction();
-            action.setPosition(tempXOffset, yOffset);
-
-            field.addAction(action);
-            stage.addActor(field);
-            setPlayerHighlight(column, row, tempXOffset, yOffset);
-        }
-
-        setHighlight(column, row, tempXOffset, yOffset);
-
+    private static float getOffsetXNormal(float row){
+        return (stage.getWidth() * xOffset + lineOffset)+(row)*pointOffset;
     }
 
-    public static  void deleteActor(int actorIndex){
+    private static float getOffsetYNormal(float column){
+        return ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
+    }
+
+    public static  void moveToPosition(int actorIndex){
         if(actorActive != -1) {
             //Highlight wieder verschwinden lassen
             setPlayerFiguresHighlighted(false);
 
-            MoveToAction action = getMoveToAction(actorIndex);
-            MoveToAction action2 = getMoveToAction(actorIndex);
+            MoveToAction action = getMoveToAction(actorIndex, 1F);
+            MoveToAction action2 = getMoveToAction(actorIndex, 0);
 
             stage.getActors().get(actorActive-1).addAction(action);
             stage.getActors().get(actorActive).addAction(action2);
             
-            //Hier alle gehighlighteten Positionen löschen (außer die auf dem Spieler!!!)
+            //Hier alle gehighlighteten Positionen löschen
+            //Wenn nach der Berechnung der Route die Highlights angezeigt werden, Size von
+            //stage.getActors() speichern!!
+            //danach kann man alle leicht wieder löschen (alle nach index (size-1)
             stage.getActors().get(actorIndex).remove();
             actorActive = -1;
 
         }
     }
 
-    private static MoveToAction getMoveToAction(int actorIndex){
+    private static MoveToAction getMoveToAction(int actorIndex, float duration){
         MoveToAction action = new MoveToAction();
         action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());
-        action.setDuration(1F);
+        action.setDuration(duration);
         return action;
     }
 
     public static void setActorActive(int index){
+        //Actor Active ist der Index der gerade ausgewählten Figur
         actorActive = index;
     }
 }
