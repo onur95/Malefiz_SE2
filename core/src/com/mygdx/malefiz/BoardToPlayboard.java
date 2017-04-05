@@ -1,5 +1,7 @@
 package com.mygdx.malefiz;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +28,7 @@ public class BoardToPlayboard {
     static float pointOffset;
     static Image highlight;
     static int actorActive;
+    static Music yourTurn;
 
     public static void init(){
         player1=new Image(new Texture("Player1-xl.png"));
@@ -34,6 +37,10 @@ public class BoardToPlayboard {
         player4=new Image(new Texture("Player4-xl.png"));
         highlight=new Image(new Texture("Highlight-xl.png"));
         block=new Image(new Texture("Block-xl.png"));
+//        yourTurn = Gdx.audio.newSound(Gdx.files.internal("soundeffects/Your turn.wav"));
+        //mit Klasse "Sound" funktioniert es nicht nicht
+        //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
+        yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/Your turn.mp3"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
         float percentOffset =0.009333333F;
@@ -55,6 +62,7 @@ public class BoardToPlayboard {
         /**Test-Data**/
         setPlayerFiguresHighlighted(true);
         setHighlight(15,0);
+        playYourTurn();
         /**Test-Data**/
     }
 
@@ -323,5 +331,9 @@ public class BoardToPlayboard {
     public static void setActorActive(int index){
         //Actor Active ist der Index der gerade ausgewählten Figur
         actorActive = index;
+    }
+
+    public static void playYourTurn(){
+        yourTurn.play();
     }
 }
