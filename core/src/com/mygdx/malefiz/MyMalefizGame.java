@@ -32,15 +32,15 @@ public class MyMalefizGame extends ApplicationAdapter {
 		BoardToPlayboard.init();
 		Gdx.graphics.setContinuousRendering(false);
 		Gdx.graphics.requestRendering();
+		stage.addActor(img_playground);
+		BoardToPlayboard.generate();
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.addActor(img_playground);
 		stage.act();
 		stage.draw();
-		BoardToPlayboard.generate();
 	}
 
 	public static Stage getState(){

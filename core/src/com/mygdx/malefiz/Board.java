@@ -32,7 +32,6 @@ public class Board {
                 //o->Normales Feld
                 //.->kein benutzbares Feld
                 //1-4->Player 1-4
-    private static boolean somethingChanged = false;
     private static FieldPosition fieldActive;
 
 
@@ -48,7 +47,6 @@ public class Board {
         /**Test-Data**/
         Player.setNumber(2);
         /**Test-Data**/
-        somethingChanged = true;
     }
 
     private static void reverseBoardMeta(){
@@ -61,14 +59,6 @@ public class Board {
 
     public static Field[][] getBoardArray(){
         return boardArray;
-    }
-
-    public static boolean getSomethingChanged(){
-        return somethingChanged;
-    }
-
-    public static void setSomethingChanged(boolean status){
-        somethingChanged = status;
     }
 
     public static void setFieldActive(int column, int row){

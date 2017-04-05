@@ -43,23 +43,19 @@ public class BoardToPlayboard {
     }
 
     public static void generate(){
-        if(Board.getSomethingChanged()) {
-            for(int column = 0; column < board.length; column++) {
-                for (int i = 0; i < board[column].length; i++) {
-                    setField(column,i);
-                }
+        for(int column = 0; column < board.length; column++) {
+            for (int i = 0; i < board[column].length; i++) {
+                setField(column,i);
             }
-
-            stage.act();
-            stage.draw();
-
-            Board.setSomethingChanged(false);
-            /**Test-Data**/
-            setPlayerFiguresHighlighted(true);
-            setHighlight(15,0);
-            /**Test-Data**/
         }
 
+        stage.act();
+        stage.draw();
+
+        /**Test-Data**/
+        setPlayerFiguresHighlighted(true);
+        setHighlight(15,0);
+        /**Test-Data**/
     }
 
     private static float setFirstFields(int column, int row, boolean onlyCalculateAndReturn){
