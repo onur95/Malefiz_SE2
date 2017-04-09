@@ -12,7 +12,6 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import com.badlogic.gdx.utils.async.AsyncTask;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.io.IOException;
@@ -24,8 +23,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
-
 import javax.swing.text.View;
+import com.badlogic.gdx.utils.async.AsyncTask;
 
 
 public class MyMalefizGame extends ApplicationAdapter {
