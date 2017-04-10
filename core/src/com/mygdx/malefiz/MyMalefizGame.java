@@ -3,6 +3,7 @@ package com.mygdx.malefiz;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,13 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
-public class MyMalefizGame extends ApplicationAdapter {
+public class MyMalefizGame implements Screen {
+
 	private static Stage stage;
 	Texture txt_playground;
 	Image img_playground;
+	final Malefiz mal;
 
-	@Override
-	public void create () {
+	public MyMalefizGame (final Malefiz mal) {
+		this.mal=mal;
 		stage=new Stage(new FitViewport(1500,1498));
 		Gdx.input.setInputProcessor(stage);
 		txt_playground = new Texture("Playboard.jpg");
@@ -35,7 +38,7 @@ public class MyMalefizGame extends ApplicationAdapter {
 	}
 
 	@Override
-	public void render () {
+	public void render (float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.addActor(img_playground);
 		stage.act();
@@ -57,5 +60,25 @@ public class MyMalefizGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		stage.dispose();
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
+	}
+
+	@Override
+	public void show() {
+
 	}
 }
