@@ -32,7 +32,6 @@ public class Board {
                 //o->Normales Feld
                 //.->kein benutzbares Feld
                 //1-4->Player 1-4
-    private static boolean somethingChanged = false;
     private static FieldPosition fieldActive;
 
 
@@ -46,12 +45,8 @@ public class Board {
             }
         }
         /**Test-Data**/
-        boardArray[15][0].setHighlighted(true);
         Player.setNumber(2);
         /**Test-Data**/
-        somethingChanged = true;
-//        setFieldActive(0,5);
-
     }
 
     private static void reverseBoardMeta(){
@@ -66,23 +61,13 @@ public class Board {
         return boardArray;
     }
 
-    public static boolean getSomethingChanged(){
-        return somethingChanged;
-    }
-
-    public static void setSomethingChanged(boolean status){
-        somethingChanged = status;
-    }
-
     public static void setFieldActive(int column, int row){
-        System.out.println("set FieldActive");
         fieldActive = new FieldPosition(column, row);
     }
 
     public static void moveTo(int column, int row){
-        System.out.println("hier");
         Field temp = boardArray[column][row];
-        temp.setHighlighted(false);
+//        temp.setHighlighted(false);
         boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
 
         //Feld, auf dem der Spieler war, wird auf FIELD gesetzt

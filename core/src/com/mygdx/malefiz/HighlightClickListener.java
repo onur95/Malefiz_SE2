@@ -20,8 +20,7 @@ public class HighlightClickListener extends ClickListener {
     public void clicked(InputEvent event, float x, float y)
     {
         Board.moveTo(this.column, this.row);
-        BoardToPlayboard.deleteActor(this.actorIndex);
-//        BoardToPlayboard.moveTo(this.column, this.row);
+        BoardToPlayboard.moveToPosition(this.actorIndex);
     }
 
 }

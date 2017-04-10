@@ -10,7 +10,6 @@ import static com.mygdx.malefiz.FieldStates.*;
 
 public class Field {
     private FieldStates field_state;
-    private boolean highlight = false;
 
     public Field(char field_type){
         init(field_type);
@@ -50,18 +49,10 @@ public class Field {
                 this.field_state = NOFIELD;
                 break;
         }
-//        System.out.println(field_state);
     }
 
     public FieldStates getField_state(){
         return this.field_state;
     }
 
-    public boolean isHighlighted(){
-        return this.highlight;
-    }
-
-    public void setHighlighted(boolean status){
-        this.highlight = status;
-    }
 }
