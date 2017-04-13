@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 // TODO: Ausimplementierung der Klasse
+// Necessary ONLY for clients.
 
 public class ListConnectionScreen implements Screen {
     private SpriteBatch batch;

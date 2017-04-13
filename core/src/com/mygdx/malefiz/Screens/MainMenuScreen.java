@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.malefiz.GameNetwork;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
 
@@ -60,7 +61,7 @@ public class MainMenuScreen implements Screen {
         TextButton playButton = new TextButton("Start", skin);
         playButton.getLabel().setSize(150f,150f);
 
-        // TODO -- Tom :: Code below is written blind. Correct smaller issues later
+        // TODO :: Code below is written blind. Correct smaller issues later
         // Added Button for Networking
         //TextButton conButton = new TextButton("Search game", skin);
         //conButton.getLabel().setSize(250f, 250f);
@@ -76,10 +77,11 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        // TODO -- Tom :: Code below is written blind. Correct smaller issues later
+        // TODO :: Code below is written blind. Correct smaller issues later
         //conButton.addListener(new ClickListener(){
         //    @Override
         //    public void clicked(InputEvent event, float x, float y){
+        //        GameNetwork.initClient();
         //        ((Game)Gdx.app.getApplicationListener()).setScreen(new ListConnectionScreen()) // ?
         //    }
         //});
