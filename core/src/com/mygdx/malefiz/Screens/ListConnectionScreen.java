@@ -6,13 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 // TODO: Ausimplementierung der Klasse
-// Necessary ONLY for clients.
+// Necessary ONLY for clients -- Servers are already in some game.
 
 public class ListConnectionScreen implements Screen {
     private SpriteBatch batch;
@@ -39,16 +40,29 @@ public class ListConnectionScreen implements Screen {
 
     public void show() {
         //Create Table as in MainMenuScreen
-        Table mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.top();
+        Table conTable = new Table();
+        conTable.setFillParent(true);
+        conTable.top();
 
-        // Fill Table with possible Socketconnections
+        //Search for connections
+        Object[] conBuf = new Object[10];     // Display up to 9 possible connections
+
+                // Well, how TODO ?
+
+        final SelectBox<Object> sb = new SelectBox<Object>(skin);
+        sb.setItems(conBuf);
+
+        // Actually fill the table & the app with list of possible connections
+        conTable.add(sb);
+        stage.addActor(conTable);
+
     }
 
     @Override
     public void dispose() {
-
+        // Does this suffice for disposing connectionlist?
+        skin.dispose();
+        atlas.dispose();
     }
 
     @Override
@@ -73,66 +87,6 @@ public class ListConnectionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
     }
 }
-
-/* TODO :: Take a look. This may be more solid for overall coding, dunno if worth.
-public class MainClass extends Game implements ApplicationListener {
-    private GameScreen gameScreen;
-    private MenuScreen menuScreen;
-    private OptionsScreen optionsScreen;
-
-    @Override
-    public void create() {
-        // Code
-    }
-    setGameScreen()
-    {
-        gameScreen=new GameScreen(this);
-        setScreen(gameScreen);
-    }
-    setMenuScreen()
-    {
-        menuScreen=new menuScreen(this);
-        setScreen(menuScreen);
-    }
-    setConnectivityScreen()
-    {
-        connectivityScreen=new connectivityScreen(this);
-        setScreen(connectivityScreen);
-    }
-
-    @Override
-    public void dispose() {
-
-        super.dispose();
-    }
-
-    @Override
-    public void render() {
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-        super.render();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-        super.resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-        super.pause();
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-    }
-}
-
- */

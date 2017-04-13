@@ -13,10 +13,11 @@ import java.io.InputStreamReader;
 
 
 /// TODO: Update Data-Transfer of Field/Turn/etc.
-/// Yet to Test ! -- This better works.
+/// Minimal sample; If this doesn't work, then Upgrade :: Confirm at discord please.
 
 public class GameNetwork {
     // Serverside
+    /// TODO: Doublecheck whether this goes well or needs while(true)
     public static void initServer(){
 
         new Thread(new Runnable() {
@@ -24,7 +25,6 @@ public class GameNetwork {
             public void run() {
                 ServerSocketHints sshS = new ServerSocketHints();
                 ServerSocket host = Gdx.net.newServerSocket(Net.Protocol.TCP, "localhost", 7331, sshS);
-
                 Socket client = host.accept(null);
                 try{
                     String datatransfer = new BufferedReader(new InputStreamReader(client.getInputStream())).readLine();
@@ -38,8 +38,8 @@ public class GameNetwork {
 
     }
 
+    //Clientside
     public static void initClient(){
-        //Clientside
         SocketHints sshC = new SocketHints();
         Socket client = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 7331, sshC);
         try{
