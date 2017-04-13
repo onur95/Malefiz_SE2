@@ -59,6 +59,12 @@ public class MainMenuScreen implements Screen {
         //Create buttons
         TextButton playButton = new TextButton("Start", skin);
         playButton.getLabel().setSize(150f,150f);
+
+        // TODO -- Tom :: Code below is written blind. Correct smaller issues later
+        // Added Button for Networking
+        //TextButton conButton = new TextButton("Search game", skin);
+        //conButton.getLabel().setSize(250f, 250f);
+
         //TextButton optionsButton = new TextButton("Options", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
@@ -69,6 +75,15 @@ public class MainMenuScreen implements Screen {
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
             }
         });
+
+        // TODO -- Tom :: Code below is written blind. Correct smaller issues later
+        //conButton.addListener(new ClickListener(){
+        //    @Override
+        //    public void clicked(InputEvent event, float x, float y){
+        //        ((Game)Gdx.app.getApplicationListener()).setScreen(new ListConnectionScreen()) // ?
+        //    }
+        //});
+
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

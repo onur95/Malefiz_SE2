@@ -1,22 +1,15 @@
 package com.mygdx.malefiz;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 
 public class MyMalefizGame implements Screen {
 
@@ -33,6 +26,7 @@ public class MyMalefizGame implements Screen {
 		img_playground=new Image(txt_playground);
 		Board.init();
 		BoardToPlayboard.init();
+		GameNetwork.initServer();
 		//auskommentiert da die Bewegung sonst hängt
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.requestRendering();
@@ -83,4 +77,5 @@ public class MyMalefizGame implements Screen {
 	public void dispose () {
 		stage.dispose();
 	}
+
 }
