@@ -48,6 +48,7 @@ public class ListConnectionScreen implements Screen {
         Object[] conBuf = new Object[10];     // Display up to 9 possible connections
 
                 // Well, how TODO ?
+                // GameNetwork.fetchIPAddresses() > Return null or String[5] with Addresses
 
         final SelectBox<Object> sb = new SelectBox<Object>(skin);
         sb.setItems(conBuf);
