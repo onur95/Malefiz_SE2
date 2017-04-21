@@ -23,7 +23,7 @@ public class ListConnectionScreen implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    public ListConnectionScreen{
+    public ListConnectionScreen(){
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         batch = new SpriteBatch();
