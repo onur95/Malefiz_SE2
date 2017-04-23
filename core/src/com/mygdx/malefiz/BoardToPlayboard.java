@@ -1,6 +1,7 @@
 package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
@@ -29,33 +30,34 @@ public class BoardToPlayboard {
     static float pointOffset;
     static Image highlight;
     static int actorActive;
-    static Music yourTurn;
-//    static Music gameStart;
+    static Sound yourTurn;
     static Sound kickPlayer;
     static Sound kickedPlayerMove;
     static Sound placeBlock;
     static Sound kickedOwnFigure;
     static Sound moveFigure;
+
     static int actorsCount = -1;
 
 
+
+    private static void init_sound(){
+        yourTurn=Gdx.audio.newSound(Gdx.files.internal("soundeffects/your-turn.wav"));
+        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
+        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
+        placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
+        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
+        moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
+    }
+
     public static void init(){
+        init_sound();
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
         player4=new Image(new Texture("Player4.png"));
         highlight=new Image(new Texture("Highlight.png"));
         block=new Image(new Texture("Block.png"));
-//        yourTurn = Gdx.audio.newSound(Gdx.files.internal("soundeffects/Your turn.wav"));
-        //mit Klasse "Sound" funktioniert es nicht nicht
-        //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
-        yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
-        yourTurn.setLooping(false);
-        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
-        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
-        placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
-        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
-        moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
         float percentOffset =0.009333333F;
@@ -356,7 +358,7 @@ public class BoardToPlayboard {
     }
 
     public static void playYourTurn(){
-        yourTurn.play();
+        yourTurn.play(1.0f);
 
     }
 
