@@ -39,16 +39,17 @@ public class BoardToPlayboard {
 
 
     public static void init(){
-        player1=new Image(new Texture("Player1-xl.png"));
-        player2=new Image(new Texture("Player2-xl.png"));
-        player3=new Image(new Texture("Player3-xl.png"));
-        player4=new Image(new Texture("Player4-xl.png"));
-        highlight=new Image(new Texture("Highlight-xl.png"));
-        block=new Image(new Texture("Block-xl.png"));
+        player1=new Image(new Texture("Player1.png"));
+        player2=new Image(new Texture("Player2.png"));
+        player3=new Image(new Texture("Player3.png"));
+        player4=new Image(new Texture("Player4.png"));
+        highlight=new Image(new Texture("Highlight.png"));
+        block=new Image(new Texture("Block.png"));
 //        yourTurn = Gdx.audio.newSound(Gdx.files.internal("soundeffects/Your turn.wav"));
         //mit Klasse "Sound" funktioniert es nicht nicht
         //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
         yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
+        yourTurn.setLooping(false);
         kickPlayer = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kick-player.wav"));
         kickedPlayerMove = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
         placeBlock = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/place-block.wav"));
@@ -356,6 +357,7 @@ public class BoardToPlayboard {
 
     public static void playYourTurn(){
         yourTurn.play();
+
     }
 
     public static void setActorsCount(){
