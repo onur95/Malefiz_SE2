@@ -48,6 +48,7 @@ public class BoardToPlayboard {
         //mit Klasse "Sound" funktioniert es nicht nicht
         //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
         yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
+        yourTurn.setLooping(false);
         kickPlayer = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kick-player.wav"));
         kickedPlayerMove = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
         placeBlock = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/place-block.wav"));
@@ -347,5 +348,6 @@ public class BoardToPlayboard {
 
     public static void playYourTurn(){
         yourTurn.play();
+
     }
 }
