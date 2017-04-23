@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 
 public class Board {
     private static Field[][] boardArray; //Das aktuelle Spielfeld
-    private static final String[] boardMeta =   //Das Grundgerüst des Spielfeldes
+    private static final String[] meta =   //Das Grundgerüst des Spielfeldes
                     {   "........G........",
                         "ooooooooBoooooooo",
                         "o...............o",
@@ -27,6 +27,7 @@ public class Board {
                         "..1...2...3...4..",
                         ".1.1.2.2.3.3.4.4.",
                         ".1.1.2.2.3.3.4.4."};
+    private static final String[] boardMeta = reverseBoardMeta(meta);
                 //G->Goal
                 //B->Block
                 //o->Normales Feld
@@ -36,7 +37,6 @@ public class Board {
 
 
     public static void init(){
-        reverseBoardMeta();
         boardArray = new Field[17][17];
         for(int column = boardMeta.length-1; column>=0; column--){
 
@@ -49,12 +49,14 @@ public class Board {
         /**Test-Data**/
     }
 
-    private static void reverseBoardMeta(){
-        for(int i=0;i<boardMeta.length/2;i++){
-            String a = boardMeta[boardMeta.length-i-1];
-            boardMeta[boardMeta.length-i-1] = boardMeta[i] ;
-            boardMeta[i] = a;
+    private static String[] reverseBoardMeta(String [] defaultMeta){
+        String[] meta = defaultMeta;
+        for(int i=0;i<meta.length/2;i++){
+            String a = meta[meta.length-i-1];
+            meta[meta.length-i-1] = meta[i] ;
+            meta[i] = a;
         }
+        return meta;
     }
 
     public static Field[][] getBoardArray(){
