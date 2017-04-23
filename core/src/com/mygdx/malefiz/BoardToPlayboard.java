@@ -35,6 +35,7 @@ public class BoardToPlayboard {
     static Music placeBlock;
     static Music kickedOwnFigure;
     static Music moveFigure;
+    static int actorsCount;
 
 
     public static void init(){
@@ -327,9 +328,17 @@ public class BoardToPlayboard {
             //Wenn nach der Berechnung der Route die Highlights angezeigt werden, Size von
             //stage.getActors() speichern!!
             //danach kann man alle leicht wieder löschen (alle nach index (size-1)
-            stage.getActors().get(actorIndex).remove();
+            //stage.getActors().get(actorIndex).remove();
+            removeHighlights();
             actorActive = -1;
 
+        }
+    }
+
+    private static void removeHighlights(){
+        int actorC=getActorsCount();
+        while(stage.getActors().size>actorC){
+            stage.getActors().get(actorC).remove();
         }
     }
 
@@ -347,5 +356,13 @@ public class BoardToPlayboard {
 
     public static void playYourTurn(){
         yourTurn.play();
+    }
+
+    public static void setActorsCount(){
+        actorsCount=stage.getActors().size;
+    }
+
+    public static int getActorsCount(){
+        return actorsCount;
     }
 }

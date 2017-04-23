@@ -29,6 +29,8 @@ public class PlayerClickListener extends ClickListener {
             BoardToPlayboard.setPlayerFigureHighlighted(actorIndex, true);
 
             BoardToPlayboard.setActorActive(actorIndex);
+            //TODO: den gewürfelten Wert übergeben.
+            Board.higlightPositionsMovement(5,Board.getRealFieldActive(),null);
         }
     }
 
