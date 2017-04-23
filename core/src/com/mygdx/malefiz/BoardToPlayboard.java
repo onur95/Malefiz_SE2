@@ -2,6 +2,7 @@ package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,11 +31,11 @@ public class BoardToPlayboard {
     static int actorActive;
     static Music yourTurn;
 //    static Music gameStart;
-    static Music kickPlayer;
-    static Music kickedPlayerMove;
-    static Music placeBlock;
-    static Music kickedOwnFigure;
-    static Music moveFigure;
+    static Sound kickPlayer;
+    static Sound kickedPlayerMove;
+    static Sound placeBlock;
+    static Sound kickedOwnFigure;
+    static Sound moveFigure;
     static int actorsCount = -1;
 
 
@@ -50,11 +51,11 @@ public class BoardToPlayboard {
         //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
         yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
         yourTurn.setLooping(false);
-        kickPlayer = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kick-player.wav"));
-        kickedPlayerMove = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
-        placeBlock = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/place-block.wav"));
-        kickedOwnFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
-        moveFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/move-figure2.wav"));
+        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
+        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
+        placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
+        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
+        moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
         float percentOffset =0.009333333F;
