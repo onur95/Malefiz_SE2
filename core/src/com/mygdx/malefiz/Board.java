@@ -102,7 +102,6 @@ public class Board {
     }
 
     public static void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore) {
-        BoardToPlayboard.setActorsCount();  //Um Highlights rauszulöschen
         checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field); //above
         checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field); //below
         checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field); //left

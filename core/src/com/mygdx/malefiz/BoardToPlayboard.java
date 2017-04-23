@@ -35,7 +35,7 @@ public class BoardToPlayboard {
     static Music placeBlock;
     static Music kickedOwnFigure;
     static Music moveFigure;
-    static int actorsCount;
+    static int actorsCount = -1;
 
 
     public static void init(){
@@ -75,7 +75,6 @@ public class BoardToPlayboard {
 
         /**Test-Data**/
         setPlayerFiguresHighlighted(true);
-        setHighlight(15,0);
         playYourTurn();
         /**Test-Data**/
     }
@@ -336,11 +335,11 @@ public class BoardToPlayboard {
         }
     }
 
-    private static void removeHighlights(){
-        int actorC=getActorsCount();
-        while(stage.getActors().size>actorC){
-            stage.getActors().get(actorC).remove();
+    public static void removeHighlights(){
+        while(stage.getActors().size>actorsCount && actorsCount != -1){
+            stage.getActors().get(actorsCount).remove();
         }
+        actorsCount = -1;
     }
 
     private static MoveToAction getMoveToAction(int actorIndex, float duration){
@@ -361,7 +360,9 @@ public class BoardToPlayboard {
     }
 
     public static void setActorsCount(){
-        actorsCount=stage.getActors().size;
+        if(actorsCount == -1) {
+            actorsCount = stage.getActors().size;
+        }
     }
 
     public static int getActorsCount(){
