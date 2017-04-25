@@ -23,8 +23,10 @@ public class MyMalefizGame implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		txt_playground = new Texture("Playboard.jpg");
 		img_playground=new Image(txt_playground);
+		stage.addActor(img_playground);
 		Board.init();
 		BoardToPlayboard.init();
+		BoardToPlayboard.generate();
 		//Dice.randomNumber();
 		//Dice.init();
 		//auskommentiert da die Bewegung sonst hängt
@@ -46,10 +48,8 @@ public class MyMalefizGame implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.addActor(img_playground);
 		stage.act();
 		stage.draw();
-		BoardToPlayboard.generate();
 	}
 
 	@Override

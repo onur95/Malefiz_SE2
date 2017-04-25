@@ -1,7 +1,9 @@
 package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,31 +30,34 @@ public class BoardToPlayboard {
     static float pointOffset;
     static Image highlight;
     static int actorActive;
-    static Music yourTurn;
-//    static Music gameStart;
-    static Music kickPlayer;
-    static Music kickedPlayerMove;
-    static Music placeBlock;
-    static Music kickedOwnFigure;
-    static Music moveFigure;
+    static Sound yourTurn;
+    static Sound kickPlayer;
+    static Sound kickedPlayerMove;
+    static Sound placeBlock;
+    static Sound kickedOwnFigure;
+    static Sound moveFigure;
 
+    static int actorsCount = -1;
+
+
+
+    private static void init_sound(){
+        yourTurn=Gdx.audio.newSound(Gdx.files.internal("soundeffects/your-turn.wav"));
+        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
+        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
+        placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
+        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
+        moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
+    }
 
     public static void init(){
+        init_sound();
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
         player4=new Image(new Texture("Player4.png"));
         highlight=new Image(new Texture("Highlight.png"));
         block=new Image(new Texture("Block.png"));
-//        yourTurn = Gdx.audio.newSound(Gdx.files.internal("soundeffects/Your turn.wav"));
-        //mit Klasse "Sound" funktioniert es nicht nicht
-        //Failed to open libwvm.so: dlopen failed: library "libwvm.so" not found
-        yourTurn = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/your-turn.wav"));
-        kickPlayer = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kick-player.wav"));
-        kickedPlayerMove = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
-        placeBlock = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/place-block.wav"));
-        kickedOwnFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
-        moveFigure = Gdx.audio.newMusic(Gdx.files.internal("soundeffects/move-figure2.wav"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
         float percentOffset =0.009333333F;
@@ -73,7 +78,6 @@ public class BoardToPlayboard {
 
         /**Test-Data**/
         setPlayerFiguresHighlighted(true);
-        setHighlight(15,0);
         playYourTurn();
         /**Test-Data**/
     }
@@ -322,15 +326,23 @@ public class BoardToPlayboard {
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
             stage.getActors().get(actorActive-1).addAction(action);
             stage.getActors().get(actorActive).addAction(action2);
-            
+
             //Hier alle gehighlighteten Positionen löschen
             //Wenn nach der Berechnung der Route die Highlights angezeigt werden, Size von
             //stage.getActors() speichern!!
             //danach kann man alle leicht wieder löschen (alle nach index (size-1)
-            stage.getActors().get(actorIndex).remove();
+            //stage.getActors().get(actorIndex).remove();
+            removeHighlights();
             actorActive = -1;
 
         }
+    }
+
+    public static void removeHighlights(){
+        while(stage.getActors().size>actorsCount && actorsCount != -1){
+            stage.getActors().get(actorsCount).remove();
+        }
+        actorsCount = -1;
     }
 
     private static MoveToAction getMoveToAction(int actorIndex, float duration){
@@ -346,6 +358,17 @@ public class BoardToPlayboard {
     }
 
     public static void playYourTurn(){
-        yourTurn.play();
+        yourTurn.play(1.0f);
+
+    }
+
+    public static void setActorsCount(){
+        if(actorsCount == -1) {
+            actorsCount = stage.getActors().size;
+        }
+    }
+
+    public static int getActorsCount(){
+        return actorsCount;
     }
 }
