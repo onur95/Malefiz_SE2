@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -38,6 +39,7 @@ public class BoardToPlayboard {
     static Sound moveFigure;
 
     static int actorsCount = -1;
+    static int kickedIndex = -1;
 
 
 
@@ -327,6 +329,7 @@ public class BoardToPlayboard {
             stage.getActors().get(actorActive-1).addAction(action);
             stage.getActors().get(actorActive).addAction(action2);
 
+
             //Hier alle gehighlighteten Positionen löschen
             //Wenn nach der Berechnung der Route die Highlights angezeigt werden, Size von
             //stage.getActors() speichern!!
@@ -370,5 +373,46 @@ public class BoardToPlayboard {
 
     public static int getActorsCount(){
         return actorsCount;
+    }
+
+    public static void setKickedIndex(int index){
+        float x = stage.getActors().get(index).getX();
+        float y = stage.getActors().get(index).getY();
+        int kicked = 0;
+        for(Actor actor : stage.getActors()){
+            if(actor.getX() == x && actor.getY() == y){
+                kickedIndex = kicked;
+                break;
+            }
+            kicked++;
+        }
+    }
+
+    public static void moveKicked(){
+        if(kickedIndex != -1){
+            int column = Board.getNewPlayerPosition().getColumn();
+            int row = Board.getNewPlayerPosition().getRow();
+            float yOffset;
+            float tempXOffset = setFirstFields(column, row, true);
+            if(column == 0){
+                yOffset = (float) (stage.getHeight()*0.015);
+            }
+            else if(column == 1){
+                yOffset = (float) (stage.getHeight()*0.096);
+            }
+            else{
+                tempXOffset = getOffsetXNormal(row);
+                yOffset = getOffsetYNormal(column);
+            }
+            MoveToAction action = new MoveToAction();
+            action.setPosition(tempXOffset,yOffset);
+            action.setDuration(1F);
+            stage.getActors().get(kickedIndex).addAction(action);
+            kickedIndex = -1;
+        }
+    }
+
+    public static void getKickedToPosition(){
+
     }
 }

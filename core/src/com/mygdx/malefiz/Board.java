@@ -38,6 +38,7 @@ public class Board {
     //.->kein benutzbares Feld
     //1-4->Player 1-4
     private static FieldPosition fieldActive;
+    private static FieldPosition newPlayerPosition;
 
 
     public static void init(){
@@ -117,7 +118,7 @@ public class Board {
 
     private static void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore){
         dice--;
-        if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==Player.getNumber() && dice != 0))&& !myState.equals(FieldStates.NOFIELD)){
+        if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==Player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != Player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
                 BoardToPlayboard.setHighlight(column,row);
             }
@@ -125,5 +126,34 @@ public class Board {
                 higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore);
             }
         }
+    }
+
+    public static boolean isPlayer(int ordinal){
+        return (ordinal >= 1 && ordinal <= 4);
+    }
+
+    public static boolean isPlayer(int column, int row){
+        return isPlayer(boardArray[column][row].getField_state().ordinal());
+    }
+
+    public static void movePlayerToStart(int column, int row){
+
+        for(int x = 0; x < 3; x++){
+            for(int y = 0; y < boardArray[x].length; y++){
+                if(boardMeta[x].charAt(y) != '.'){
+                    int playerNumber = Character.getNumericValue(boardMeta[x].charAt(y));
+
+                    if(playerNumber == boardArray[column][row].getField_state().ordinal() && boardArray[x][y].getField_state() == FieldStates.NOFIELD){
+                        System.out.println("hier");
+                        newPlayerPosition = new FieldPosition(x,y);
+                        boardArray[x][y] = new Field(boardMeta[x].charAt(y));
+                    }
+                }
+            }
+        }
+    }
+
+    public static FieldPosition getNewPlayerPosition(){
+        return newPlayerPosition;
     }
 }
