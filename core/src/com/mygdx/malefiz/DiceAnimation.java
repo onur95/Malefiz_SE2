@@ -44,7 +44,7 @@ public class DiceAnimation  {
             }
         }
 
-        diceAnimation = new Animation<TextureRegion>(0.25f, walkFrames);
+        diceAnimation = new Animation<TextureRegion>(0.2f, walkFrames);
         spriteBatch = new SpriteBatch();
         time = 0f;
     }
@@ -58,7 +58,7 @@ public class DiceAnimation  {
 
         TextureRegion actDiceAnimation = diceAnimation.getKeyFrame(time, false);
         spriteBatch.begin();
-        spriteBatch.draw(actDiceAnimation, 50, 500, 200, 100);
+        spriteBatch.draw(actDiceAnimation, 100, 550, 350, 175);
         spriteBatch.end();
     }
 
