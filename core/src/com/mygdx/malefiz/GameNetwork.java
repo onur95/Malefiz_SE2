@@ -37,6 +37,7 @@ public class GameNetwork extends Thread {
                 // Serverside Client-Setup
                 SocketHints shC = new SocketHints();
                 Socket client = host.accept(shC);
+    // Commitcomment
 
                 // Running the server
                     while (true) {
