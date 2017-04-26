@@ -61,13 +61,12 @@ public class ConnectionScreen implements Screen {
         mainTable.top();
 
         //Create editable Textfields
-        TextField eIPText = new TextField("Enter public IP", skin);
+        final TextField eIPText = new TextField("Enter public IP. (F.ex.: 10.226.172.156)", skin);
         eIPText.setSize(150f, 150f);
-        TextField ePortText = new TextField("Enter Port", skin);
+        final TextField ePortText = new TextField("Enter the Portnumber (F.ex.: 7734)", skin);
         ePortText.setSize(150f, 150f);
 
-        // TODO: Create Listeners to input new Data into textfield
-
+        // TODO: Check if we really do not need any listener on TextField >> Test
 
         // Create connection-Button
         TextButton conButton = new TextButton("Connect", skin);
@@ -76,8 +75,12 @@ public class ConnectionScreen implements Screen {
         conButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                // TODO :: Connect client to server
+                // Fetch entries
+                final String ip = eIPText.getText();
+                final int port = Integer.parseInt(ePortText.getText());
 
+                // Initialise the Client in GameNetwork
+                GameNetwork.initClient(ip, port);
             }
         });
 

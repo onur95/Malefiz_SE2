@@ -18,26 +18,30 @@ import java.util.Enumeration;
 /*
 Gschickt werdn drei klassn und de spielernummer
 Klasse besteht aus:
-Actorindex, column, row
+Actorindex, column, row, playerturn
 */
 
 public class GameNetwork extends Thread {
-    // Serverside
-    // TODO: Update Data-Transfer of Field/Turn/etc.
+    //// Serverside
+    // Initialization via starting a new Game in MainMenuScreen.playButton.addListener
     public static void initServer(){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Server + Settings
+                // Serverconfiguration via sshS
                 ServerSocketHints sshS = new ServerSocketHints();
-                sshS.backlog = 4;
-                sshS.acceptTimeout = 0; // No timeout
-                ServerSocket host = Gdx.net.newServerSocket(Net.Protocol.TCP, "localhost", 7454, sshS);
+                sshS.backlog = 3;       // Maximum of 3 available Connections
+                sshS.acceptTimeout = 0; // No timeout (Shuts down server on x seconds throwing e)
 
-                // Serverside Client-Setup
+                // Setup Server
+                // Fetch Device-Data :: 0 = Port; 1 = private ip; 2 = public ip
+                String[] data = fetchServerInfo();
+
+                ServerSocket host = Gdx.net.newServerSocket(Net.Protocol.TCP, data[2], Integer.parseInt(data[0]), sshS);
+
+                // Serverside Client-Setup :: Kept if necessary
                 SocketHints shC = new SocketHints();
                 Socket client = host.accept(shC);
-    // Commitcomment
 
                 // Running the server
                     while (true) {
@@ -67,16 +71,16 @@ public class GameNetwork extends Thread {
         }).start();
     }
 
-    //Clientside
-    public static void initClient() {
-        String host = "";
-        int port = 0;
+    //// Clientside
+    // Initialise the Client from ConnectionScreen.conButton.addListener()
+    public static void initClient(String ip, int port) {
         SocketHints sshC = new SocketHints();
 
-        //TODO :: Entry for serverinformation
+        // Connect the Client using TCP/IP-Protocol onto IP x, Port y, using reconfigured Hints sshC
+        Socket client = Gdx.net.newClientSocket(Net.Protocol.TCP, ip, port, sshC);
 
-        Socket client = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, sshC);
 
+        //TODO :: Test this implementation
         try {
             client.getOutputStream().write(/*Send move to server*/null);
             String serverresponse = new BufferedReader(new InputStreamReader(client.getInputStream())).readLine();
@@ -90,7 +94,7 @@ public class GameNetwork extends Thread {
 
     // TODO: Call this in Textfield of Submenu in Main
     // We need to distribute Information to clients. Do so via sharing information person to person.
-    public String[] fetchServerInfo() {
+    public static String[] fetchServerInfo() {
         String[] serverInfo = new String[2];
         // 0 = Port; 1 = private ip; 2 = public ip
         serverInfo[0] = "7454"; // Port
