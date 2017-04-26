@@ -2,16 +2,18 @@ package com.mygdx.malefiz.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -19,12 +21,10 @@ import com.mygdx.malefiz.GameNetwork;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
 
-/**
- * Created by Onur on 04.04.2017.
- */
+// TODO: Ausimplementierung der Klasse
+// Necessary ONLY for clients -- Servers are already in some game.
 
-public class MainMenuScreen implements Screen {
-
+public class ConnectionScreen implements Screen {
     private SpriteBatch batch;
     Stage stage;
     private TextureAtlas atlas;
@@ -33,8 +33,10 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     final Malefiz game;
 
-    public MainMenuScreen(final Malefiz game){
-        this.game=game;
+    String input;
+
+    public ConnectionScreen(final Malefiz game){
+        this.game = game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         batch = new SpriteBatch();
@@ -46,9 +48,9 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(viewport, batch);
 
         Gdx.input.setInputProcessor(stage);
+
     }
 
-    @Override
     public void show() {
         //Create Table
         Table mainTable = new Table();
@@ -57,65 +59,53 @@ public class MainMenuScreen implements Screen {
         //Set alignment of contents in the table.
         mainTable.top();
 
-        //Create buttons
-        TextButton playButton = new TextButton("Start", skin);
-        playButton.getLabel().setSize(150f,150f);
+        //Create editable Textfields
+        TextField eIPText = new TextField("Enter public IP", skin);
+        eIPText.setSize(150f, 150f);
+        TextField ePortText = new TextField("Enter Port", skin);
+        ePortText.setSize(150f, 150f);
 
-        // TODO :: Code below is written blind. Correct smaller issues later
-        //Added Button for Networking
-        TextButton conButton = new TextButton("Search game", skin);
+        // TODO: Create Listeners to input new Data into textfield
+
+
+        // Create connection-Button
+        TextButton conButton = new TextButton("Connect", skin);
         conButton.getLabel().setSize(150f, 150f);
-
-        //TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
-
-        //Add listeners to buttons
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameNetwork.initServer();
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
-            }
-        });
 
         conButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConnectionScreen(game));
-            }
-        });
+                // TODO :: Connect client to server
 
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
             }
         });
 
         //Add buttons to table
-        mainTable.add(playButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
+        mainTable.add(eIPText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
+        mainTable.row();
+        mainTable.add(ePortText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
         mainTable.row();
         mainTable.add(conButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
-        mainTable.row();
-        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
 
         //Add table to stage
         stage.addActor(mainTable);
+    }
 
+    @Override
+    public void dispose() {
+        // Does this suffice for disposing connectionlist?
+        skin.dispose();
+        atlas.dispose();
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act();
-        stage.draw();
     }
 
     @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
+    public void hide() {
+
     }
 
     @Override
@@ -129,13 +119,7 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        skin.dispose();
-        atlas.dispose();
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 }

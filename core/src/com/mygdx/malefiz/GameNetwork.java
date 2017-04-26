@@ -22,7 +22,6 @@ Actorindex, column, row
 */
 
 public class GameNetwork extends Thread {
-
     // Serverside
     // TODO: Update Data-Transfer of Field/Turn/etc.
     public static void initServer(){
@@ -68,7 +67,6 @@ public class GameNetwork extends Thread {
     }
 
     //Clientside
-    // TODO:
     public static void initClient() {
         String host = "";
         int port = 0;
@@ -89,6 +87,7 @@ public class GameNetwork extends Thread {
     }
 
 
+    // TODO: Call this in Textfield of Submenu in Main
     // We need to distribute Information to clients. Do so via sharing information person to person.
     public String[] fetchServerInfo() {
         String[] serverInfo = new String[2];

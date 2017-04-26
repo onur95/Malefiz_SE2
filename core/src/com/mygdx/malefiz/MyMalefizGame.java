@@ -28,12 +28,6 @@ public class MyMalefizGame implements Screen {
 		Board.init();
 		BoardToPlayboard.init();
 
-		GameNetwork.initServer();
-
-		// TODO
-		// This needs a graphical update for displaying Serverinformation
-		// Using GameNetwork.fetchServerInfo();
-
 		//auskommentiert da die Bewegung sonst hängt
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.requestRendering();
