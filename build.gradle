@@ -103,12 +103,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        destinationDir = file("../javadoc/")
-        failOnError false
-    }
+    
 
 
     apply plugin: 'jacoco'
