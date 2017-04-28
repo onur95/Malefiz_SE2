@@ -6,6 +6,7 @@ import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
+import com.esotericsoftware.kryonet.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -126,7 +127,7 @@ public class GameNetwork extends Thread {
 
 
     private void updateParams(){
-        // TODO :: Set playfield for Server & thus for all following clients
+
 
     }
 
