@@ -5,14 +5,9 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
-/**
- * Created by tom on 29.04.17.
- */
-
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
     Server server;
-
 
     public GameServer(int tcp, int udp){
         this.TCP_PORT = tcp;

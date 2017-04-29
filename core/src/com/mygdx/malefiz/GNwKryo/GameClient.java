@@ -25,6 +25,7 @@ public class GameClient {
     public void connect(String serverIP){
         try{
             Log.debug("Client verbindet.");
+            client.start();
             client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
             client.addListener(new GameClientListener());
         }catch(IOException e){
@@ -35,6 +36,18 @@ public class GameClient {
     public void disconnect(){
         Log.debug("Client hält.");
         client.stop();
+    }
+
+    public void sendData(){
+        Network.ClientMessage transmission = new Network.ClientMessage();
+
+        /* TODO: Take Data from current turn -- Currently only on the current player .. **
+        transmission.actorIndex = x.actorIndex;
+        transmission.column = x.column;
+        transmission.row = x.row;
+        */
+
+        client.sendTCP(transmission);       // ** .. Send it to server
     }
 
 }

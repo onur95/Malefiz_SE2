@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Malefiz;
 
 // TODO: Ausimplementierung der Klasse
@@ -58,8 +59,6 @@ public class ConnectionScreen implements Screen {
         //Create editable Textfields
         final TextField eIPText = new TextField("Enter public IP. (F.ex.: 10.226.172.156)", skin);
         eIPText.setSize(150f, 150f);
-        final TextField ePortText = new TextField("Enter the Portnumber (F.ex.: 7734)", skin);
-        ePortText.setSize(150f, 150f);
 
         // TODO: Check if we really do not need any listener on TextField >> Test
 
@@ -72,17 +71,15 @@ public class ConnectionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 // Fetch entries
                 final String ip = eIPText.getText();
-                final int port = Integer.parseInt(ePortText.getText());
 
                 // TODO Initialise the Client in GameNetwork
-                //GameNetwork.initClient(ip, port);
+                GameClient client = new GameClient(6000, 6001, 10000);
+                client.connect(ip);
             }
         });
 
         //Add buttons to table
         mainTable.add(eIPText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
-        mainTable.row();
-        mainTable.add(ePortText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
         mainTable.row();
         mainTable.add(conButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
 
