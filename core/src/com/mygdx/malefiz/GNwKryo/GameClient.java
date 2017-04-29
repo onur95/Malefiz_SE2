@@ -26,6 +26,7 @@ public class GameClient {
             if(GameServer.players <= GameServer.max_usercount){
                 Gdx.app.log("Client", "Connected.");
                 client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
+                GameServer.players++;
                 client.addListener(new GameClientListener());
             }else{
                 Gdx.app.log("Client", "Closing client :: Server Full");
