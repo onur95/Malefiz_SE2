@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.malefiz.GameNetwork;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
 
@@ -73,7 +72,7 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameNetwork.initServer();
+                // TODO : GameNetwork.initServer();
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
             }
         });

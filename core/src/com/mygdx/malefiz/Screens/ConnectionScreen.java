@@ -1,8 +1,6 @@
 package com.mygdx.malefiz.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -18,9 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.malefiz.GameNetwork;
 import com.mygdx.malefiz.Malefiz;
-import com.mygdx.malefiz.MyMalefizGame;
 
 // TODO: Ausimplementierung der Klasse
 // Necessary ONLY for clients -- Servers are already in some game.
@@ -79,8 +74,8 @@ public class ConnectionScreen implements Screen {
                 final String ip = eIPText.getText();
                 final int port = Integer.parseInt(ePortText.getText());
 
-                // Initialise the Client in GameNetwork
-                GameNetwork.initClient(ip, port);
+                // TODO Initialise the Client in GameNetwork
+                //GameNetwork.initClient(ip, port);
             }
         });
 
