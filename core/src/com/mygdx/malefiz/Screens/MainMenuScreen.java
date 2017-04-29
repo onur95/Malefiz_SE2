@@ -9,18 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.esotericsoftware.minlog.Log;
-import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
-import com.mygdx.malefiz.MyMalefizGame;
 
 /**
  * Created by Onur on 04.04.2017.
@@ -77,7 +72,7 @@ public class MainMenuScreen implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 /* Start Game */
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConfigureGame(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConfigureScreen(game));
             }
         });
 

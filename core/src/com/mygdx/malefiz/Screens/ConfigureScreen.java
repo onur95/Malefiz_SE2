@@ -25,7 +25,7 @@ import com.mygdx.malefiz.MyMalefizGame;
  * Created by tom on 29.04.17.
  */
 
-public class ConfigureGame implements Screen {
+public class ConfigureScreen implements Screen {
 
     private SpriteBatch batch;
     Stage stage;
@@ -35,7 +35,7 @@ public class ConfigureGame implements Screen {
     private Viewport viewport;
     final Malefiz game;
 
-    public ConfigureGame(final Malefiz game){
+    public ConfigureScreen(final Malefiz game){
         this.game=game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
