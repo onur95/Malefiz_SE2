@@ -72,7 +72,6 @@ public class ConnectionScreen implements Screen {
                 // Fetch entries
                 final String ip = eIPText.getText();
 
-                // TODO Initialise the Client in GameNetwork
                 GameClient client = new GameClient(6000, 6001, 10000);
                 client.connect(ip);
             }

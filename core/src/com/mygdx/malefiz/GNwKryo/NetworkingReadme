@@ -1,0 +1,15 @@
+Implementation via Kryonet-Framework :: https://github.com/EsotericSoftware/kryonet
+
+Network.java :: Includes register()-services & classes for Client & Server
+
+GameServer & Listener :: Employ effective Servermanagement using Kryonet
+        Serversetup in MainMenuScreen using hardcoded TCP & UDP-Ports. For Libgdx, only TCP really matters.
+                GameServer server = new GameServer(6000, 6001);
+                server.startServer();
+
+GameClient & Listener :: Employ effective Clientmanagement using Krynet
+        Clientsetup in ConnectionScreen using hardcoded TCP & UDP-Ports aswell as Timeout-Factor.
+                GameClient client = new GameClient(6000, 6001, 10000);
+        The actual connection requires an IP-Address to connect to.
+                final String ip = eIPText.getText();
+                client.connect(ip);
