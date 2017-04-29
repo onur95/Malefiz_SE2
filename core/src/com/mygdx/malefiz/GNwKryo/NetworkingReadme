@@ -16,3 +16,6 @@ GameClient & Listener :: Employ effective Clientmanagement using Krynet
 
 Logging in Kryonet: Log.debug("Logmessage")
                     Log.set(Log.LEVEL_DEBUG); // Set f.ex.: 'None' in order to ignore all following Logs
+
+
+29.4.'17 >> Stalled coding, due to lack of availability to update-parameters. Changes to Listeners be at a later date.

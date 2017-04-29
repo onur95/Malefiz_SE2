@@ -9,24 +9,23 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.esotericsoftware.minlog.Log;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
 
 /**
- * Created by Onur on 04.04.2017.
+ * Created by tom on 29.04.17.
  */
 
-public class MainMenuScreen implements Screen{
+public class ConfigureGame implements Screen {
 
     private SpriteBatch batch;
     Stage stage;
@@ -36,7 +35,7 @@ public class MainMenuScreen implements Screen{
     private Viewport viewport;
     final Malefiz game;
 
-    public MainMenuScreen(final Malefiz game){
+    public ConfigureGame(final Malefiz game){
         this.game=game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
@@ -61,46 +60,48 @@ public class MainMenuScreen implements Screen{
         mainTable.top();
 
         //Create buttons
-        TextButton setupButton = new TextButton("New Game Setup", skin);
-        setupButton.getLabel().setSize(150f,150f);
-
-        // TODO :: Code below is written blind. Correct smaller issues later
-        //Added Button for Networking
-        TextButton conButton = new TextButton("Connect to..", skin);
-        conButton.getLabel().setSize(150f, 150f);
+        TextButton playButton = new TextButton("Start", skin);
 
         //TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton returnButton = new TextButton("Return", skin);
 
         //Add listeners to buttons
-        setupButton.addListener(new ClickListener(){
+        playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+
+		        /* Networking */
+                GameServer server = new GameServer(44775, 44776);
+                try{
+                    server.startServer();
+                    Gdx.app.log("Server","Server successfully started on starting the main game.");
+                }catch(Exception e){
+                    server.stopServer();
+                    Gdx.app.log("Server","Failed to create Server on starting the main game.");
+                }
+
                 /* Start Game */
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConfigureGame(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
             }
         });
 
-        conButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConnectionScreen(game));
-            }
-        });
-
-        exitButton.addListener(new ClickListener(){
+        returnButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                // Return to Mainmenu
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
+
 
         //Add buttons to table
-        mainTable.add(setupButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
-        mainTable.row();
-        mainTable.add(conButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
-        mainTable.row();
-        mainTable.add(exitButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
+        HorizontalGroup buttons = new HorizontalGroup();
+        buttons.addActor(returnButton);
+        buttons.addActor(playButton);
+        buttons.setOrigin(buttons.getWidth()/2, buttons.getHeight()/2);
+        buttons.setPosition(Gdx.graphics.getWidth()/2 - (buttons.getWidth()/2), Gdx.graphics.getHeight()/2 - (buttons.getHeight()/2));
+
+        mainTable.add(buttons);
 
         //Add table to stage
         stage.addActor(mainTable);
@@ -140,5 +141,4 @@ public class MainMenuScreen implements Screen{
         skin.dispose();
         atlas.dispose();
     }
-
 }

@@ -1,5 +1,6 @@
 package com.mygdx.malefiz.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Malefiz;
+import com.mygdx.malefiz.MyMalefizGame;
 
 // TODO: Ausimplementierung der Klasse
 // Necessary ONLY for clients -- Servers are already in some game.
@@ -64,7 +66,8 @@ public class ConnectionScreen implements Screen {
 
         // Create connection-Button
         TextButton conButton = new TextButton("Connect", skin);
-        conButton.getLabel().setSize(150f, 150f);
+
+        TextButton returnButton = new TextButton("Return", skin);
 
         conButton.addListener(new ClickListener(){
             @Override
@@ -79,6 +82,16 @@ public class ConnectionScreen implements Screen {
                     client.terminate();
                     Gdx.app.log("Client", "Failed to Connect to server.", e);
                 }
+
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
+
+            }
+        });
+
+        returnButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
 
@@ -86,6 +99,8 @@ public class ConnectionScreen implements Screen {
         mainTable.add(eIPText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
         mainTable.row();
         mainTable.add(conButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
+        mainTable.row();
+        mainTable.add(returnButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
 
         //Add table to stage
         stage.addActor(mainTable);

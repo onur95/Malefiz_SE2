@@ -4,7 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
 public class Network {
-    // Register Datatypes to transmit -- Endpoint = Server
+    // Register Datatypes to transmit -- Endpoint = Server or Client
     static public void registerKryoClasses(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(ClientMessage.class);

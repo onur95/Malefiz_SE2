@@ -3,11 +3,8 @@ package com.mygdx.malefiz.GNwKryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
+import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.Player;
-
-/**
- * Created by tom on 29.04.17.
- */
 
 public class GameClientListener extends Listener {
 

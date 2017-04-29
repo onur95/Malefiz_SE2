@@ -2,8 +2,12 @@ package com.mygdx.malefiz.GNwKryo;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.mygdx.malefiz.Board;
+import com.mygdx.malefiz.BoardToPlayboard;
+import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.FieldPosition;
 import com.mygdx.malefiz.MyMalefizGame;
+
 
 public class GameServerListener extends Listener {
     @Override
