@@ -76,11 +76,14 @@ public class MainMenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
 
 		        /* Networking */
-                Log.set(Log.LEVEL_DEBUG); // Set None to ignore all following Logs
-                Log.debug("Network-Startup in MyMalefizGame");
-
-                GameServer server = new GameServer(6000, 6001);
-                server.startServer();
+                GameServer server = new GameServer(44775, 44776);
+                try{
+                    server.startServer();
+                    Gdx.app.log("Server","Server successfully started on starting the main game.");
+                }catch(Exception e){
+                    server.stopServer();
+                    Gdx.app.log("Server","Failed to create Server on starting the main game.");
+                }
 
                 /* Start Game */
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));

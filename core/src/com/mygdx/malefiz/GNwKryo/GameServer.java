@@ -1,5 +1,6 @@
 package com.mygdx.malefiz.GNwKryo;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
@@ -8,6 +9,8 @@ import java.io.IOException;
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
     Server server;
+    protected static final int max_usercount = 3;
+    protected static int players = 0;
 
     public GameServer(int tcp, int udp){
         this.TCP_PORT = tcp;
@@ -20,7 +23,7 @@ public class GameServer {
     }
 
     public void startServer(){
-        Log.debug("Server start.");
+        Gdx.app.log("Server","Startet.");
         server.start();
         server.addListener(new GameServerListener());
         try{
@@ -31,7 +34,7 @@ public class GameServer {
     }
 
     public void stopServer(){
-        Log.debug("Server halt.");
+        Gdx.app.log("Server","Stopt.");
         server.stop();
     }
 }

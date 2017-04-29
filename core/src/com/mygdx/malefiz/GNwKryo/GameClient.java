@@ -1,13 +1,10 @@
 package com.mygdx.malefiz.GNwKryo;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
-
-/**
- * Created by tom on 29.04.17.
- */
 
 public class GameClient {
     private int TCP_PORT, UDP_PORT, TIMEOUT;
@@ -24,21 +21,31 @@ public class GameClient {
 
     public void connect(String serverIP){
         try{
-            Log.debug("Client verbindet.");
             client.start();
-            client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
-            client.addListener(new GameClientListener());
+
+            if(GameServer.players <= GameServer.max_usercount){
+                Gdx.app.log("Client", "Connected.");
+                client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
+                client.addListener(new GameClientListener());
+            }else{
+                Gdx.app.log("Client", "Closing client :: Server Full");
+                client.close();
+            }
+
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    public void disconnect(){
-        Log.debug("Client hält.");
+    public void terminate(){
         client.stop();
+        client.close();
+        Gdx.app.log("Client","Disconnected.");
     }
 
+
     public void sendData(){
+
         Network.ClientMessage transmission = new Network.ClientMessage();
 
         /* TODO: Take Data from current turn -- Currently only on the current player .. **
@@ -48,6 +55,6 @@ public class GameClient {
         */
 
         client.sendTCP(transmission);       // ** .. Send it to server
+        Gdx.app.log("Client","Transmitted Data.");
     }
-
 }

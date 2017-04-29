@@ -69,11 +69,16 @@ public class ConnectionScreen implements Screen {
         conButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                // Fetch entries
                 final String ip = eIPText.getText();
 
-                GameClient client = new GameClient(6000, 6001, 10000);
-                client.connect(ip);
+                GameClient client = new GameClient(44775, 44776, 10000);
+                try{
+                    client.connect(ip);
+                    Gdx.app.log("Client", "Successfully connected to server.");
+                }catch(Exception e){
+                    client.terminate();
+                    Gdx.app.log("Client", "Failed to Connect to server.", e);
+                }
             }
         });
 

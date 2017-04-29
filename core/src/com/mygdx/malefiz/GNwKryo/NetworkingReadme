@@ -13,3 +13,6 @@ GameClient & Listener :: Employ effective Clientmanagement using Krynet
         The actual connection requires an IP-Address to connect to.
                 final String ip = eIPText.getText();
                 client.connect(ip);
+
+Logging in Kryonet: Log.debug("Logmessage")
+                    Log.set(Log.LEVEL_DEBUG); // Set f.ex.: 'None' in order to ignore all following Logs
