@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
     }
+
 }
 
 allprojects {
@@ -90,7 +91,23 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
+    apply plugin: "jacoco"
 
+    test {
+        finalizedBy jacocoTestReport
+    }
+
+    jacoco {
+        toolVersion = "0.7.7.201606060606"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination "${buildDir}/jacocoHtml"
+        }
+    }
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -104,6 +121,7 @@ project(":core") {
 
         compile "com.esotericsoftware:kryonet:2.22.0-RC1"
     }
+
 }
 
 tasks.eclipse.doLast {

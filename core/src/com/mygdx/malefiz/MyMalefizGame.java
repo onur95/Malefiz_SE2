@@ -15,6 +15,8 @@ public class MyMalefizGame implements Screen {
 	Texture txt_playground;
 	Image img_playground;
 	final Malefiz mal;
+	String pfad;
+
 
 	public MyMalefizGame (final Malefiz mal) {
 		this.mal=mal;
@@ -24,8 +26,9 @@ public class MyMalefizGame implements Screen {
 		img_playground=new Image(txt_playground);
 		Board.init();
 		BoardToPlayboard.init();
-
-
+		Dice.randomNumber();
+		pfad=Dice.getResult(Dice.getResultNumber());
+		DiceAnimation.create(pfad);
 		//auskommentiert da die Bewegung sonst hängt
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.requestRendering();
@@ -49,6 +52,7 @@ public class MyMalefizGame implements Screen {
 		stage.act();
 		stage.draw();
 		BoardToPlayboard.generate();
+		DiceAnimation.render();
 	}
 
 	@Override
@@ -76,5 +80,4 @@ public class MyMalefizGame implements Screen {
 	public void dispose () {
 		stage.dispose();
 	}
-
 }
