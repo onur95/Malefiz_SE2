@@ -5,12 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -31,26 +35,34 @@ public class ConfigureScreen implements Screen {
     protected Skin skin;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Image img_background_menu;
+    private Texture txt_background_menu;
+    private ImageButton imageButtonStartServer;
+    private ImageButton imageButtonReturn;
     final Malefiz game;
 
     public ConfigureScreen(final Malefiz game){
         this.game=game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-        batch = new SpriteBatch();
+        /*batch = new SpriteBatch();
         camera = new OrthographicCamera();
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),camera);
         viewport.apply();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
-        stage = new Stage(viewport, batch);
-
+        stage = new Stage(viewport, batch);*/
+        imageButtonStartServer=MainMenuScreen.createImageButton("start_server.png",375,335,350,150);
+        imageButtonReturn=MainMenuScreen.createImageButton("return.png",375,220,350,150);
+        stage = new Stage(new FitViewport(1024,670));
+        txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
+        img_background_menu=new Image(txt_background_menu);
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
-        //Create Table
+       /* //Create Table
         Table mainTable = new Table();
         //Set table to fill stage
         mainTable.setFillParent(true);
@@ -60,12 +72,13 @@ public class ConfigureScreen implements Screen {
 
         TextButton playButton = new TextButton("Start", skin);
         TextButton returnButton = new TextButton("Return", skin);
-
-        TextField setPlayersInfo = new TextField("The maximum amount of players: ", skin);
+        */
+        Label setPlayersInfo = new Label("The maximum amount of players: ", skin);
+        setPlayersInfo.setBounds(375,450,250,90);
         final TextField playerNumber = new TextField("3", skin);
-
+        playerNumber.setBounds(650,470,50,50);
         //Add listeners to buttons
-        playButton.addListener(new ClickListener(){
+        imageButtonStartServer.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
@@ -84,7 +97,7 @@ public class ConfigureScreen implements Screen {
             }
         });
 
-        returnButton.addListener(new ClickListener(){
+        imageButtonReturn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to Mainmenu
@@ -98,7 +111,7 @@ public class ConfigureScreen implements Screen {
         setPlayersInfo.setTouchable(Touchable.disabled);
 */
         //Add buttons to table
-        HorizontalGroup buttons = new HorizontalGroup();
+        /*HorizontalGroup buttons = new HorizontalGroup();
         buttons.addActor(returnButton);
         buttons.addActor(playButton);
         buttons.setOrigin(buttons.getWidth()/2, buttons.getHeight()/2);
@@ -111,8 +124,12 @@ public class ConfigureScreen implements Screen {
 
         mainTable.add(menu);
 
-        //Add table to stage
-        stage.addActor(mainTable);
+        //Add table to stage*/
+        stage.addActor(img_background_menu);
+        stage.addActor(imageButtonStartServer);
+        stage.addActor(imageButtonReturn);
+        stage.addActor(setPlayersInfo);
+        stage.addActor(playerNumber);
     }
 
     @Override
@@ -126,7 +143,8 @@ public class ConfigureScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        //viewport.update(width, height);
+        stage.getViewport().update(width,height);
     }
 
     @Override
@@ -148,5 +166,6 @@ public class ConfigureScreen implements Screen {
     public void dispose() {
         skin.dispose();
         atlas.dispose();
+        stage.dispose();
     }
 }

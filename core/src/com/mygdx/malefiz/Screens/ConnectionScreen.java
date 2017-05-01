@@ -5,10 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -30,6 +33,10 @@ public class ConnectionScreen implements Screen {
     protected Skin skin;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Image img_background_menu;
+    private Texture txt_background_menu;
+    private ImageButton imageButtonConnect;
+    private ImageButton imageButtonReturn;
     final Malefiz game;
 
     String input;
@@ -38,38 +45,42 @@ public class ConnectionScreen implements Screen {
         this.game = game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-        batch = new SpriteBatch();
+        /*batch = new SpriteBatch();
         camera = new OrthographicCamera();
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),camera);
         viewport.apply();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();
-        stage = new Stage(viewport, batch);
-
+        stage = new Stage(viewport, batch);*/
+        imageButtonConnect=MainMenuScreen.createImageButton("connect.png",375,335,350,150);
+        imageButtonReturn=MainMenuScreen.createImageButton("return.png",380,220,350,150);
+        stage = new Stage(new FitViewport(1024,670));
+        txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
+        img_background_menu=new Image(txt_background_menu);
         Gdx.input.setInputProcessor(stage);
 
     }
 
     public void show() {
-        //Create Table
+       /* //Create Table
         Table mainTable = new Table();
         //Set table to fill stage
         mainTable.setFillParent(true);
         //Set alignment of contents in the table.
-        mainTable.top();
+        mainTable.top();*/
 
         //Create editable Textfields
         final TextField eIPText = new TextField("Enter public IP. (F.ex.: 10.226.172.156)", skin);
-        eIPText.setSize(150f, 150f);
+        eIPText.setBounds(400,450,300,100);
 
         // TODO: Check if we really do not need any listener on TextField >> Test
 
         // Create connection-Button
-        TextButton conButton = new TextButton("Connect", skin);
+        /*TextButton conButton = new TextButton("Connect", skin);
 
-        TextButton returnButton = new TextButton("Return", skin);
+        TextButton returnButton = new TextButton("Return", skin);*/
 
-        conButton.addListener(new ClickListener(){
+        imageButtonConnect.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 final String ip = eIPText.getText();
@@ -88,7 +99,7 @@ public class ConnectionScreen implements Screen {
             }
         });
 
-        returnButton.addListener(new ClickListener(){
+        imageButtonReturn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
@@ -96,14 +107,18 @@ public class ConnectionScreen implements Screen {
         });
 
         //Add buttons to table
-        mainTable.add(eIPText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
+        /*mainTable.add(eIPText).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
         mainTable.row();
         mainTable.add(conButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/3);
         mainTable.row();
         mainTable.add(returnButton).width(Gdx.graphics.getWidth()/3).height(Gdx.graphics.getHeight()/5);
 
         //Add table to stage
-        stage.addActor(mainTable);
+        stage.addActor(mainTable);*/
+        stage.addActor(img_background_menu);
+        stage.addActor(imageButtonConnect);
+        stage.addActor(imageButtonReturn);
+        stage.addActor(eIPText);
     }
 
     @Override
@@ -111,6 +126,7 @@ public class ConnectionScreen implements Screen {
         // Does this suffice for disposing connectionlist?
         skin.dispose();
         atlas.dispose();
+        stage.dispose();
     }
 
     @Override
@@ -139,6 +155,8 @@ public class ConnectionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+
+        //viewport.update(width, height);
+        stage.getViewport().update(width,height);
     }
 }
