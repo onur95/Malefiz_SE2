@@ -3,6 +3,7 @@ package com.mygdx.malefiz.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -75,8 +76,10 @@ public class ConfigureScreen implements Screen {
         */
         Label setPlayersInfo = new Label("The maximum amount of players: ", skin);
         setPlayersInfo.setBounds(375,450,250,90);
+        setPlayersInfo.setColor(Color.RED);
         final TextField playerNumber = new TextField("3", skin);
         playerNumber.setBounds(650,470,50,50);
+        playerNumber.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
         //Add listeners to buttons
         imageButtonStartServer.addListener(new ClickListener(){
             @Override

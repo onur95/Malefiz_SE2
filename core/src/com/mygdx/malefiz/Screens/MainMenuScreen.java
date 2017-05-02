@@ -36,6 +36,8 @@ public class MainMenuScreen implements Screen{
     private Viewport viewport;
     private Image img_background_menu;
     private Texture txt_background_menu;
+    private Image img_malefiz_logo;
+    private Texture txt_malefiz_logo;
     private ImageButton imageButtonNewGame;
     private ImageButton imageButtonConnect;
     private ImageButton imageButtonExit;
@@ -58,6 +60,9 @@ public class MainMenuScreen implements Screen{
         stage = new Stage(new FitViewport(1024,670));
         txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
         img_background_menu=new Image(txt_background_menu);
+        txt_malefiz_logo=new Texture("malefiz_logo.png");
+        img_malefiz_logo=new Image(txt_malefiz_logo);
+        img_malefiz_logo.setBounds(375,450,400,200);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -115,6 +120,7 @@ public class MainMenuScreen implements Screen{
         //Add table to stage
         stage.addActor(mainTable);*/
         stage.addActor(img_background_menu);
+        stage.addActor(img_malefiz_logo);
         stage.addActor(imageButtonNewGame);
         stage.addActor(imageButtonConnect);
         stage.addActor(imageButtonExit);
