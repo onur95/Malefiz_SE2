@@ -19,8 +19,14 @@ public class HighlightClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
+        if(Board.isPlayer(column, row)){
+            BoardToPlayboard.setKickedIndex(actorIndex);
+        }
+        Board.movePlayerToStart(column, row);
         Board.moveTo(this.column, this.row);
         BoardToPlayboard.moveToPosition(this.actorIndex);
+        BoardToPlayboard.moveKicked();
+
     }
 
 }
