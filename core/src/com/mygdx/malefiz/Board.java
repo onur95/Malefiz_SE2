@@ -2,6 +2,8 @@ package com.mygdx.malefiz;
 
 import java.lang.reflect.Array;
 
+import jdk.nashorn.internal.ir.Block;
+
 /**
  * Created by Klaus on 02.04.2017.
  */
@@ -68,14 +70,19 @@ public class Board {
         fieldActive = new FieldPosition(column, row);
     }
 
-    public static void moveTo(int column, int row){
+    public static void moveTo(int column, int row, boolean isBlock){
         Field temp = boardArray[column][row];
 //        temp.setHighlighted(false);
-        boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
+        if(isBlock){
+            boardArray[column][row] = new Field('B');
+            BoardToPlayboard.setKickedVisibility();
+        }
+        else {
+            boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
 
-        //Feld, auf dem der Spieler war, wird auf FIELD gesetzt
-        boardArray[fieldActive.getColumn()][fieldActive.getRow()] = new Field('.');
-
+            //Feld, auf dem der Spieler war, wird auf FIELD gesetzt
+            boardArray[fieldActive.getColumn()][fieldActive.getRow()] = new Field('.');
+        }
         fieldActive = null;
 //        setSomethingChanged(true);
 //        BoardToPlayboard.setAnimation();
@@ -132,6 +139,14 @@ public class Board {
         return isPlayer(boardArray[column][row].getField_state().ordinal());
     }
 
+    public static boolean isBlock(int column, int row){
+        return (boardArray[column][row].getField_state() == FieldStates.BLOCK);
+    }
+
+    public static boolean isField(int column, int row){
+        return (boardArray[column][row].getField_state() == FieldStates.FIELD);
+    }
+
     public static void movePlayerToStart(int column, int row){
 
         for(int x = 0; x < 3; x++){
@@ -151,5 +166,15 @@ public class Board {
 
     public static FieldPosition getNewPlayerPosition(){
         return newPlayerPosition;
+    }
+
+    public static void setAllHighlighted(){
+        for(int x = 0; x < boardArray.length; x++) {
+            for (int y = 0; y < boardArray[x].length; y++) {
+                if(boardArray[x][y].getField_state() == FieldStates.FIELD){
+                    BoardToPlayboard.setHighlight(x,y);
+                }
+            }
+        }
     }
 }

@@ -317,8 +317,8 @@ public class BoardToPlayboard {
         return ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
     }
 
-    public static  void moveToPosition(int actorIndex){
-        if(actorActive != -1) {
+    public static  void moveToPosition(int actorIndex, boolean blockIsMoving){
+        if(actorActive != -1 && !blockIsMoving) {
             moveFigure.play();
             //Highlight wieder verschwinden lassen
             setPlayerFiguresHighlighted(false);
@@ -334,10 +334,14 @@ public class BoardToPlayboard {
             //stage.getActors() speichern!!
             //danach kann man alle leicht wieder löschen (alle nach index (size-1)
             //stage.getActors().get(actorIndex).remove();
-            removeHighlights();
-            actorActive = -1;
-
         }
+        else if(blockIsMoving){
+            MoveToAction action2 = getMoveToAction(actorIndex, 0);
+            stage.getActors().get(kickedIndex).addAction(action2);
+            kickedIndex = -1;
+        }
+        removeHighlights();
+        actorActive = -1;
     }
 
     public static void removeHighlights(){
@@ -374,7 +378,7 @@ public class BoardToPlayboard {
         return actorsCount;
     }
 
-    public static void setKickedIndex(int index){
+    public static void setKickedIndex(int index, boolean isVisible){
         float x = stage.getActors().get(index).getX();
         float y = stage.getActors().get(index).getY();
         int kicked = 0;
@@ -385,6 +389,7 @@ public class BoardToPlayboard {
             }
             kicked++;
         }
+        stage.getActors().get(kickedIndex).setVisible(isVisible);
     }
 
     public static void moveKicked(){
@@ -411,7 +416,11 @@ public class BoardToPlayboard {
         }
     }
 
-    public static void getKickedToPosition(){
+    public static void setKickedVisibility(){
+        stage.getActors().get(kickedIndex).setVisible(true);
+    }
 
+    public static int getKickedIndex(){
+        return kickedIndex;
     }
 }

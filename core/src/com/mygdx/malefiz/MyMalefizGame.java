@@ -5,11 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.GNwKryo.GameServer;
 
 
 public class MyMalefizGame implements Screen {
@@ -44,40 +41,16 @@ public class MyMalefizGame implements Screen {
 		return stage;
 	}
 
+
 	@Override
 	public void show() {
-		// Skin uiSkin = new Skin(Gdx.files.internal("uiskin.json"));
-		// MenuDialog mDia = new MenuDialog("Menu", uiSkin);
-		// mDia.show(stage);
+
 	}
-/* TODO: Not quite working on our maingame.
-	public class MenuDialog extends Dialog{
 
-
-		public MenuDialog(String title, Skin skin) {
-			super(title, skin);
-		}
-		public MenuDialog(String title, Skin skin, String windowStyleName) {
-			super(title, skin, windowStyleName);
-		}
-		public MenuDialog(String title, WindowStyle windowStyle) {
-			super(title, windowStyle);
-		}
-
-		{	// Used in every Constructor
-			text("IP = " + GameServer.fetchPublicIP());
-			button("Resume Game");
-		}
-
-		@Override
-		protected void result(Object object) {
-
-		}
-	}
-*/
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//stage.addActor(img_playground);
 		stage.act();
 		stage.draw();
 		//BoardToPlayboard.generate();
@@ -109,5 +82,4 @@ public class MyMalefizGame implements Screen {
 	public void dispose () {
 		stage.dispose();
 	}
-
 }

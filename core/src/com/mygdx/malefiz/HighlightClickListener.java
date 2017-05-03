@@ -19,13 +19,26 @@ public class HighlightClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
-        if(Board.isPlayer(column, row)){
-            BoardToPlayboard.setKickedIndex(actorIndex);
+        boolean isBlock = Board.isBlock(column, row);
+        boolean isPlayer = Board.isPlayer(column, row);
+        if(isPlayer){
+            BoardToPlayboard.setKickedIndex(actorIndex, true);
+            Board.movePlayerToStart(column, row);
         }
-        Board.movePlayerToStart(column, row);
-        Board.moveTo(this.column, this.row);
-        BoardToPlayboard.moveToPosition(this.actorIndex);
-        BoardToPlayboard.moveKicked();
+        else if(isBlock){
+            BoardToPlayboard.setKickedIndex(actorIndex, false);
+        }
+        boolean blockIsMoving = BoardToPlayboard.getKickedIndex() != -1 && Board.isField(column, row);
+        Board.moveTo(this.column, this.row, blockIsMoving);
+        BoardToPlayboard.moveToPosition(this.actorIndex, blockIsMoving);
+        if(isPlayer) {
+            BoardToPlayboard.moveKicked();
+        }
+        else if(isBlock){
+            BoardToPlayboard.setActorsCount();
+            Board.setFieldActive(column,row);
+            Board.setAllHighlighted();
+        }
 
     }
 

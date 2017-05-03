@@ -15,13 +15,14 @@ public class Dice {
     static float sensorx = Gdx.input.getAccelerometerX();
     static float sensory =Gdx.input.getAccelerometerY();
     static float sensorz = Gdx.input.getAccelerometerZ();
-    // public static Button btnDice;
+   // public static Button btnDice;
 
     //static Malefiz game;
 
 
 
    /* public static void init() {
+
         btnDice = new TextButton("Würfeln", new TextButton.TextButtonStyle());
         btnDice.setVisible(true);
         btnDice.setBounds(100, 100, 100, 50);
@@ -31,6 +32,7 @@ public class Dice {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new DiceScreen(game));
             }
         });
+
     }*/
 
     //Zufallszahl zw 1 & 6
