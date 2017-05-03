@@ -1,6 +1,8 @@
 package com.mygdx.malefiz;
 
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.Random;
 
 /**
@@ -9,14 +11,17 @@ import java.util.Random;
 
 public class Dice {
     private static int result = -1;  //fehler bzw. dfeault Wert
-   // public static Button btnDice;
+    private static boolean shaked;
+    static float sensorx = Gdx.input.getAccelerometerX();
+    static float sensory =Gdx.input.getAccelerometerY();
+    static float sensorz = Gdx.input.getAccelerometerZ();
+    // public static Button btnDice;
 
     //static Malefiz game;
 
 
 
    /* public static void init() {
-
         btnDice = new TextButton("Würfeln", new TextButton.TextButtonStyle());
         btnDice.setVisible(true);
         btnDice.setBounds(100, 100, 100, 50);
@@ -26,7 +31,6 @@ public class Dice {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new DiceScreen(game));
             }
         });
-
     }*/
 
     //Zufallszahl zw 1 & 6
@@ -64,6 +68,16 @@ public class Dice {
 
     public static  int getResultNumber() {return result;}
 
+
+    public static void shake(){
+//Sensitivität prüfen
+        float force= (float)Math.sqrt((sensorx * sensorx) + (sensory * sensory) + (sensorz * sensorz));
+
+        if(force>10){
+            DiceAnimation.render();
+            shaked=true;}
+
+    }
 
 
 }

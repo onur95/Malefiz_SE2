@@ -81,7 +81,7 @@ public class MyMalefizGame implements Screen {
 		stage.act();
 		stage.draw();
 		//BoardToPlayboard.generate();
-		DiceAnimation.render();
+		Dice.shake();
 	}
 
 	@Override
