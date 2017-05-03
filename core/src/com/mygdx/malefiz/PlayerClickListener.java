@@ -22,6 +22,7 @@ public class PlayerClickListener extends ClickListener {
     {
         //Player.getHighlightedFiguresIndizes().contains(actorIndex)     -->Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
         if(isPlayersTurnHighlighted()) {
+            BoardToPlayboard.removeHighlights();
             Board.setFieldActive(this.column, this.row);
 
             //alle anderen Highlights der Spielerfiguren bis auf die ausgewählte Figur auf visible: false setzen
@@ -29,6 +30,9 @@ public class PlayerClickListener extends ClickListener {
             BoardToPlayboard.setPlayerFigureHighlighted(actorIndex, true);
 
             BoardToPlayboard.setActorActive(actorIndex);
+            //TODO: warten bis der würfel fertig gewürfelt hat!
+            BoardToPlayboard.setActorsCount();  //Um Highlights rauszulöschen
+            Board.higlightPositionsMovement(Dice.getResultNumber(),Board.getRealFieldActive(),null);
         }
     }
 
