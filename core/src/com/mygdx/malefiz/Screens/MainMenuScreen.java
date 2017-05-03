@@ -108,7 +108,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(imageButtonExit);
     }
 
-    private ImageButton createImageButton(String file, float x, float y, float width, float height){
+    public static ImageButton createImageButton(String file, float x, float y, float width, float height){
         Texture txt=new Texture(Gdx.files.internal(file));
         ImageButton imageButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(txt)));
         imageButton.setBounds(x,y,width,height);
