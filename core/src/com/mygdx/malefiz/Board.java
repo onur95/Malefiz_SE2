@@ -106,7 +106,7 @@ public class Board {
     }
 
     private static void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter){
-        if(column>=0 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
+        if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
             FieldStates state=boardArray[column][row].getField_state();
             checkDiceField(state,column,row,dice,positionBeforeAfter);
         }
