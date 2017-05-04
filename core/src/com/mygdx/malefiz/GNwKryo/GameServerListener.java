@@ -17,6 +17,8 @@ public class GameServerListener extends Listener {
         if(object instanceof Network.ClientMessage){
             Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
 
+
+
             // TODO: Setter for updated Gamefield
             /* Something similar to:
             if(x.actorIndex == clientTransmission.actorIndex){
