@@ -64,4 +64,22 @@ public class GameServer {
         } catch (SocketException e) {e.printStackTrace(); ipAddress = ipAddress + "Error in getIpAddress() ::" + e.toString() + "\n";}
         return ipAddress;
     }
+
+    // TODO: This call is necessary after update of Gamefield.
+    // Passing data to clients <=> Params processed in GameClientListener
+    public void sendMessage(){
+        // Build Transmission from Server. Fetch @Par as necessary - Featured in Network.ServerEcho
+        Network.ServerEcho transmission = new Network.ServerEcho();
+
+        // TODO: Build as necessary
+        /*
+        transmission.actorIndex = actorindex.fetch();
+        transmission.column = column.fetch();
+        transmission.row = row.fetch() ;
+        transmission.playerTurn = x.playerturn;
+        */
+
+        server.sendToAllTCP(transmission); // Sends created message to all connected devices.
+        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
+    }
 }

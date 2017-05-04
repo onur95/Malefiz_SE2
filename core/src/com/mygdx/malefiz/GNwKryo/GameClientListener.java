@@ -10,7 +10,10 @@ public class GameClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
+        // object received from connection
+
         if(object instanceof Network.ServerEcho){
+            // Parse data to use it.
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
             //TODO: Doublecheck the logic. Somewhat certain that'd be correct
@@ -21,7 +24,7 @@ public class GameClientListener extends Listener {
             }
             */
             if(serverEcho.playerTurn == Player.getNumber()){
-                // TODO: Set player as active Player
+                // TODO: Set next player's turn.
                 Log.debug("Spieler #" + serverEcho.playerTurn +" an der Reihe");
             }
         }

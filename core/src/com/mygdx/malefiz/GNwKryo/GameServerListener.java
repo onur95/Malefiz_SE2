@@ -12,12 +12,11 @@ import com.mygdx.malefiz.MyMalefizGame;
 public class GameServerListener extends Listener {
     @Override
     public void received(Connection connection, Object object) {
-        // Check what is sent, then do x
+        // Received object from connection
 
         if(object instanceof Network.ClientMessage){
+            // Parse Data to use it.
             Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
-
-
 
             // TODO: Setter for updated Gamefield
             /* Something similar to:

@@ -20,7 +20,7 @@ public class PlayerClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
-        //Player.getHighlightedFiguresIndizes().contains(actorIndex)     -->Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
+        //Player.getHighlightedFiguresIndizes().contains(actorIndex) --> Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
         if(isPlayersTurnHighlighted()) {
             BoardToPlayboard.removeHighlights();
             Board.setFieldActive(this.column, this.row);

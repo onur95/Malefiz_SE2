@@ -21,12 +21,16 @@ public class GameClient {
 
     public void connect(String serverIP){
         try{
+            //Starts Client
             client.start();
 
+            // Attempt to connect to server; Controlling via GameServer.var
             if(GameServer.players <= GameServer.max_usercount){
                 Gdx.app.log("Client", "Connected.");
                 client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
                 GameServer.players++;
+                // Effective Messagemanagement via Listener.
+                // Shutdown via client.terminate() in alternative Class (which shutdowns the programm).
                 client.addListener(new GameClientListener());
             }else{
                 Gdx.app.log("Client", "Closing client :: Server Full");
@@ -38,6 +42,7 @@ public class GameClient {
         }
     }
 
+    // TODO: MUST HAPPEN somewhere. Otherwise Client/Server remains active
     public void terminate(){
         client.stop();
         client.close();
@@ -45,8 +50,11 @@ public class GameClient {
     }
 
 
+    // Create message sent to the server.
+    // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
+    // TODO: This needs a call after player picked a position, thus sending the "new field" to server
+    // Data sent in transmission <=> Params processed in GameServerListener
     public void sendData(){
-
         Network.ClientMessage transmission = new Network.ClientMessage();
 
         /* TODO: Take Data from current turn -- Currently only on the current player .. **
