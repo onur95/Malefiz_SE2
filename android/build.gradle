@@ -16,6 +16,8 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+        exclude 'META-INF/LICENSE'
     }
     defaultConfig {
         applicationId "com.mygdx.malefiz"

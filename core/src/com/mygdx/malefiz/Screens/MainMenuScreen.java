@@ -38,7 +38,8 @@ public class MainMenuScreen implements Screen {
     private Texture txt_background_menu;
     private Image img_malefiz_logo;
     private Texture txt_malefiz_logo;
-    private ImageButton imageButtonStart;
+    private ImageButton imageButtonNewGame;
+    private ImageButton imageButtonConnect;
     private ImageButton imageButtonExit;
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -54,8 +55,9 @@ public class MainMenuScreen implements Screen {
         viewport.apply();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
         camera.update();*/
-        imageButtonStart=createImageButton("start_button.png",375,335,350,150);
-        imageButtonExit=createImageButton("exit_button.png",375,200,350,150);
+        imageButtonNewGame=createImageButton("new_game_setup.png",375,335,350,150);
+        imageButtonConnect=createImageButton("connect_to.png",375,220,350,150);
+        imageButtonExit=createImageButton("exit_button.png",375,100,350,150);
         stage = new Stage(new FitViewport(1024,670));
         txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
         img_background_menu=new Image(txt_background_menu);
@@ -81,10 +83,16 @@ public class MainMenuScreen implements Screen {
         TextButton exitButton = new TextButton("Exit", skin);*/
 
         //Add listeners to buttons
-        imageButtonStart.addListener(new ClickListener(){
+        imageButtonNewGame.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConfigureScreen(game));
+            }
+        });
+        imageButtonConnect.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game)Gdx.app.getApplicationListener()).setScreen(new ConnectionScreen(game));
             }
         });
         imageButtonExit.addListener(new ClickListener(){
@@ -104,7 +112,8 @@ public class MainMenuScreen implements Screen {
         stage.addActor(mainTable);*/
         stage.addActor(img_background_menu);
         stage.addActor(img_malefiz_logo);
-        stage.addActor(imageButtonStart);
+        stage.addActor(imageButtonNewGame);
+        stage.addActor(imageButtonConnect);
         stage.addActor(imageButtonExit);
     }
 
