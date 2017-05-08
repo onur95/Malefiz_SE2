@@ -57,7 +57,7 @@ public class BoardToPlayboard {
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
         player4=new Image(new Texture("Player4.png"));
-        highlight=new Image(new Texture("Highlight.png"));
+        highlight=new Image(new Texture("Highlight_2.png"));
         block=new Image(new Texture("Block.png"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
