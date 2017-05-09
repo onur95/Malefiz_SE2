@@ -23,6 +23,7 @@ android {
         applicationId "com.mygdx.malefiz"
         minSdkVersion 9
         targetSdkVersion 25
+        multiDexEnabled true
     }
 }
 
