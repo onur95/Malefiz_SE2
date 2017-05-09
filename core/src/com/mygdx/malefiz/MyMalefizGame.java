@@ -5,21 +5,26 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.malefiz.Screens.*;
+import com.mygdx.malefiz.Screens.GameMenu;
 
 public class MyMalefizGame implements Screen {
 
-	private static Stage stage;
+	public static Stage stage;
 	Texture txt_playground;
 	Image img_playground;
 	final Malefiz mal;
 	String pfad;
 
-
 	public MyMalefizGame (final Malefiz mal) {
 		this.mal=mal;
-		stage=new Stage(new FitViewport(1500,1498));
+		stage=new Stage(new FitViewport(1500, 1500));
 		Gdx.input.setInputProcessor(stage);
 		txt_playground = new Texture("Playboard.jpg");
 		img_playground=new Image(txt_playground);
@@ -27,19 +32,23 @@ public class MyMalefizGame implements Screen {
 		Board.init();
 		BoardToPlayboard.init();
 		BoardToPlayboard.generate();
+	// Disable Menu/Exit-Buttons via Commenting here
+		stage.addActor(GameMenu.createExit());
+		stage.addActor(GameMenu.createMenu());
+
 		Dice.randomNumber();
 		pfad=Dice.getResult(Dice.getResultNumber());
 		DiceAnimation.create(pfad);
+
+
 		//auskommentiert da die Bewegung sonst hängt
 		//Gdx.graphics.setContinuousRendering(false);
 		//Gdx.graphics.requestRendering();
 	}
 
-
 	public static Stage getState(){
 		return stage;
 	}
-
 
 	@Override
 	public void show() {
