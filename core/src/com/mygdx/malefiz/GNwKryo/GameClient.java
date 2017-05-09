@@ -54,14 +54,12 @@ public class GameClient {
     // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
     // TODO: This needs a call after player picked a position, thus sending the "new field" to server
     // Data sent in transmission <=> Params processed in GameServerListener
-    public void sendData(){
+    public void sendData(int actorindex, int column, int row){
         Network.ClientMessage transmission = new Network.ClientMessage();
 
-        /* TODO: Take Data from current turn -- Currently only on the current player .. **
-        transmission.actorIndex = x.actorIndex;
-        transmission.column = x.column;
-        transmission.row = x.row;
-        */
+        transmission.actorIndex = actorindex;
+        transmission.column = column;
+        transmission.row = row;
 
         client.sendTCP(transmission);       // ** .. Send it to server
         Gdx.app.log("Client","Transmitted Data.");

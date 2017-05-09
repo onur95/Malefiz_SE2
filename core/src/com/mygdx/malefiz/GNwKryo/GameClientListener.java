@@ -1,9 +1,10 @@
 package com.mygdx.malefiz.GNwKryo;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import com.mygdx.malefiz.BoardUpdate;
+import com.mygdx.malefiz.Board;
 import com.mygdx.malefiz.Player;
 
 public class GameClientListener extends Listener {
@@ -11,21 +12,26 @@ public class GameClientListener extends Listener {
     @Override
     public void received(Connection connection, Object object) {
         // object received from connection
-
         if(object instanceof Network.ServerEcho){
             // Parse data to use it.
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
-            //TODO: Doublecheck the logic. Somewhat certain that'd be correct
-            /*if(serverEcho.actorIndex == x.actorIndex && (serverEcho.column != x.column || serverEcho.row != x.column)){
-                x.column = serverEcho.column;
-                x.row = serverEcho.row;
-                Log.debug("Updated Playerfield on Client.")
+            // Check if the correct player has made a move
+            if(serverEcho.actorIndex == Player.getNumber()){
+                // Then move the figure accordingly
+                Board.moveTo(serverEcho.column, serverEcho.row, false);
+                Gdx.app.log("GameClientListener", "Transmission successfull. Updating playfield");
             }
-            */
-            if(serverEcho.playerTurn == Player.getNumber()){
-                // TODO: Set next player's turn.
-                Log.debug("Spieler #" + serverEcho.playerTurn +" an der Reihe");
+            else{
+                Gdx.app.log("GameClientListener", "Transmission fault.");
+            }
+
+            // Set player for next turn :: There is only 1,2,3,4
+            if(serverEcho.playerTurn > 0 && serverEcho.playerTurn < 5 ){
+                Player.setNumber(serverEcho.playerTurn);
+                Gdx.app.log("GameClientListener", "Turn of Player #" + serverEcho.playerTurn);
+            }else{
+                Gdx.app.log("GameClientListener", "Error updating Players turn.");
             }
         }
     }
