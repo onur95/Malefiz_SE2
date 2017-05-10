@@ -29,7 +29,19 @@ public class GameMenu
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                Dialog dialog = new Dialog("Confirm Exit", defSkin){
+                    public void result(Object object){
+                        if(object.equals(1L)){
+
+                        }
+                        if(object.equals(2L)){
+                            Gdx.app.exit();
+                        }
+                    }
+                };
+                dialog.button("Resume Game", 1L);
+                dialog.button("Exit Game", 2L);
+                dialog.show(MyMalefizGame.stage);
             }
         });
 
