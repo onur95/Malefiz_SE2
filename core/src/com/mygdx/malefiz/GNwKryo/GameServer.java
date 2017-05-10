@@ -27,7 +27,7 @@ public class GameServer {
     }
 
     public void startServer(){
-        Gdx.app.log("Server","Startet.");
+//Line interferes with tests.        Gdx.app.log("Server","Startet.");
         server.start();
         server.addListener(new GameServerListener());
         try{

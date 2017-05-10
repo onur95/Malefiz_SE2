@@ -1,34 +1,29 @@
 package com.mygdx.malefiz.Screens;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.MyMalefizGame;
 
-/* Serves the purpose to to something Ingame */
+/* Serves the purpose to do something Ingame */
 
 public class GameMenu
 {
     static TextButton exitButton;
     static TextButton menuButton;
 
+
     static Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
+
 
     public static Actor createExit()
     {
-
         exitButton = new TextButton("Exit Game", defSkin);
         exitButton.setPosition(250, 943);
         exitButton.addListener(new ClickListener(){

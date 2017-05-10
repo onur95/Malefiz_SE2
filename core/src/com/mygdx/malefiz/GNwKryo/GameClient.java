@@ -25,15 +25,13 @@ public class GameClient {
             client.start();
 
             // Attempt to connect to server; Controlling via GameServer.var
-            if(GameServer.players <= GameServer.max_usercount){
-                Gdx.app.log("Client", "Connected.");
+            if(GameServer.players < GameServer.max_usercount){
+// Line interferes with testing                Gdx.app.log("Client", "Connected.");
                 client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
                 GameServer.players++;
-                // Effective Messagemanagement via Listener.
-                // Shutdown via client.terminate() in alternative Class (which shutdowns the programm).
                 client.addListener(new GameClientListener());
             }else{
-                Gdx.app.log("Client", "Closing client :: Server Full");
+// Line interferes with testing               Gdx.app.log("Client", "Closing client :: Server Full");
                 client.close();
             }
 
