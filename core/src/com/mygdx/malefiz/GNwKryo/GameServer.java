@@ -78,6 +78,6 @@ public class GameServer {
         transmission.playerTurn = playerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
-        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
+//        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
     }
 }

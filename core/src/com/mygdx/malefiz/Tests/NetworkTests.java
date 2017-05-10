@@ -59,4 +59,28 @@ public class NetworkTests {
         }
         server.stopServer();
     }
+
+    @Test
+    public void sendMessageClientToServer(){
+        server = new GameServer(tcpPort, udpPort);
+        server.startServer();
+
+        client = new GameClient(tcpPort, udpPort, timeout);
+        client.connect(ip);
+
+        client.sendData(3, 2, 2);
+    }
+
+    @Test
+    public void sendMessageServerToClient(){
+        server = new GameServer(tcpPort, udpPort);
+        server.startServer();
+
+        client = new GameClient(tcpPort, udpPort, timeout);
+        client.connect(ip);
+
+        server.sendMessage(3, 2, 2, 2);
+    }
+
+
 }

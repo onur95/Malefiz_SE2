@@ -25,7 +25,7 @@ public class GameServerListener extends Listener {
             } else {
                 // Data fault :: No known Actor has been moved.
                 // Should be virtually impossible. Still consider controlling
-                Gdx.app.log("GameServerListener", "Entered 'else'");
+//                Gdx.app.log("GameServerListener", "Entered 'else'");
             }
         }
     }

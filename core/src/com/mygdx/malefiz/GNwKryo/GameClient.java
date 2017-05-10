@@ -59,6 +59,6 @@ public class GameClient {
         transmission.row = row;
 
         client.sendTCP(transmission);       // ** .. Send it to server
-        Gdx.app.log("Client","Transmitted Data.");
+//        Gdx.app.log("Client","Transmitted Data.");
     }
 }
