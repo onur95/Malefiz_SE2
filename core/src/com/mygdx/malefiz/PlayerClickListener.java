@@ -36,6 +36,14 @@ public class PlayerClickListener extends ClickListener {
         }
     }
 
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
     private boolean isPlayersTurnHighlighted(){
         //Falls der Spieler am Zug ist, kann er die gerade ausgewählte Figur dadurch wieder ändern
         boolean status = false;

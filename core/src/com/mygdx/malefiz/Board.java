@@ -71,25 +71,20 @@ public class Board {
     }
 
     public static void moveTo(int column, int row, boolean isBlock){
-        Field temp = boardArray[column][row];
-//        temp.setHighlighted(false);
         if(isBlock){
             boardArray[column][row] = new Field('B');
             BoardToPlayboard.setKickedVisibility();
         }
         else {
             boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
-
             //Feld, auf dem der Spieler war, wird auf FIELD gesetzt
-            boardArray[fieldActive.getColumn()][fieldActive.getRow()] = new Field('.');
+            boardArray[fieldActive.getColumn()][fieldActive.getRow()] = fieldActive.getColumn() <= 2 ? new Field('.') : new Field('o');
         }
         fieldActive = null;
-//        setSomethingChanged(true);
-//        BoardToPlayboard.setAnimation();
     }
 
     public static FieldPosition getRealFieldActive(){
-        FieldPosition fieldTemp = fieldActive;
+        FieldPosition fieldTemp = new FieldPosition(fieldActive.getColumn(), fieldActive.getRow()); // wenn =  fieldActive dann Referenz!!!!!
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
                 char field = boardMeta[2].charAt(k);

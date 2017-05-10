@@ -30,7 +30,7 @@ public class HighlightClickListener extends ClickListener {
         }
         boolean blockIsMoving = BoardToPlayboard.getKickedIndex() != -1 && Board.isField(column, row);
         Board.moveTo(this.column, this.row, blockIsMoving);
-        BoardToPlayboard.moveToPosition(this.actorIndex, blockIsMoving);
+        BoardToPlayboard.moveToPosition(this.actorIndex, blockIsMoving, column, row);
         if(isPlayer) {
             BoardToPlayboard.moveKicked();
         }

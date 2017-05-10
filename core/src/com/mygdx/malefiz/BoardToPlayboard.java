@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -25,10 +26,11 @@ public class BoardToPlayboard {
     static Image player3;
     static Image player4;
     static Image block;
+    static Image highlight;
+    static Image playerHighlight;
     static Stage stage;
     static float lineOffset;
     static float pointOffset;
-    static Image highlight;
     static int actorActive;
     static Sound yourTurn;
     static Sound kickPlayer;
@@ -36,7 +38,6 @@ public class BoardToPlayboard {
     static Sound placeBlock;
     static Sound kickedOwnFigure;
     static Sound moveFigure;
-
     static int actorsCount = -1;
     static int kickedIndex = -1;
 
@@ -57,7 +58,8 @@ public class BoardToPlayboard {
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
         player4=new Image(new Texture("Player4.png"));
-        highlight=new Image(new Texture("Highlight_2.png"));
+        highlight=new Image(new Texture("Highlight.png"));
+        playerHighlight=new Image(new Texture("Highlight_2.png"));
         block=new Image(new Texture("Block.png"));
         board = Board.getBoardArray();
         stage = MyMalefizGame.getState();
@@ -253,7 +255,7 @@ public class BoardToPlayboard {
         if(board[column][row].getField_state().ordinal() == Player.getNumber()) {
             MoveToAction action = new MoveToAction();
             action.setPosition(offsetX, offsetY);
-            Image field = new Image(highlight.getDrawable());
+            Image field = new Image(playerHighlight.getDrawable());
             field.addAction(action);
             field.setVisible(false);
             field.addListener(new PlayerClickListener(column, row, stage.getActors().size));
@@ -317,7 +319,7 @@ public class BoardToPlayboard {
         return ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
     }
 
-    public static  void moveToPosition(int actorIndex, boolean blockIsMoving){
+    public static  void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
         if(actorActive != -1 && !blockIsMoving) {
             moveFigure.play();
             //Highlight wieder verschwinden lassen
@@ -325,8 +327,13 @@ public class BoardToPlayboard {
 
             MoveToAction action = getMoveToAction(actorIndex, 1F);
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
-            stage.getActors().get(actorActive-1).addAction(action);
             stage.getActors().get(actorActive).addAction(action2);
+            stage.getActors().get(actorActive - 1).addAction(action);
+
+            adjustPlayerClickListener(column, row, actorActive);
+            adjustPlayerClickListener(column, row, actorActive-1);
+
+
 
 
             //Hier alle gehighlighteten Positionen löschen
@@ -342,6 +349,15 @@ public class BoardToPlayboard {
         }
         removeHighlights();
         actorActive = -1;
+    }
+
+    private static void adjustPlayerClickListener(int column, int row, int index){
+        for(EventListener event : stage.getActors().get(index).getListeners()){
+            if(event.getClass() == PlayerClickListener.class){
+                ((PlayerClickListener)event).setColumn(column);
+                ((PlayerClickListener)event).setRow(row);
+            }
+        }
     }
 
     public static void removeHighlights(){
@@ -364,7 +380,7 @@ public class BoardToPlayboard {
     }
 
     public static void playYourTurn(){
-        yourTurn.play(1.0f);
+        yourTurn.play();
 
     }
 
