@@ -42,9 +42,8 @@ public class GameClient {
 
     // TODO: MUST HAPPEN somewhere. Otherwise Client/Server remains active
     public void terminate(){
-        client.stop();
         client.close();
-        Gdx.app.log("Client","Disconnected.");
+        //Gdx.app.log("Client","Disconnected.");
     }
 
 

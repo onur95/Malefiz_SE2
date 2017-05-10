@@ -39,8 +39,8 @@ public class GameServer {
 
     // TODO: Needs a call once game is aborted
     public void stopServer(){
-        Gdx.app.log("Server","Stopt.");
-        server.stop();
+        //Gdx.app.log("Server","Stopt.");
+        this.players = 0;   // Necessary for shutdown + windup. Bugs for some reason
         server.close();
     }
 

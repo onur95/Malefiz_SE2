@@ -3,35 +3,46 @@ package com.mygdx.malefiz.Tests;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
-
-import java.io.IOException;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NetworkTests {
-    static public String ip = "127.0.0.1";
-    static public int tcpPort = 45455;
-    static public int udpPort = 45456;
-    static public int timeout = 10000;
+    static protected String ip = "127.0.0.1";   // Emulating Server-IP always throws this
+    static protected int tcpPort = 45455;
+    static protected int udpPort = 45456;
+    static protected int timeout = 10000;
+    GameServer server;
+    GameClient client;
 
     @Test
-    public void createAServer(){
-        GameServer server = new GameServer(tcpPort, udpPort);
+    public void createAndStopServer(){
+        server = new GameServer(tcpPort, udpPort);
         server.startServer();
+
+        server.stopServer();
     }
 
     @Test
     public void createClientAndConnect(){
-        GameClient client = new GameClient(tcpPort, udpPort, timeout);
+        server = new GameServer(tcpPort, udpPort);
+        server.startServer();
+
+        client = new GameClient(tcpPort, udpPort, timeout);
         client.connect(ip);
+
+        client.terminate();
+        server.stopServer();
     }
 
     @Test
-    public void testMaximumConnectionCount(){
+    public void maximumConnectionCount(){
+        server = new GameServer(tcpPort, udpPort);
+        server.startServer();
+
         int tc = 100;   // Don't do too many.
         GameClient clients[] = new GameClient[tc];
 
@@ -40,8 +51,12 @@ public class NetworkTests {
             clients[i] = new GameClient(tcpPort, udpPort, timeout);
             clients[i].connect(ip);
         }
-        // Only 3 Connections allowed. First connection in Test before, 2 more allowed.
+        // Maximum of 3 Connections allowed
         // Every other was successfully shut down.
+        for(int i = tc; i <= 0; i--)
+        {
+            clients[i].terminate();
+        }
+        server.stopServer();
     }
-
 }
