@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Tests;
+package com.mygdx.malefiz.tests;
 
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
