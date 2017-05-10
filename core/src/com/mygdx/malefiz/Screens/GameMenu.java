@@ -39,8 +39,8 @@ public class GameMenu
                         }
                     }
                 };
-                dialog.button("Resume Game", 1L);
                 dialog.button("Exit Game", 2L);
+                dialog.button("Resume Game", 1L);
                 dialog.show(MyMalefizGame.stage);
             }
         });

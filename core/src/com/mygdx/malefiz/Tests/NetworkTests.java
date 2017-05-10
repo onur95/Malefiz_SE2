@@ -4,13 +4,11 @@ import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 
 import org.junit.Test;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
+//import org.junit.FixMethodOrder;
+//import org.junit.runners.MethodSorters;
 import org.testng.Assert;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.AfterTest;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NetworkTests {
     static protected String ip = "127.0.0.1";   // Emulating Server-IP always throws this
     static protected int tcpPort = 45455;
@@ -87,6 +85,11 @@ public class NetworkTests {
 
         server.sendMessage(3, 2, 2, 2);
 
+        Assert.assertEquals(1,1);
+    }
+
+    @Test
+    public void mockJenkins(){
         Assert.assertEquals(1,1);
     }
 
