@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.malefiz.GNwKryo.GameClient;
@@ -54,7 +55,7 @@ public class ConnectionScreen implements Screen {
         stage = new Stage(viewport, batch);*/
         imageButtonConnect=MainMenuScreen.createImageButton("connect.png",375,335,350,150);
         imageButtonReturn=MainMenuScreen.createImageButton("return.png",380,220,350,150);
-        stage = new Stage(new FitViewport(1024,670));
+        stage = new Stage(new FillViewport(1024,670));
         txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
         img_background_menu=new Image(txt_background_menu);
         Gdx.input.setInputProcessor(stage);

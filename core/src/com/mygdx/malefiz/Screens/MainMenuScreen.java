@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.malefiz.Malefiz;
@@ -58,7 +59,7 @@ public class MainMenuScreen implements Screen {
         imageButtonNewGame=createImageButton("new_game_setup.png",375,335,350,150);
         imageButtonConnect=createImageButton("connect_to.png",375,220,350,150);
         imageButtonExit=createImageButton("exit_button.png",375,100,350,150);
-        stage = new Stage(new FitViewport(1024,670));
+        stage = new Stage(new FillViewport(1024,670));
         txt_background_menu=new Texture("malefiz_mainmenu_background.jpg");
         img_background_menu=new Image(txt_background_menu);
         txt_malefiz_logo=new Texture("malefiz_logo.png");
