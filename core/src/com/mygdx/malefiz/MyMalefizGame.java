@@ -25,14 +25,12 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	Image img_playground;
 	final Malefiz mal;
 	String pfad;
-	private float currentZoom;
 
 	public MyMalefizGame (final Malefiz mal) {
 		this.mal=mal;
 		InputMultiplexer im = new InputMultiplexer();
 		GestureDetector gd = new GestureDetector(this);
 		stage=new Stage(new FitViewport(1500, 1500));
-		currentZoom=((OrthographicCamera)stage.getCamera()).zoom;
 		im.addProcessor(gd);
 		im.addProcessor(stage);
 		Gdx.input.setInputProcessor(im);
@@ -137,14 +135,13 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	 */
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
-		float actualZoom=((OrthographicCamera)stage.getCamera()).zoom;
-		if(initialDistance>=distance && actualZoom!=currentZoom){ //zoom out
+		
+		if(initialDistance>=distance && ((OrthographicCamera)stage.getCamera()).zoom!=1.0f){ //zoom out
 			((OrthographicCamera)stage.getCamera()).zoom += 0.005f;
-			actualZoom+=0.005f;
+
 		}
-		else if(initialDistance<=distance){ //zoom in
+		else if(initialDistance<=distance && ((OrthographicCamera)stage.getCamera()).zoom!=0.6950003f){ //zoom in
 			((OrthographicCamera) stage.getCamera()).zoom -= 0.005f;
-			actualZoom-=0.005f;
 
 		}
 		return true;
