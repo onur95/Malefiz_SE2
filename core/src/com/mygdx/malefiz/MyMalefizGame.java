@@ -75,7 +75,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	@Override
 	public void resize (int width, int height) {
-		// See below for what true means.
+		// true - center camera.
 		stage.getViewport().update(width, height, true);
 	}
 
@@ -110,9 +110,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	}
 
 	@Override
-	public boolean longPress(float x, float y) {
-		return false;
-	}
+	public boolean longPress(float x, float y) { return false; }
 
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
@@ -135,12 +133,12 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	 */
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
-		
+
 		if(initialDistance>=distance && ((OrthographicCamera)stage.getCamera()).zoom!=1.0f){ //zoom out
 			((OrthographicCamera)stage.getCamera()).zoom += 0.005f;
 
 		}
-		else if(initialDistance<=distance && ((OrthographicCamera)stage.getCamera()).zoom!=0.6950003f){ //zoom in
+		else if(initialDistance<=distance && ((OrthographicCamera)stage.getCamera()).zoom!=0.93500006f){ //zoom in
 			((OrthographicCamera) stage.getCamera()).zoom -= 0.005f;
 
 		}
