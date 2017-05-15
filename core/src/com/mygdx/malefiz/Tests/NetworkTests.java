@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.tests;
+package com.mygdx.malefiz.Tests;
 
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
@@ -21,10 +21,7 @@ public class NetworkTests {
     public void createAndStopServer(){
         server = new GameServer(tcpPort, udpPort);
         server.startServer();
-
         server.stopServer();
-
-        Assert.assertEquals(1,1);
     }
 
     @Test
@@ -37,7 +34,6 @@ public class NetworkTests {
 
         client.terminate();
         server.stopServer();
-        Assert.assertEquals(1,1);
     }
 
     @Test
@@ -60,7 +56,6 @@ public class NetworkTests {
             clients[i].terminate();
         }
         server.stopServer();
-        Assert.assertEquals(1,1);
     }
 
     @Test
@@ -72,7 +67,6 @@ public class NetworkTests {
         client.connect(ip);
 
         client.sendData(3, 2, 2);
-        Assert.assertEquals(1,1);
     }
 
     @Test
@@ -84,14 +78,5 @@ public class NetworkTests {
         client.connect(ip);
 
         server.sendMessage(3, 2, 2, 2);
-
-        Assert.assertEquals(1,1);
     }
-
-    @Test
-    public void mockJenkins(){
-        Assert.assertEquals(1,1);
-    }
-
-
 }

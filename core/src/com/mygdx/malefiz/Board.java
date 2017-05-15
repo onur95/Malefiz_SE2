@@ -11,7 +11,7 @@ import jdk.nashorn.internal.ir.Block;
 public class Board {
     private static Field[][] boardArray; //Das aktuelle Spielfeld
     private static final String[] meta =   //Das Grundgerüst des Spielfeldes
-            {   "........G........",
+            {       "........G........",
                     "ooooooooBoooooooo",
                     "o...............o",
                     "ooooooooBoooooooo",
@@ -25,10 +25,12 @@ public class Board {
                     "BoooBoooBoooBoooB",
                     "o...o...o...o...o",
                     "ooooooooooooooooo",
-//                        "oo4ooBoo1Bo2oo3oB",
                     "..1...2...3...4..",
                     ".1.1.2.2.3.3.4.4.",
-                    ".1.1.2.2.3.3.4.4."};
+                    ".1.1.2.2.3.3.4.4."};       // Leftside: 0,0
+
+// (4)                       "oo4ooBoo1Bo2oo3oB",
+
     private static final String[] boardMeta = reverseBoardMeta(meta);
     //G->Goal
     //B->Block
