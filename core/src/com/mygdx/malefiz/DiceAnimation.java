@@ -58,7 +58,7 @@ public class DiceAnimation  {
 
         TextureRegion actDiceAnimation = diceAnimation.getKeyFrame(time, false);
         spriteBatch.begin();
-        spriteBatch.draw(actDiceAnimation, 100, 550, 350, 175);
+        spriteBatch.draw(actDiceAnimation, 100, 500, 350, 180);
         spriteBatch.end();
     }
 
