@@ -99,7 +99,7 @@ public class ConfigureScreen implements Screen {
                 /* TODO: Gameserver set playercount */
 //                public void setPlayerCount(int n){
 //                    this.max_usercount = n;
-//                }
+//                }l
 
                 /* Start Game */
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
