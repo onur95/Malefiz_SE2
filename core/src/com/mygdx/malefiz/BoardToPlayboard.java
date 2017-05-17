@@ -296,7 +296,11 @@ public class BoardToPlayboard {
         if(board[column][row].getField_state().ordinal() == Player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
-            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            try{
+                field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            }catch(NullPointerException e){
+                Gdx.app.log("GetFieldType", e.toString());
+            }
         }
         return field;
     }

@@ -12,7 +12,7 @@ import java.util.Enumeration;
 
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
-    Server server;
+    static Server server;
     protected static final int max_usercount = 3;
     protected static int players = 0;
 
@@ -38,9 +38,9 @@ public class GameServer {
     }
 
     // TODO: Needs a call once game is aborted
-    public void stopServer(){
+    public static void stopServer(){
         //Gdx.app.log("Server","Stopt.");
-        this.players = 0;   // Necessary for shutdown + windup. Bugs for some reason
+        players = 0;   // Necessary for shutdown + windup. Bugs for some reason
         server.close();
     }
 

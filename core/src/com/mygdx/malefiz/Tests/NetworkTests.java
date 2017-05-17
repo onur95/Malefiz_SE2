@@ -51,7 +51,7 @@ public class NetworkTests {
         }
         // Maximum of 3 Connections allowed
         // Every other was successfully shut down.
-        for(int i = tc; i <= 0; i--)
+        for(int i = tc; i == 0; i--)
         {
             clients[i].terminate();
         }
