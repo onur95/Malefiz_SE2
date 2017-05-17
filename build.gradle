@@ -93,18 +93,18 @@ project(":core") {
     apply plugin: "java"
     apply plugin: "jacoco"
 
-    test {
-        finalizedBy jacocoTestReport
-    }
-
     jacoco {
         toolVersion = "0.7.6.201602180812"
     }
 
+    test {
+        finalizedBy jacocoTestReport
+    }
+
     jacocoTestReport {
         reports {
-            xml.enabled false
-            csv.enabled false
+            xml.enabled = true
+            csv.enabled = true
             html.destination "${buildDir}/jacocoHtml"
         }
     }
