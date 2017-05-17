@@ -11,7 +11,7 @@ public class GameClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        // object received from connection
+        // Received from Connection that Object
         if(object instanceof Network.ServerEcho){
             // Parse data to use it.
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
