@@ -97,11 +97,27 @@ project(":core") {
         toolVersion = "0.7.6.201602180812"
     }
 
+    def coverageSourceDirs = [
+            'src'
+    ]
+
     test {
         finalizedBy jacocoTestReport
     }
 
     jacocoTestReport {
+        classDirectories = fileTree(
+                dir: '../core/build/classes/main/com/mygdx/malefiz/Tests/',
+                excludes: ['**/R.class',
+                           '**/R$*.class',
+                           '**/*$ViewInjector*.*',
+                           '**/BuildConfig.*',
+                           '**/Manifest*.*']
+        )
+        additionalSourceDirs = files(coverageSourceDirs)
+        sourceDirectories = files(coverageSourceDirs)
+        executionData = files('../android/build/jacoco/testReleaseUnitTest.exec ')
+
         reports {
             xml.enabled = true
             csv.enabled = true
