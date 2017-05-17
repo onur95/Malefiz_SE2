@@ -13,8 +13,8 @@ import java.util.Enumeration;
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
     static Server server;
-    protected static final int max_usercount = 3;
-    protected static int players = 0;
+    protected static int max_usercount = 1; // TODO: Change von Textfield Anzahl holen.
+    protected static int players = 0;           // Aktuelle Anzahl an Spielern im Spiel
 
     public GameServer(int tcp, int udp){
         this.TCP_PORT = tcp;
@@ -79,5 +79,9 @@ public class GameServer {
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
 //        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
+    }
+
+    public void setPlayerCount(int n){
+        this.max_usercount = n;
     }
 }

@@ -96,6 +96,11 @@ public class ConfigureScreen implements Screen {
                     Gdx.app.log("Server","Failed to create Server on starting the main game.");
                 }
 
+                /* TODO: Gameserver set playercount */
+//                public void setPlayerCount(int n){
+//                    this.max_usercount = n;
+//                }
+
                 /* Start Game */
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
             }
