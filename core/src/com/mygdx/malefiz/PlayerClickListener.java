@@ -10,11 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class PlayerClickListener extends ClickListener {
 
     private int column, row, actorIndex;
+    private Player player;
+    private Board board;
+    private BoardToPlayboard view;
+    private Dice dice;
 
-    public PlayerClickListener(int column, int row, int actorIndex) {
+    public PlayerClickListener(int column, int row, int actorIndex, Player player, Board board, BoardToPlayboard view, Dice dice) {
         this.column = column;
         this.row = row;
         this.actorIndex = actorIndex;
+        this.player = player;
+        this.view = view;
+        this.board = board;
+        this.dice = dice;
     }
 
     @Override
@@ -22,17 +30,17 @@ public class PlayerClickListener extends ClickListener {
     {
         //Player.getHighlightedFiguresIndizes().contains(actorIndex) --> Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
         if(isPlayersTurnHighlighted()) {
-            BoardToPlayboard.removeHighlights();
-            Board.setFieldActive(this.column, this.row);
+            view.removeHighlights();
+            board.setFieldActive(this.column, this.row);
 
             //alle anderen Highlights der Spielerfiguren bis auf die ausgewählte Figur auf visible: false setzen
-            BoardToPlayboard.setPlayerFiguresHighlighted(false);
-            BoardToPlayboard.setPlayerFigureHighlighted(actorIndex, true);
+            view.setPlayerFiguresHighlighted(false);
+            view.setPlayerFigureHighlighted(actorIndex, true);
 
-            BoardToPlayboard.setActorActive(actorIndex);
+            view.setActorActive(actorIndex);
             //TODO: warten bis der würfel fertig gewürfelt hat!
-            BoardToPlayboard.setActorsCount();  //Um Highlights rauszulöschen
-            Board.higlightPositionsMovement(Dice.getResultNumber(),Board.getRealFieldActive(),null);
+            view.setActorsCount();  //Um Highlights rauszulöschen
+            board.higlightPositionsMovement(dice.getResultNumber(),board.getRealFieldActive(),null);
         }
     }
 
@@ -47,8 +55,8 @@ public class PlayerClickListener extends ClickListener {
     private boolean isPlayersTurnHighlighted(){
         //Falls der Spieler am Zug ist, kann er die gerade ausgewählte Figur dadurch wieder ändern
         boolean status = false;
-        for(int index : Player.getHighlightedFiguresIndizes()){
-            if(BoardToPlayboard.stage.getActors().get(index).isVisible()){
+        for(int index : player.getHighlightedFiguresIndizes()){
+            if(view.getStage().getActors().get(index).isVisible()){
                 status = true;
             }
         }

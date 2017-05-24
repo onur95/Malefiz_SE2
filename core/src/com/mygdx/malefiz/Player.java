@@ -8,23 +8,26 @@ import java.util.List;
  */
 
 public class Player {
-    private static int number;
-    private static List<Integer> highlightedFiguresIndizes = new ArrayList<Integer>();
+    private int number;
+    private List<Integer> highlightedFiguresIndizes = new ArrayList<Integer>();
 
-    public static void setNumber(int number1){
+    public Player(int number){
+        this.number = number;
+    }
+
+    public void setNumber(int number1){
         number = number1;
     }
 
-    public static int getNumber(){
+    public int getNumber(){
         return number;
     }
 
-    public static void addHighlightFigure(int index){
-
+    public void addHighlightFigure(int index){
         highlightedFiguresIndizes.add(index);
     }
 
-    public static List<Integer> getHighlightedFiguresIndizes() {
+    public List<Integer> getHighlightedFiguresIndizes() {
         return highlightedFiguresIndizes;
     }
 }

@@ -1,6 +1,7 @@
 package com.mygdx.malefiz;
 
 import java.lang.reflect.Array;
+import java.util.List;
 
 import jdk.nashorn.internal.ir.Block;
 
@@ -9,8 +10,10 @@ import jdk.nashorn.internal.ir.Block;
  */
 
 public class Board {
-    private static Field[][] boardArray; //Das aktuelle Spielfeld
-    private static final String[] meta =   //Das Grundgerüst des Spielfeldes
+    private  Player player;
+    private  BoardToPlayboard view;
+    private  Field[][] boardArray; //Das aktuelle Spielfeld
+    private  final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
                     "ooooooooBoooooooo",
                     "o...............o",
@@ -31,17 +34,19 @@ public class Board {
 
 // (4)                       "oo4ooBoo1Bo2oo3oB",
 
-    private static final String[] boardMeta = reverseBoardMeta(meta);
+    private  final String[] boardMeta = reverseBoardMeta(meta);
     //G->Goal
     //B->Block
     //o->Normales Feld
     //.->kein benutzbares Feld
     //1-4->Player 1-4
-    private static FieldPosition fieldActive;
-    private static FieldPosition newPlayerPosition;
+    private  FieldPosition fieldActive;
+    private  FieldPosition newPlayerPosition;
 
 
-    public static void init(){
+    public  void init(Player play, BoardToPlayboard view){
+        this.view = view;
+        player = play;
         boardArray = new Field[17][17];
         for(int column = boardMeta.length-1; column>=0; column--){
 
@@ -50,11 +55,11 @@ public class Board {
             }
         }
         /**Test-Data**/
-        Player.setNumber(2);
+//        Player.setNumber(2);
         /**Test-Data**/
     }
 
-    private static String[] reverseBoardMeta(String [] defaultMeta){
+    private  String[] reverseBoardMeta(String [] defaultMeta){
         String[] meta = defaultMeta;
         for(int i=0;i<meta.length/2;i++){
             String a = meta[meta.length-i-1];
@@ -64,18 +69,18 @@ public class Board {
         return meta;
     }
 
-    public static Field[][] getBoardArray(){
+    public  Field[][] getBoardArray(){
         return boardArray;
     }
 
-    public static void setFieldActive(int column, int row){
+    public  void setFieldActive(int column, int row){
         fieldActive = new FieldPosition(column, row);
     }
 
-    public static void moveTo(int column, int row, boolean isBlock){
+    public  void moveTo(int column, int row, boolean isBlock){
         if(isBlock){
             boardArray[column][row] = new Field('B');
-            BoardToPlayboard.setKickedVisibility();
+            view.setKickedVisibility();
         }
         else {
             boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
@@ -85,14 +90,14 @@ public class Board {
         fieldActive = null;
     }
 
-    public static FieldPosition getRealFieldActive(){
+    public  FieldPosition getRealFieldActive(){
         FieldPosition fieldTemp = new FieldPosition(fieldActive.getColumn(), fieldActive.getRow()); // wenn =  fieldActive dann Referenz!!!!!
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
                 char field = boardMeta[2].charAt(k);
                 if(field == '.'){continue;}
-                int player = Character.getNumericValue(field);
-                if(player==Player.getNumber()){
+                int playerNumber = Character.getNumericValue(field);
+                if(playerNumber==player.getNumber()){
                     fieldTemp.setColumn(2);
                     fieldTemp.setRow(k);
                     break;
@@ -102,25 +107,25 @@ public class Board {
         return fieldTemp;
     }
 
-    public static void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore) {
+    public  void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore) {
         checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field); //above
         checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field); //below
         checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field); //left
         checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field); //right
     }
 
-    private static void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter){
+    private  void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter){
         if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
             FieldStates state=boardArray[column][row].getField_state();
             checkDiceField(state,column,row,dice,positionBeforeAfter);
         }
     }
 
-    private static void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore){
+    private  void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore){
         dice--;
-        if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==Player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != Player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
+        if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
-                BoardToPlayboard.setHighlight(column,row);
+                view.setHighlight(column,row, false);
             }
             else{
                 higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore);
@@ -128,23 +133,27 @@ public class Board {
         }
     }
 
-    public static boolean isPlayer(int ordinal){
+    public  boolean isPlayer(int ordinal){
         return (ordinal >= 1 && ordinal <= 4);
     }
 
-    public static boolean isPlayer(int column, int row){
+    public  boolean isPlayer(int column, int row){
         return isPlayer(boardArray[column][row].getField_state().ordinal());
     }
 
-    public static boolean isBlock(int column, int row){
+    public  boolean isBlock(int column, int row){
         return (boardArray[column][row].getField_state() == FieldStates.BLOCK);
     }
 
-    public static boolean isField(int column, int row){
+    public  boolean isField(int column, int row){
         return (boardArray[column][row].getField_state() == FieldStates.FIELD);
     }
 
-    public static void movePlayerToStart(int column, int row){
+    public  FieldPosition getFieldActive(){
+        return fieldActive;
+    }
+
+    public  void movePlayerToStart(int column, int row){
 
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < boardArray[x].length; y++){
@@ -161,17 +170,35 @@ public class Board {
         }
     }
 
-    public static FieldPosition getNewPlayerPosition(){
+    public  FieldPosition getNewPlayerPosition(){
         return newPlayerPosition;
     }
 
-    public static void setAllHighlighted(){
+    public  void setAllHighlighted(){
         for(int x = 0; x < boardArray.length; x++) {
             for (int y = 0; y < boardArray[x].length; y++) {
                 if(boardArray[x][y].getField_state() == FieldStates.FIELD){
-                    BoardToPlayboard.setHighlight(x,y);
+                    view.setHighlight(x,y, false);
                 }
             }
+        }
+    }
+
+    public  void serverMove(List<BoardUpdate> update){
+        if(update.size() > 2){//dann 2. Element zuerst bewegen
+            BoardUpdate first = update.get(1);
+            BoardUpdate second = update.get(2);
+            //first zu second
+            //last zu first
+
+
+
+
+            BoardUpdate last = update.get(0);
+        }
+        else{
+            BoardUpdate first = update.get(0);
+            BoardUpdate second = update.get(1);
         }
     }
 }

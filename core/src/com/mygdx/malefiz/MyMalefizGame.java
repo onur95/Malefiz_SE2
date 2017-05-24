@@ -9,53 +9,61 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.Screens.*;
+import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Screens.GameMenu;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
-	public static Stage stage;
-	Texture txt_playground;
-	Image img_playground;
-	final Malefiz mal;
-	String pfad;
+	private Stage stage;
+	private Dice dice;
+	private Texture txt_playground;
+	private Image img_playground;
+	private final Malefiz mal;
 
-	public MyMalefizGame (final Malefiz mal) {
+
+	public MyMalefizGame (final Malefiz mal, GameClient client) {
 		this.mal=mal;
+		dice = new Dice(client.getPlayerNumber() == 1); //Spieler 1 fängt an; Würfel wird aktiviert
+		Board board = new Board();
+		UpdateHandler handler = new UpdateHandler(client, dice);
+		BoardToPlayboard view= new BoardToPlayboard();
+		Player player = new Player(client.getPlayerNumber());
 		InputMultiplexer im = new InputMultiplexer();
 		GestureDetector gd = new GestureDetector(this);
 		stage=new Stage(new FitViewport(1500, 1500));
+		GameMenu menu = new GameMenu(stage, client.getServerIp());
 		im.addProcessor(gd);
 		im.addProcessor(stage);
 		Gdx.input.setInputProcessor(im);
 		txt_playground = new Texture("Playboard.jpg");
 		img_playground=new Image(txt_playground);
 		stage.addActor(img_playground);
-		Board.init();
-		BoardToPlayboard.init();
-		BoardToPlayboard.generate();
-	// Disable Menu/Exit-Buttons via Commenting here
-		stage.addActor(GameMenu.createExit());
-		stage.addActor(GameMenu.createMenu());
+		board.init(player, view);
 
-		Dice.randomNumber();
-		pfad=Dice.getResult(Dice.getResultNumber());
-		DiceAnimation.create(pfad);
+		handler.setBoardAndView(view,board);
 
 
-		//auskommentiert da die Bewegung sonst hängt
-		//Gdx.graphics.setContinuousRendering(false);
-		//Gdx.graphics.requestRendering();
+		view.init(handler, player, stage, board, dice);
+		view.generate();
+		dice.setView(view);
+		dice.setDiceAnimation();
+
+		// Disable Menu/Exit-Buttons via Commenting here
+		stage.addActor(menu.createExit());
+		stage.addActor(menu.createMenu());
+//		dice.randomNumber();
+//		pfad=dice.getResult(dice.getResultNumber());
+//		DiceAnimation diceAnimation = new DiceAnimation();
+//		diceAnimation.create(pfad);
+//		dice.setDiceAnimation(diceAnimation);
+
+
 	}
 
-	public static Stage getState(){
-		return stage;
+	public Stage getStage(){
+		return this.stage;
 	}
 
 	@Override
@@ -70,7 +78,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		stage.act();
 		stage.draw();
 		//BoardToPlayboard.generate();
-		Dice.shake();
+		dice.shake();
 	}
 
 	@Override

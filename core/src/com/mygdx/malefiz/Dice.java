@@ -10,22 +10,27 @@ import java.util.Random;
  */
 
 public class Dice {
-    private static int result = -1;  //fehler bzw. dfeault Wert
-    private static boolean shaked;
-
+    private int result = -1;  //fehler bzw. dfeault Wert
+    private boolean shaked;
+    private BoardToPlayboard view;
+    private DiceAnimation diceAnimation;
 
     //static Malefiz game;
 
+    public Dice(boolean shakedStatus){
+        this.shaked = shakedStatus;
+    }
+
 
     //Zufallszahl zw 1 & 6
-    public static int randomNumber() {
+    public int randomNumber() {
         Random r = new Random();
         result = r.nextInt(6) + 1;
         return result;
     }
 
     //Pfad für animation je nach augenzahl wird festgelegt
-    public static String getResult(int result){
+    public String getResult(int result){
         String res="badlogic.jpg";
         switch (result) {
             case 1:
@@ -50,16 +55,33 @@ public class Dice {
         return res;
     }
 
-    public static  int getResultNumber() {return result;}
+    public  int getResultNumber() {return result;}
 
-//wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
-    public static void shake(){
-        float force= (float)Math.sqrt((Gdx.input.getAccelerometerX()* Gdx.input.getAccelerometerX()) + (Gdx.input.getAccelerometerY() * Gdx.input.getAccelerometerY()) + (Gdx.input.getAccelerometerZ() * Gdx.input.getAccelerometerZ()));
+    //wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
+    public void shake(){
+        if(!shaked && diceAnimation != null) {
+            float force = (float) Math.sqrt((Gdx.input.getAccelerometerX() * Gdx.input.getAccelerometerX()) + (Gdx.input.getAccelerometerY() * Gdx.input.getAccelerometerY()) + (Gdx.input.getAccelerometerZ() * Gdx.input.getAccelerometerZ()));
 
-        if(force>10){
-            shaked=true;}
+            if (force > 10) {
+                shaked = true;
+                diceAnimation.render();
+                view.setPlayerFiguresHighlighted(true);
+            }
+        }
+    }
 
-        if(shaked)DiceAnimation.render();
+    public void setShaked(boolean status){
+        shaked = status;
+    }
+
+    public void setView(BoardToPlayboard view){
+        this.view = view;
+    }
+
+    public void setDiceAnimation(){
+        DiceAnimation diceAnimation = new DiceAnimation();
+        diceAnimation.create(getResult(randomNumber()));
+        this.diceAnimation = diceAnimation;
     }
 
 

@@ -17,18 +17,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class DiceAnimation  {
 
     // Zeilen & Spalten des SPrite sheets
-    private static final int cols = 12, rows = 2;
+    private final int cols = 12, rows = 2;
 
     // Deklarierung
-    static Animation<TextureRegion> diceAnimation; // Must declare frame type (TextureRegion)
-    static Texture diceSheet;
-    static SpriteBatch spriteBatch;
+    private Animation<TextureRegion> diceAnimation; // Must declare frame type (TextureRegion)
+    private Texture diceSheet;
+    private SpriteBatch spriteBatch;
 
     // timer für animation
-    static float time;
+    private float time;
 
     //Initialisieren, von Texture, TextureRegions, Animation & umwandlung eines 2D TextureRegion zu 1D Textureregion
-    public static void create(String img) {
+    public void create(String img) {
 
         diceSheet = new Texture(Gdx.files.internal(img));
 
@@ -51,8 +51,8 @@ public class DiceAnimation  {
 
 
     //Animation ohne Loop zu textureRegion casten & batch zeichnen
-    public static void render() {
-       // Gdx.gl.glClearColor(1, 0, 0, 1);
+    public void render() {
+        // Gdx.gl.glClearColor(1, 0, 0, 1);
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         time += Gdx.graphics.getDeltaTime();
 
@@ -64,7 +64,7 @@ public class DiceAnimation  {
 
 
 
-    public static void dispose() {
+    public void dispose() {
         spriteBatch.dispose();
         diceSheet.dispose();
     }
