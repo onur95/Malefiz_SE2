@@ -2,7 +2,10 @@ package com.mygdx.malefiz.GNwKryo;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.MyMalefizGame;
+
+import java.util.List;
 
 public class Network {
     // Register Datatypes to transmit -- Endpoint = Server or Client
@@ -14,12 +17,14 @@ public class Network {
 
     // Transmission from Client to Server
     static public class ClientMessage {
-        int actorIndex, column, row;
+        int playerTurn;
+        List<BoardUpdate> update;
     }
 
     // Transmission from Server to client
     static public class ServerEcho {
-        int actorIndex, column, row, playerTurn;
+        int playerTurn;
+        List<BoardUpdate> update;
     }
 
 

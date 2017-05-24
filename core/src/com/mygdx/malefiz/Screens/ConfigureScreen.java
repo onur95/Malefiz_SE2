@@ -25,9 +25,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
+
+import org.omg.CORBA.Context;;
 
 public class ConfigureScreen implements Screen {
 
@@ -82,27 +85,35 @@ public class ConfigureScreen implements Screen {
         playerNumber.setBounds(650,470,50,50);
         playerNumber.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
         //Add listeners to buttons
+
         imageButtonStartServer.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
 		        /* Networking */
-                GameServer server = new GameServer(44775, 44776);
+                GameServer server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
                 try{
                     server.startServer();
                     Gdx.app.log("Server","Server successfully started on starting the main game.");
+                    final String ip = server.fetchPublicIP();
+                    System.out.println("ServerIP: "+ip);
+
+
+                    GameClient client = new GameClient(44775, 44776, 10000, game);
+                    try{
+                        client.connect(ip);
+                        Gdx.app.log("Client", "Successfully connected to server.");
+                    }catch(Exception e){
+                        client.terminate();
+                        server.stopServer();
+                        Gdx.app.log("Client", "Failed to connect cClient of server to server.", e);
+                    }
                 }catch(Exception e){
                     server.stopServer();
                     Gdx.app.log("Server","Failed to create Server on starting the main game.");
                 }
 
-                /* TODO: Gameserver set playercount */
-//                public void setPlayerCount(int n){
-//                    this.max_usercount = n;
-//                }l
 
-                /* Start Game */
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
             }
         });
 

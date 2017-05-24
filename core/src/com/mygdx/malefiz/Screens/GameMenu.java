@@ -4,6 +4,7 @@ package com.mygdx.malefiz.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -15,14 +16,18 @@ import com.mygdx.malefiz.MyMalefizGame;
 
 public class GameMenu
 {
-    static TextButton exitButton;
-    static TextButton menuButton;
+    private TextButton exitButton;
+    private TextButton menuButton;
+    private Stage stage;
+    private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
+    private String serverIp;
 
+    public GameMenu(Stage stage, String serverIp){
+        this.stage = stage;
+        this.serverIp = serverIp;
+    }
 
-    static Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
-
-
-    public static Actor createExit()
+    public Actor createExit()
     {
         exitButton = new TextButton("Exit Game", defSkin);
         exitButton.setPosition(250, 943);
@@ -41,14 +46,14 @@ public class GameMenu
                 };
                 dialog.button("Exit Game", 2L);
                 dialog.button("Resume Game", 1L);
-                dialog.show(MyMalefizGame.stage);
+                dialog.show(stage);
             }
         });
 
         return exitButton;
     }
 
-    public static Actor createMenu()
+    public Actor createMenu()
     {
         menuButton = new TextButton("Game Menu", defSkin);
         menuButton.setPosition(1125, 925);
@@ -63,9 +68,9 @@ public class GameMenu
                         }
                     }
                 };
-                dialog.text(GameServer.fetchPublicIP());
+                dialog.text(serverIp);
                 dialog.button("Resume", 1L);
-                dialog.show(MyMalefizGame.stage);
+                dialog.show(stage);
             }
         });
 

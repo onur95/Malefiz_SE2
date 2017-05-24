@@ -86,7 +86,7 @@ public class ConnectionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 final String ip = eIPText.getText();
 
-                GameClient client = new GameClient(44775, 44776, 10000);
+                GameClient client = new GameClient(44775, 44776, 10000, game);
                 try{
                     client.connect(ip);
                     Gdx.app.log("Client", "Successfully connected to server.");
@@ -94,8 +94,6 @@ public class ConnectionScreen implements Screen {
                     client.terminate();
                     Gdx.app.log("Client", "Failed to Connect to server.", e);
                 }
-
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(game));
 
             }
         });

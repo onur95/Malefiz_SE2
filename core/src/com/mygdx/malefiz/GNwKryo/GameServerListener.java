@@ -8,6 +8,13 @@ import com.mygdx.malefiz.Player;
 
 
 public class GameServerListener extends Listener {
+    private GameServer server;
+
+    public GameServerListener(GameServer server) {
+        super();
+        this.server = server;
+    }
+
     @Override
     public void received(Connection connection, Object object) {
         // Received object from connection
@@ -16,17 +23,19 @@ public class GameServerListener extends Listener {
             // Parse Data to use it.
             Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
 
-            // Check if the correct player has made a move
-            if (clientTransmission.actorIndex == Player.getNumber()) {
-                // Then set his figure to the allocated spot.
-                Board.moveTo(clientTransmission.column, clientTransmission.row, false);
-                Gdx.app.log("GameServerListener", "Receiving Data successfull. Updating field.");
-
-            } else {
-                // Data fault :: No known Actor has been moved.
-                // Should be virtually impossible. Still consider controlling
-//                Gdx.app.log("GameServerListener", "Entered 'else'");
+            clientTransmission.playerTurn++;
+            if(clientTransmission.playerTurn > server.getMax_usercount()){
+                clientTransmission.playerTurn = 1;
             }
+            server.sendMessage(clientTransmission.update, clientTransmission.playerTurn);
+            //message Senden mit clientTransmission
         }
     }
+
+    @Override
+    public void connected(Connection connection){
+        server.addClient(connection);
+    }
+
+
 }
