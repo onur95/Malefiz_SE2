@@ -35,7 +35,7 @@ import org.omg.CORBA.Context;;
 public class ConfigureScreen implements Screen {
 
     private SpriteBatch batch;
-    Stage stage;
+    private Stage stage;
     private TextureAtlas atlas;
     protected Skin skin;
     private OrthographicCamera camera;
@@ -44,7 +44,9 @@ public class ConfigureScreen implements Screen {
     private Texture txt_background_menu;
     private ImageButton imageButtonStartServer;
     private ImageButton imageButtonReturn;
-    final Malefiz game;
+    private final Malefiz game;
+    private GameClient client;
+    private GameServer server;
 
     public ConfigureScreen(final Malefiz game){
         this.game=game;
@@ -89,9 +91,11 @@ public class ConfigureScreen implements Screen {
         imageButtonStartServer.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                if(playerNumber.getText().length() == 0){
+                    return;
+                }
 		        /* Networking */
-                GameServer server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
+                server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
                 try{
                     server.startServer();
                     Gdx.app.log("Server","Server successfully started on starting the main game.");
@@ -99,7 +103,7 @@ public class ConfigureScreen implements Screen {
                     System.out.println("ServerIP: "+ip);
 
 
-                    GameClient client = new GameClient(44775, 44776, 10000, game);
+                    client = new GameClient(44775, 44776, 10000, game);
                     try{
                         client.connect(ip);
                         Gdx.app.log("Client", "Successfully connected to server.");
@@ -187,5 +191,11 @@ public class ConfigureScreen implements Screen {
         skin.dispose();
         atlas.dispose();
         stage.dispose();
+        if(server != null){
+            server.stopServer();
+        }
+        if(client != null){
+            client.terminate();
+        }
     }
 }

@@ -21,9 +21,11 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private Texture txt_playground;
 	private Image img_playground;
 	private final Malefiz mal;
+	private GameClient client;
 
 
 	public MyMalefizGame (final Malefiz mal, GameClient client) {
+		this.client = client;
 		this.mal=mal;
 		dice = new Dice(client.getPlayerNumber() == 1); //Spieler 1 fängt an; Würfel wird aktiviert
 		Board board = new Board();
@@ -105,6 +107,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	@Override
 	public void dispose () {
 		stage.dispose();
+		client.terminate();
 	}
 
 	@Override

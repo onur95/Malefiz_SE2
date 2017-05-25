@@ -29,7 +29,7 @@ import com.mygdx.malefiz.MyMalefizGame;
 
 public class ConnectionScreen implements Screen {
     private SpriteBatch batch;
-    Stage stage;
+    private Stage stage;
     private TextureAtlas atlas;
     protected Skin skin;
     private OrthographicCamera camera;
@@ -38,7 +38,8 @@ public class ConnectionScreen implements Screen {
     private Texture txt_background_menu;
     private ImageButton imageButtonConnect;
     private ImageButton imageButtonReturn;
-    final Malefiz game;
+    private final Malefiz game;
+    private GameClient client;
 
     String input;
 
@@ -86,7 +87,7 @@ public class ConnectionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 final String ip = eIPText.getText();
 
-                GameClient client = new GameClient(44775, 44776, 10000, game);
+                client = new GameClient(44775, 44776, 10000, game);
                 try{
                     client.connect(ip);
                     Gdx.app.log("Client", "Successfully connected to server.");
@@ -126,6 +127,9 @@ public class ConnectionScreen implements Screen {
         skin.dispose();
         atlas.dispose();
         stage.dispose();
+        if(client != null) {
+            client.terminate();
+        }
     }
 
     @Override
