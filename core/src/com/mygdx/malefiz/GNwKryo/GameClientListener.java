@@ -27,7 +27,7 @@ public class GameClientListener extends Listener {
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
 
-            if(!alreadyMoved(serverEcho)) {//Der Spieler der den Zug getätigt hat, wird nicht angepasst
+            if(client.getPlayerNumber() != serverEcho.playerTurnBefore) {//Der Spieler der den Zug getätigt hat, wird nicht angepasst
                 client.getHandler().updatePlayboard(serverEcho.update, serverEcho.playerTurn);
             }
 
@@ -57,9 +57,4 @@ public class GameClientListener extends Listener {
         }
     }
 
-    private boolean alreadyMoved(Network.ServerEcho serverEcho){
-        int count = serverEcho.playerTurn-1;
-        count = count == 0 ? client.getPlayerCount() : count;
-        return client.getPlayerNumber() == count;
-    }
 }

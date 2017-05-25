@@ -22,11 +22,6 @@ public class GameServerListener extends Listener {
         if (object instanceof Network.ClientMessage) {
             // Parse Data to use it.
             Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
-
-            clientTransmission.playerTurn++;
-            if(clientTransmission.playerTurn > server.getMax_usercount()){
-                clientTransmission.playerTurn = 1;
-            }
             server.sendMessage(clientTransmission.update, clientTransmission.playerTurn);
             //message Senden mit clientTransmission
         }
@@ -35,6 +30,11 @@ public class GameServerListener extends Listener {
     @Override
     public void connected(Connection connection){
         server.addClient(connection);
+    }
+
+    @Override
+    public void disconnected(Connection connection){
+        server.removeClient(connection);
     }
 
 

@@ -8,6 +8,7 @@ import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.Screens.ConfigureScreen;
 
 import org.omg.CORBA.Context;
+import org.omg.CORBA.ExceptionList;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -19,15 +20,19 @@ import java.util.List;
 
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
-    Server server;
-    private int max_usercount = 3; // TODO: Change von Textfield Anzahl holen.
+    private Server server;
+    private int max_usercount;
     private int players = 0;           // Aktuelle Anzahl an Spielern im Spiel
     private List<Connection> clients;
+    private List<Integer> leavedPlayers;
+    private boolean gameStarted = false;
+    private int lastTurn = 1; //wird gebraucht, damit der nächste Spieler dran kommt, falls der Spieler vor ihm das Spiel verlässt
 
     public GameServer(int tcp, int udp, int max_usercount){
         this.TCP_PORT = tcp;
         this.UDP_PORT = udp;
         clients = new ArrayList<Connection>(4);
+        leavedPlayers = new ArrayList<Integer>(4);
         server = new Server();
         this.max_usercount = max_usercount;
 
@@ -53,6 +58,7 @@ public class GameServer {
         players = 0;   // Necessary for shutdown + windup. Bugs for some reason
         server.close();
         clients.clear();
+        leavedPlayers.clear();
     }
 
     public String fetchPublicIP(){
@@ -84,7 +90,11 @@ public class GameServer {
         Network.ServerEcho transmission = new Network.ServerEcho();
 
         transmission.update = update;
+        transmission.playerTurnBefore = playerturn;
+        playerturn = nextPlayer(playerturn);
+
         transmission.playerTurn = playerturn;
+        lastTurn = playerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
 //        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
@@ -97,9 +107,10 @@ public class GameServer {
             for(int i=1; i<=players; i++) {
                 clients.get(i - 1).sendTCP(i);
             }
+            gameStarted = true;
         }
         else if(players > max_usercount){
-            connection.sendTCP(-1); //close; Spieleranzahl erreicht
+            connection.sendTCP(-1); //close; Spieleranzahl bereits erreicht
         }
         else{
             clients.add(connection);
@@ -113,5 +124,50 @@ public class GameServer {
 
     public void setPlayerCount(int n){
         this.max_usercount = n;
+    }
+
+    private int nextPlayer(int playerTurn){
+        playerTurn = adjustPlayerTurn(playerTurn+1);
+        if(leavedPlayers.size() != 0 && leavedPlayers.size() <= 3){
+            while(leavedPlayers.contains(playerTurn)){
+                playerTurn = adjustPlayerTurn(playerTurn+1);
+            }
+        }
+        return playerTurn;
+    }
+
+    public void removeClient(Connection connection){
+        Gdx.app.log("Server", "Client disconnected");
+        int clientIndex = -1;
+        for(int i = 0; i < clients.size(); i++){
+            if(!clients.get(i).isConnected()){
+                clientIndex = i;
+                break;
+            }
+        }
+        if(gameStarted && clientIndex != -1){
+            leavedPlayers.add(clientIndex);
+            if(lastTurn == clientIndex+1){
+                sendMessage(null,lastTurn);
+            }
+        }
+        else if(clientIndex != -1){
+            clients.remove(clientIndex);
+            players--;
+            //playerTurn vor dem schicken anpasssen
+
+        }
+        if(players == 0 && gameStarted){
+            stopServer();
+            Gdx.app.log("Server", "All Players left. Server closed");
+        }
+
+    }
+
+    public int adjustPlayerTurn(int playerTurn){
+        if(playerTurn > max_usercount){
+            playerTurn = 1;
+        }
+        return playerTurn;
     }
 }

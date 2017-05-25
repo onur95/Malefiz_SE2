@@ -23,7 +23,7 @@ public class Network {
 
     // Transmission from Server to client
     static public class ServerEcho {
-        int playerTurn;
+        int playerTurn, playerTurnBefore;
         List<BoardUpdate> update;
     }
 
