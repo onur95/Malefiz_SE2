@@ -6,13 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.malefiz.CheatEngine;
-import com.mygdx.malefiz.GNwKryo.GameServer;
-import com.mygdx.malefiz.MyMalefizGame;
 
 /* Serves the purpose to do something Ingame */
 
@@ -84,21 +82,23 @@ public class GameMenu
         return menuButton;
     }
 
-    // NOT TESTED YET.
+    // CodeEntry MUST REMAIN GLOBAL. Otherwise Bugs.
+    TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
     public void cheatMenu(){
         Dialog dialog = new Dialog("Cheat Menu", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
-                    // TODO: Fetch string from dialog.text
-                   // CheatEngine.cheatEngine(code);      // Need to read "code" fromt text
+                    // Fetch String from cheatCodeEntry & call corresponding cheat-method
+                    CheatEngine.cheatEngine(cheatCodeEntry.getText());
                 }
                 if(object.equals(2L)){
                     // Exit to mainmenu
                 }
             }
         };
-            dialog.text("Enter a Cheat here."); // TODO: Needs test whether we can enter stuff here
-        // .. and also put it into result
+
+        // Menu-Composition.
+        dialog.add(cheatCodeEntry);
         dialog.button("Confirm", 1L);
         dialog.button("Back to Game", 2L);
         dialog.show(stage);
