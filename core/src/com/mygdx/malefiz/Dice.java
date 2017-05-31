@@ -60,13 +60,13 @@ public class Dice {
     //wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
     public void shake(){
         if(!shaked && diceAnimation != null) {
-            float force = (float) Math.sqrt((Gdx.input.getAccelerometerX() * Gdx.input.getAccelerometerX()) + (Gdx.input.getAccelerometerY() * Gdx.input.getAccelerometerY()) + (Gdx.input.getAccelerometerZ() * Gdx.input.getAccelerometerZ()));
-
-            if (force > 10) {
+//            float force = (float) Math.sqrt((Gdx.input.getAccelerometerX() * Gdx.input.getAccelerometerX()) + (Gdx.input.getAccelerometerY() * Gdx.input.getAccelerometerY()) + (Gdx.input.getAccelerometerZ() * Gdx.input.getAccelerometerZ()));
+//            System.out.println(force);
+//            if (force > 10) {
                 shaked = true;
                 diceAnimation.render();
                 view.setPlayerFiguresHighlighted(true);
-            }
+//            }
         }
     }
 

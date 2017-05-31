@@ -39,7 +39,7 @@ public class HighlightClickListener extends ClickListener {
         boolean blockIsMoving = view.getKickedIndex() != -1 && board.isField(column, row);
 
         if (!blockIsMoving){
-            handler.add(new BoardUpdate(view.getActorActive(),board.getFieldActive().getColumn(), board.getFieldActive().getRow())); //was wird bewegt
+            handler.add(new BoardUpdate(view.getActorActive()-1,board.getFieldActive().getColumn(), board.getFieldActive().getRow())); //was wird bewegt
             handler.add(new BoardUpdate(actorIndex, column, row)); //wohin wird es bewegt
         }
 

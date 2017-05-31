@@ -1,5 +1,6 @@
 package com.mygdx.malefiz;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -19,12 +20,14 @@ public class UpdateHandler {
     private BoardToPlayboard view;
     private Board board;
     private Dice dice;
+    private int playerCount;
 
-    public UpdateHandler(GameClient client, Dice dice){
+    public UpdateHandler(GameClient client, Dice dice, int playerCount){
         client.setHandler(this);
         this.client = client;
         this.dice = dice;
         update = new ArrayList<BoardUpdate>(3);
+        this.playerCount = playerCount;
     }
 
     public void sendMessage(int playerTurn){
@@ -32,7 +35,7 @@ public class UpdateHandler {
     }
 
     public int getPlayerCount(){
-        return client.getPlayerCount();
+        return playerCount;
     }
 
     public void setBoardAndView(BoardToPlayboard view, Board board){
@@ -45,7 +48,7 @@ public class UpdateHandler {
     }
 
     public void updatePlayboard(List<BoardUpdate> update, int playerTurn){
-        update.clear();
+        this.update.clear();
         Field[][] array =  board.getBoardArray();
         Stage stage = view.getStage();
 
@@ -105,9 +108,9 @@ public class UpdateHandler {
             array[move1.getColumn()][move1.getRow()] = new Field('.');
 
             //View anpassen
+            Gdx.app.log("Client","Player moved: "+move1.getActorIndex());
             Actor actor1 = stage.getActors().get(move1.getActorIndex());
-            Actor actor2 = stage.getActors().get(move2.getActorIndex());
-            Coordinates coordinates2 = new Coordinates(actor2.getX(), actor2.getY());
+            Coordinates coordinates2 = view.setHighlight(move2.getColumn(), move2.getRow(), true);
 
             MoveToAction moveAction1 = new MoveToAction();
             moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
@@ -117,6 +120,13 @@ public class UpdateHandler {
         if(playerTurn == client.getPlayerNumber()){
             dice.setShaked(false);
         }
+
+        Gdx.app.log("Client", "Message handled");
+    }
+
+    public void playerDisconnected(int player){
+        view.setPlayerVisibility(player, false);
+        board.removePlayer(player);
     }
 
 }

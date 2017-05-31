@@ -8,6 +8,11 @@ import java.io.Serializable;
 public class BoardUpdate implements Serializable{
     private int actorIndex, column, row;
 
+    //Wird für die Deserialization benötigt
+    public BoardUpdate(){
+
+    }
+
     public BoardUpdate(int actorIndex, int column, int row) {
         this.actorIndex = actorIndex;
         this.column = column;

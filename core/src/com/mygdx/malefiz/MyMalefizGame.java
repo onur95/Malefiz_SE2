@@ -24,12 +24,12 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private GameClient client;
 
 
-	public MyMalefizGame (final Malefiz mal, GameClient client) {
+	public MyMalefizGame (final Malefiz mal, GameClient client, int playerCount) {
 		this.client = client;
 		this.mal=mal;
-		dice = new Dice(client.getPlayerNumber() == 1); //Spieler 1 fängt an; Würfel wird aktiviert
+		dice = new Dice(client.getPlayerNumber() != 1); //Spieler 1 fängt an; Würfel wird aktiviert
 		Board board = new Board();
-		UpdateHandler handler = new UpdateHandler(client, dice);
+		UpdateHandler handler = new UpdateHandler(client, dice, playerCount);
 		BoardToPlayboard view= new BoardToPlayboard();
 		Player player = new Player(client.getPlayerNumber());
 		InputMultiplexer im = new InputMultiplexer();
@@ -48,7 +48,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 
 		view.init(handler, player, stage, board, dice);
-		view.generate();
 		dice.setView(view);
 		dice.setDiceAnimation();
 

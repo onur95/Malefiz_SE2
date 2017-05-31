@@ -50,6 +50,7 @@ public class BoardToPlayboard {
     private Player player;
     private Board board_main;
     private Dice dice;
+    private List<List<Integer>> players;
 
 
 
@@ -62,6 +63,16 @@ public class BoardToPlayboard {
         moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
     }
 
+    private void init_players(){
+        players = new ArrayList<List<Integer>>();
+        System.out.println(playerCount);
+        for(int i = 0; i<playerCount; i++){
+            List list = new ArrayList<Integer>();
+            list.add(0);
+            players.add(list);
+        }
+    }
+
     public  void init(UpdateHandler handler, Player player, Stage stage, Board board, Dice dice){
         this.player = player;
         this.board_main = board;
@@ -69,6 +80,7 @@ public class BoardToPlayboard {
         this.dice = dice;
         playerCount = handler.getPlayerCount();
         init_sound();
+        init_players();
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
@@ -82,6 +94,8 @@ public class BoardToPlayboard {
         lineOffset = stage.getWidth()*percentOffset;
         float percentPoint = 0.046666667F;
         pointOffset = lineOffset +stage.getWidth()*percentPoint;
+
+        generate();
     }
 
     public void generate(){
@@ -93,12 +107,6 @@ public class BoardToPlayboard {
 
         stage.act();
         stage.draw();
-
-        /**Test-Data**/
-
-        setPlayerFiguresHighlighted(true);
-        playYourTurn();
-        /**Test-Data**/
     }
 
     private float setFirstFields(int column, int row, boolean onlyCalculateAndReturn){
@@ -165,7 +173,7 @@ public class BoardToPlayboard {
     }
 
     private  boolean checkPlayerCount(int column, int row){
-        return !board_main.isPlayer(column, row) || playerCount <= board[column][row].getField_state().ordinal();
+        return !board_main.isPlayer(column, row) || (board[column][row].getField_state().ordinal() <= playerCount && board_main.isPlayer(column, row));
     }
 
     private  void setField(int column, int row){
@@ -276,16 +284,22 @@ public class BoardToPlayboard {
     }
 
     private  void setPlayerHighlight(int column, int row, float offsetX, float offsetY){
-        if(board[column][row].getField_state().ordinal() == player.getNumber()) {
+//        if(board[column][row].getField_state().ordinal() == player.getNumber()) {
+        if(board_main.isPlayer(column, row)) {
             MoveToAction action = new MoveToAction();
             action.setPosition(offsetX, offsetY);
             Image field = new Image(playerHighlight.getDrawable());
             field.addAction(action);
             field.setVisible(false);
-            field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, board_main, this, dice));
+
+            if (board[column][row].getField_state().ordinal() == player.getNumber()) {
+                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, board_main, this, dice));
+                player.addHighlightFigure(stage.getActors().size);
+            }
+            players.get(board[column][row].getField_state().ordinal() - 1).add(stage.getActors().size - 1);
             stage.addActor(field);
-            player.addHighlightFigure(stage.getActors().size-1);
         }
+//        }
     }
 
     private  Image getFieldType(int column, int row){
@@ -376,6 +390,7 @@ public class BoardToPlayboard {
             kickedIndex = -1;
         }
         removeHighlights();
+
         actorActive = -1;
     }
 
@@ -485,6 +500,12 @@ public class BoardToPlayboard {
 
         if(status && kickedIndex == -1 && actorActive == -1){
             handler.sendMessage(player.getNumber());
+        }
+    }
+
+    public void setPlayerVisibility(int player, boolean status){
+        for(int index : players.get(player-1)){
+            stage.getActors().get(index).setVisible(status);
         }
     }
 

@@ -184,21 +184,15 @@ public class Board {
         }
     }
 
-    public  void serverMove(List<BoardUpdate> update){
-        if(update.size() > 2){//dann 2. Element zuerst bewegen
-            BoardUpdate first = update.get(1);
-            BoardUpdate second = update.get(2);
-            //first zu second
-            //last zu first
-
-
-
-
-            BoardUpdate last = update.get(0);
-        }
-        else{
-            BoardUpdate first = update.get(0);
-            BoardUpdate second = update.get(1);
+    public void removePlayer(int player){
+        for(int column = 0; column < boardArray.length; column++) {
+            for(int row = 0; row < boardArray[column].length; row++){
+                if(boardArray[column][row].getField_state().ordinal() == player){
+                    boardArray[column][row] = new Field('.');
+                }
+            }
         }
     }
+
+
 }

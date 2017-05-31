@@ -34,7 +34,7 @@ public class GameServerListener extends Listener {
 
     @Override
     public void disconnected(Connection connection){
-        server.removeClient(connection);
+        server.sendMessage(server.removeClient(connection));
     }
 
 

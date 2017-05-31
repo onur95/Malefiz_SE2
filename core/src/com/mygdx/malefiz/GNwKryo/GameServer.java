@@ -100,20 +100,32 @@ public class GameServer {
 //        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
     }
 
+    public void sendMessage(int player){
+        Network.PlayerDisconnected playerDisconnected = new Network.PlayerDisconnected();
+        playerDisconnected.player = player;
+        server.sendToAllTCP(playerDisconnected);
+    }
+
     public void addClient(Connection connection){
         System.out.println("Client connected");
+        if(players < max_usercount) {
+            clients.add(connection);
+        }
+
         players++;
         if(players == max_usercount){
             for(int i=1; i<=players; i++) {
-                clients.get(i - 1).sendTCP(i);
+                Network.StartClient startClient = new Network.StartClient();
+                startClient.player = i;
+                startClient.playerCount = players;
+                clients.get(i - 1).sendTCP(startClient);
             }
             gameStarted = true;
         }
         else if(players > max_usercount){
-            connection.sendTCP(-1); //close; Spieleranzahl bereits erreicht
-        }
-        else{
-            clients.add(connection);
+            Network.StartClient startClient = new Network.StartClient();
+            startClient.player = -1;
+            connection.sendTCP(startClient); //close; Spieleranzahl bereits erreicht
         }
     }
 
@@ -136,7 +148,7 @@ public class GameServer {
         return playerTurn;
     }
 
-    public void removeClient(Connection connection){
+    public int removeClient(Connection connection){
         Gdx.app.log("Server", "Client disconnected");
         int clientIndex = -1;
         for(int i = 0; i < clients.size(); i++){
@@ -151,7 +163,7 @@ public class GameServer {
                 sendMessage(null,lastTurn);
             }
         }
-        else if(clientIndex != -1){
+        else if(clientIndex != -1){ //Spiel noch nicht gestartet
             clients.remove(clientIndex);
             players--;
             //playerTurn vor dem schicken anpasssen
@@ -161,7 +173,7 @@ public class GameServer {
             stopServer();
             Gdx.app.log("Server", "All Players left. Server closed");
         }
-
+        return clientIndex;
     }
 
     public int adjustPlayerTurn(int playerTurn){

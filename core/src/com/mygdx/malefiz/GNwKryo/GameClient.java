@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GameClient {
-    private int TCP_PORT, UDP_PORT, TIMEOUT, playerCount, player;
+    private int TCP_PORT, UDP_PORT, TIMEOUT, player;
     private Client client;
     private UpdateHandler handler;
     private Malefiz game;
@@ -71,10 +71,6 @@ public class GameClient {
 
         client.sendTCP(transmission);       // ** .. Send it to server
 //        Gdx.app.log("Client","Transmitted Data.");
-    }
-
-    public int getPlayerCount(){
-        return this.playerCount;
     }
 
     public int getPlayerNumber(){

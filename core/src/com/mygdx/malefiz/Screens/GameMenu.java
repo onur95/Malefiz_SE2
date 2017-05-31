@@ -88,8 +88,9 @@ public class GameMenu
         Dialog dialog = new Dialog("Cheat Menu", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
+                    CheatEngine cheatEngine = new CheatEngine();
                     // Fetch String from cheatCodeEntry & call corresponding cheat-method
-                    CheatEngine.cheatEngine(cheatCodeEntry.getText());
+                    cheatEngine.cheatEngine(cheatCodeEntry.getText());
                 }
                 if(object.equals(2L)){
                     // Exit to mainmenu

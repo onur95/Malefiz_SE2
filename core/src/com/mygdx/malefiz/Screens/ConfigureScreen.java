@@ -30,8 +30,6 @@ import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
 
-import org.omg.CORBA.Context;;
-
 public class ConfigureScreen implements Screen {
 
     private SpriteBatch batch;
@@ -105,7 +103,7 @@ public class ConfigureScreen implements Screen {
 
                     client = new GameClient(44775, 44776, 10000, game);
                     try{
-                        client.connect(ip);
+                        client.connect("");
                         Gdx.app.log("Client", "Successfully connected to server.");
                     }catch(Exception e){
                         client.terminate();

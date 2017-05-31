@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.MyMalefizGame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Network {
@@ -13,12 +14,25 @@ public class Network {
         Kryo kryo = endPoint.getKryo();
         kryo.register(ClientMessage.class);
         kryo.register(ServerEcho.class);
+        kryo.register(PlayerDisconnected.class);
+        kryo.register(StartClient.class);
+        kryo.register(ArrayList.class); //sonst Exception beim Senden im Client (ArrayList not registered)
+        kryo.register(BoardUpdate.class); //sonst Exception beim Senden im Client (ArrayList not registered)
+
     }
 
     // Transmission from Client to Server
     static public class ClientMessage {
         int playerTurn;
         List<BoardUpdate> update;
+    }
+
+    static public class PlayerDisconnected {
+        int player;
+    }
+
+    static public class StartClient {
+        int player, playerCount;
     }
 
     // Transmission from Server to client
