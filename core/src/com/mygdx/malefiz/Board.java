@@ -161,7 +161,6 @@ public class Board {
                     int playerNumber = Character.getNumericValue(boardMeta[x].charAt(y));
 
                     if(playerNumber == boardArray[column][row].getField_state().ordinal() && boardArray[x][y].getField_state() == FieldStates.NOFIELD){
-                        System.out.println("hier");
                         newPlayerPosition = new FieldPosition(x,y);
                         boardArray[x][y] = new Field(boardMeta[x].charAt(y));
                     }

@@ -36,18 +36,21 @@ public class HighlightClickListener extends ClickListener {
             view.setKickedIndex(actorIndex, false);
         }
 
+        int kickedIndex = view.getKickedIndex();
+
         boolean blockIsMoving = view.getKickedIndex() != -1 && board.isField(column, row);
 
         if (!blockIsMoving){
             handler.add(new BoardUpdate(view.getActorActive()-1,board.getFieldActive().getColumn(), board.getFieldActive().getRow())); //was wird bewegt
-            handler.add(new BoardUpdate(actorIndex, column, row)); //wohin wird es bewegt
+            handler.add(new BoardUpdate(kickedIndex != -1 ? kickedIndex : actorIndex, column, row)); //wohin wird es bewegt
         }
 
         board.moveTo(this.column, this.row, blockIsMoving);
         view.moveToPosition(this.actorIndex, blockIsMoving, column, row);
         if(isPlayer) {
             FieldPosition coordinates = view.moveKicked();
-            handler.add(new BoardUpdate(view.getKickedIndex(), coordinates.getColumn(), coordinates.getRow())); //Was passiert mit dem Spielkegel, der auf der Position ist, auf die der Kegel fährt
+            //actorIndex ist hier eigentlich egal
+            handler.add(new BoardUpdate(kickedIndex, coordinates.getColumn(), coordinates.getRow())); //Was passiert mit dem Spielkegel, der auf der Position ist, auf die der Kegel fährt
         }
         else if(isBlock){
             view.setActorsCount();

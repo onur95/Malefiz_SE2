@@ -55,40 +55,45 @@ public class UpdateHandler {
 
 
         if(update.size() > 2){
-            BoardUpdate move1 = update.get(1);
-            BoardUpdate move2 = update.get(2);
-            BoardUpdate move3 = update.get(0);
+            BoardUpdate move1 = update.get(0);
+            BoardUpdate move2 = update.get(1);
+            BoardUpdate move3 = update.get(2);
+
 
             boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getField_state().ordinal() == client.getPlayerNumber();
 
             //Board anpassen
+            array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
             array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-            array[move1.getColumn()][move1.getRow()] = array[move3.getColumn()][move3.getRow()];
-            array[move3.getColumn()][move3.getRow()] = new Field('.');
+            array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
 
 
             //View anpassen
-            Actor actor1 = stage.getActors().get(move3.getActorIndex());
+            Actor actor1 = stage.getActors().get(move1.getActorIndex());
             Actor actor2 = stage.getActors().get(move2.getActorIndex());
-            Coordinates coordinates2 = new Coordinates(actor2.getX(), actor2.getY());
-            Coordinates coordinates3 = view.setHighlight(move1.getColumn(), move1.getRow(), true); //Gibt die richtigen X und Y Koordinaten zurück
+            Coordinates coordinates3 = view.setHighlight(move3.getColumn(), move3.getRow(), true); //Gibt die richtigen X und Y Koordinaten zurück
 
-            MoveToAction moveAction1 = new MoveToAction();
+            //move gekicktes Element
+            MoveToAction moveAction1 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
             moveAction1.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
+            moveAction1.setDuration(1F);
             actor2.addAction(moveAction1);
 
-            MoveToAction moveAction2 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
-            moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
+            //move
+            MoveToAction moveAction2 = new MoveToAction();
+            moveAction2.setPosition(actor2.getX(), actor2.getY());
+            moveAction2.setDuration(1F);
             actor1.addAction(moveAction2);
 
             if(ownPlayerKicked) {
-                Actor actorPlayer = stage.getActors().get(move3.getActorIndex()-1); //-1 ist der Kegel, sonst das Highlight des Kegels
+                Actor actorPlayer = stage.getActors().get(move2.getActorIndex()+1); //ist der Kegel, +1 das Highlight des Kegels
                 MoveToAction moveAction3 = new MoveToAction();
-                moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
+                moveAction3.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
+                moveAction3.setDuration(1F);
                 actorPlayer.addAction(moveAction3);
 
-                view.adjustPlayerClickListener(move2.getColumn(), move2.getRow(),move3.getActorIndex());
-                view.adjustPlayerClickListener(move2.getColumn(), move2.getRow(),move3.getActorIndex()-1);
+                view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex());
+                view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex()+1);
             }
 
 

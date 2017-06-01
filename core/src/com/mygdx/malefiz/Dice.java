@@ -64,6 +64,7 @@ public class Dice {
 //            System.out.println(force);
 //            if (force > 10) {
                 shaked = true;
+                diceAnimation.create(getResult(randomNumber()));
                 diceAnimation.render();
                 view.setPlayerFiguresHighlighted(true);
 //            }
