@@ -68,4 +68,8 @@ public class DiceAnimation  {
         spriteBatch.dispose();
         diceSheet.dispose();
     }
+
+    public boolean renderFinished(){
+        return diceAnimation.isAnimationFinished(time);
+    }
 }

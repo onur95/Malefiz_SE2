@@ -14,6 +14,8 @@ public class Dice {
     private boolean shaked;
     private BoardToPlayboard view;
     private DiceAnimation diceAnimation;
+    private boolean renderRunning = false;
+    private boolean playerSet = false;
 
     //static Malefiz game;
 
@@ -58,16 +60,24 @@ public class Dice {
     public  int getResultNumber() {return result;}
 
     //wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
-    public void shake(){
-        if(!shaked && diceAnimation != null) {
+    public void shake(float force){
+        if(!shaked && diceAnimation != null && force > 11.0) {
 //            float force = (float) Math.sqrt((Gdx.input.getAccelerometerX() * Gdx.input.getAccelerometerX()) + (Gdx.input.getAccelerometerY() * Gdx.input.getAccelerometerY()) + (Gdx.input.getAccelerometerZ() * Gdx.input.getAccelerometerZ()));
 //            System.out.println(force);
 //            if (force > 10) {
                 shaked = true;
                 diceAnimation.create(getResult(randomNumber()));
                 diceAnimation.render();
-                view.setPlayerFiguresHighlighted(true);
+                renderRunning = true;
 //            }
+        }
+        else if(renderRunning){
+            diceAnimation.render();
+
+            if(diceAnimation.renderFinished() && !playerSet){
+                view.setPlayerFiguresHighlighted(true);
+                playerSet = true;
+            }
         }
     }
 
@@ -83,6 +93,14 @@ public class Dice {
         DiceAnimation diceAnimation = new DiceAnimation();
         diceAnimation.create(getResult(randomNumber()));
         this.diceAnimation = diceAnimation;
+    }
+
+    public void setRenderRunning(boolean renderRunning){
+        this.renderRunning = renderRunning;
+    }
+
+    public void setPlayerSet (boolean playerSet){
+        this.playerSet = playerSet;
     }
 
 

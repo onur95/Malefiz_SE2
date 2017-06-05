@@ -31,6 +31,8 @@ public class UpdateHandler {
     }
 
     public void sendMessage(int playerTurn){
+        dice.setRenderRunning(false);
+        dice.setPlayerSet(false);
         client.sendData(update,playerTurn);
     }
 
@@ -48,6 +50,10 @@ public class UpdateHandler {
     }
 
     public void updatePlayboard(List<BoardUpdate> update, int playerTurn){
+        if(update == null){
+            Gdx.app.log("Client", "Error: update == null");
+            return;
+        }
         this.update.clear();
         Field[][] array =  board.getBoardArray();
         Stage stage = view.getStage();
