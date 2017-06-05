@@ -79,7 +79,13 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		stage.act();
 		stage.draw();
 		//BoardToPlayboard.generate();
-		dice.shake();
+		float xGrav=Gdx.input.getAccelerometerX();
+		float yGrav=Gdx.input.getAccelerometerY();
+		float zGrav=Gdx.input.getAccelerometerZ();
+		//gForce will be close to 10 when there is no movement.
+		float gForce=(float)Math.sqrt((xGrav*xGrav)+(yGrav*yGrav)+(zGrav*zGrav));
+		if(gForce>11.0)
+			dice.shake();
 	}
 
 	@Override

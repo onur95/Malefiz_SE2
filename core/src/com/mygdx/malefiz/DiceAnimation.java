@@ -44,7 +44,7 @@ public class DiceAnimation  {
             }
         }
 
-        diceAnimation = new Animation<TextureRegion>(0.2f, walkFrames);
+        diceAnimation = new Animation<TextureRegion>(0.1f, walkFrames);
         spriteBatch = new SpriteBatch();
         time = 0f;
     }
