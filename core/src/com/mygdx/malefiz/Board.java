@@ -125,7 +125,7 @@ public class Board {
         dice--;
         if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
-                view.setHighlight(column,row, false);
+                view.setHighlight(column,row);
             }
             else{
                 higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore);
@@ -177,7 +177,7 @@ public class Board {
         for(int x = 0; x < boardArray.length; x++) {
             for (int y = 0; y < boardArray[x].length; y++) {
                 if(boardArray[x][y].getField_state() == FieldStates.FIELD){
-                    view.setHighlight(x,y, false);
+                    view.setHighlight(x,y);
                 }
             }
         }

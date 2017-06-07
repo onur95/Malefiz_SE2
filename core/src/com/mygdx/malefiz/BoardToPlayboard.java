@@ -24,7 +24,6 @@ import java.util.List;
 
 public class BoardToPlayboard {
     private Field[][] board;
-    private final float xOffset = 0.02133333333333F; //in Prozent vom Spielfeld
     private Image player1;
     private Image player2;
     private Image player3;
@@ -44,14 +43,13 @@ public class BoardToPlayboard {
     private Sound moveFigure;
     private int actorsCount = -1;
     private int kickedIndex = -1;
-    private int activePlayer = 1;
     private int playerCount;
     private UpdateHandler handler;
     private Player player;
     private Board board_main;
     private Dice dice;
     private List<List<Integer>> players;
-
+    private CoordinateCalculation helper;
 
 
     private  void init_sound(){
@@ -65,7 +63,6 @@ public class BoardToPlayboard {
 
     private void init_players(){
         players = new ArrayList<List<Integer>>();
-        System.out.println(playerCount);
         for(int i = 0; i<playerCount; i++){
             List list = new ArrayList<Integer>();
             list.add(0);
@@ -90,18 +87,15 @@ public class BoardToPlayboard {
         block=new Image(new Texture("Block.png"));
         this.board = board_main.getBoardArray();
         this.stage = stage;
-        float percentOffset =0.009333333F;
-        lineOffset = stage.getWidth()*percentOffset;
-        float percentPoint = 0.046666667F;
-        pointOffset = lineOffset +stage.getWidth()*percentPoint;
-
+        helper = new CoordinateCalculation(stage);
         generate();
     }
 
     public void generate(){
         for(int column = 0; column < board.length; column++) {
-            for (int i = 0; i < board[column].length; i++) {
-                setField(column,i);
+            for (int row = 0; row < board[column].length; row++) {
+                Coordinates coordinates = helper.getCoordinatesOfField(column, row);
+                adjustView(coordinates, column, row);
             }
         }
 
@@ -109,179 +103,41 @@ public class BoardToPlayboard {
         stage.draw();
     }
 
-    private float setFirstFields(int column, int row, boolean onlyCalculateAndReturn){
-        float yOffset, tempXOffset1, tempXOffset2;
-        int status = -1; //0--> erste Zeile; 1--> zweite Zeile; -1 --> keine von beiden
-        if(column == 0){
-            yOffset = (float) (stage.getHeight()*0.015);
-            tempXOffset1 = (float) (stage.getWidth() * 0.105);
-            tempXOffset2 = (float) (stage.getWidth() * 0.187);
+    private void adjustView(Coordinates coordinates, int column, int row){
+        Image field = getFieldType(column, row);
+
+        if (field != null && checkPlayerCount(column, row)) {
+            MoveToAction action = new MoveToAction();
+            action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
+
+            field.addAction(action);
+            stage.addActor(field);
+            setPlayerHighlight(column, row, coordinates.getxOffset(), coordinates.getyOffset());
         }
-        else{
-            yOffset = (float) (stage.getHeight()*0.096);
-            tempXOffset1 = (float) (stage.getWidth() * 0.078);
-            tempXOffset2 = (float) (stage.getWidth() * 0.212);
-        }
-
-        float result = getResultFirstRowsOdd(row);
-
-        if(result > -1){
-            status = 0;
-        }
-
-        tempXOffset1 += (float) (stage.getWidth() * 0.223)*result;
-
-        result = getResultFirstRowsEven(row);
-
-        if(result > -1){
-            status = 1;
-        }
-        tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
-        if(status > -1) {
-            Image field = getFieldType(column, row);
-
-            if (field != null) {
-                MoveToAction action = new MoveToAction();
-                if (status == 0) {
-                    if(!onlyCalculateAndReturn && checkPlayerCount(column, row)) {
-                        action.setPosition(tempXOffset1, yOffset);
-                        field.addAction(action);
-                        stage.addActor(field);
-
-                        setPlayerHighlight(column, row, tempXOffset1, yOffset);
-                    }
-                    else{
-                        //Return wird nur für das Highlight gebraucht
-                        return tempXOffset1;
-                    }
-                } else { //status == 1
-                    if(!onlyCalculateAndReturn && checkPlayerCount(column, row)) {
-                        action.setPosition(tempXOffset2, yOffset);
-                        field.addAction(action);
-                        stage.addActor(field);
-
-                        setPlayerHighlight(column, row, tempXOffset2, yOffset);
-                    }
-                    else{
-                        //Return wird nur für das Highlight gebraucht
-                        return tempXOffset2;
-                    }
-                }
-            }
-        }
-        return -1;
     }
 
+
+    /**
+     * Es werden nur die Spieler generiert, die auch benötigt werden. Also bei zwei Spielern, wird Spieler 3 und 4 nicht generiert
+     * @param column
+     * @param row
+     * @return
+     */
     private  boolean checkPlayerCount(int column, int row){
         return !board_main.isPlayer(column, row) || (board[column][row].getField_state().ordinal() <= playerCount && board_main.isPlayer(column, row));
     }
 
-    private  void setField(int column, int row){
-        Image field;
-        //Falls die ersten zwei Reihen: anders generieren
-        if(column<2){
-            setFirstFields(column, row, false);
-            return;
-        }
-        //sonst normal
 
-        float tempXOffset = getOffsetXNormal(row);
-        float yOffset = getOffsetYNormal(column);
-
-        field = getFieldType(column, row);
-
-        if (field != null && checkPlayerCount(column, row)) {
-            MoveToAction action = new MoveToAction();
-            action.setPosition(tempXOffset, yOffset);
-
-            field.addAction(action);
-            stage.addActor(field);
-            setPlayerHighlight(column, row, tempXOffset, yOffset);
-        }
-    }
-
-    private  int getResultFirstRowsEven(int row){
-        int result;
-        switch (row){
-            case 3:
-                result = 0;
-                break;
-
-            case 7:
-                result = 1;
-                break;
-
-            case 11:
-                result = 2;
-                break;
-
-            case 15:
-                result = 3;
-                break;
-
-            default:
-                result = -1;
-                break;
-        }
-        return result;
-    }
-
-    private  int getResultFirstRowsOdd(int row){
-        int result;
-        switch (row){
-            case 1:
-                result = 0;
-                break;
-
-            case 5:
-                result = 1;
-                break;
-
-            case 9:
-                result = 2;
-                break;
-
-            case 13:
-                result = 3;
-                break;
-
-            default:
-                result = -1;
-        }
-        return result;
-    }
-
-    private  void setHighlight(int column, int row, float offsetX, float offsetY){
+    public void setHighlight(int column, int row){
+        Coordinates coordinates = helper.getCoordinatesOfField(column, row);
         MoveToAction action = new MoveToAction();
-        action.setPosition(offsetX, offsetY);
+        action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
         Image field = new Image(highlight.getDrawable());
         field.addAction(action);
         field.addListener(new HighlightClickListener(column, row, stage.getActors().size, board_main, this, handler));
         stage.addActor(field);
     }
 
-    public  Coordinates setHighlight(int column, int row, boolean returnCoordinates){
-        float yOffset;
-        float tempXOffset = setFirstFields(column, row, true);
-        Coordinates coordinates = new Coordinates();
-        if(column == 0){
-            yOffset = (float) (stage.getHeight()*0.015);
-        }
-        else if(column == 1){
-            yOffset = (float) (stage.getHeight()*0.096);
-        }
-        else{
-            tempXOffset = getOffsetXNormal(row);
-            yOffset = getOffsetYNormal(column);
-        }
-        if(returnCoordinates){
-            coordinates = new Coordinates(tempXOffset, yOffset);
-        }
-        else {
-            setHighlight(column, row, tempXOffset, yOffset);
-        }
-        return coordinates;
-    }
 
     private  void setPlayerHighlight(int column, int row, float offsetX, float offsetY){
 //        if(board[column][row].getField_state().ordinal() == player.getNumber()) {
@@ -347,18 +203,11 @@ public class BoardToPlayboard {
         for (int index : player.getHighlightedFiguresIndizes()) {
             setPlayerFigureHighlighted(index, status);
         }
+        playYourTurn();
     }
 
     public  void setPlayerFigureHighlighted(int index, boolean status){
         stage.getActors().get(index).setVisible(status);
-    }
-
-    private  float getOffsetXNormal(float row){
-        return (stage.getWidth() * xOffset + lineOffset)+(row)*pointOffset;
-    }
-
-    private  float getOffsetYNormal(float column){
-        return ((float) (0.143 * stage.getHeight()))+(column-2)*pointOffset;
     }
 
     public   void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
@@ -424,17 +273,12 @@ public class BoardToPlayboard {
 
     public  void playYourTurn(){
         yourTurn.play();
-
     }
 
     public  void setActorsCount(){
         if(actorsCount == -1) {
             actorsCount = stage.getActors().size;
         }
-    }
-
-    public  int getActorsCount(){
-        return actorsCount;
     }
 
     public  void setKickedIndex(int index, boolean isVisible){
@@ -452,30 +296,20 @@ public class BoardToPlayboard {
     }
 
     public  FieldPosition moveKicked(){
-        FieldPosition coordinates = null;
+        FieldPosition fieldPosition = null;
         if(kickedIndex != -1){
             int column = board_main.getNewPlayerPosition().getColumn();
             int row = board_main.getNewPlayerPosition().getRow();
-            coordinates = new FieldPosition(column, row);
-            float yOffset;
-            float tempXOffset = setFirstFields(column, row, true);
-            if(column == 0){
-                yOffset = (float) (stage.getHeight()*0.015);
-            }
-            else if(column == 1){
-                yOffset = (float) (stage.getHeight()*0.096);
-            }
-            else{
-                tempXOffset = getOffsetXNormal(row);
-                yOffset = getOffsetYNormal(column);
-            }
+            fieldPosition = new FieldPosition(column, row);
+            Coordinates coordinates = helper.getCoordinatesOfField(column, row);
+
             MoveToAction action = new MoveToAction();
-            action.setPosition(tempXOffset,yOffset);
+            action.setPosition(coordinates.getxOffset(),coordinates.getyOffset());
             action.setDuration(1F);
             stage.getActors().get(kickedIndex).addAction(action);
             kickedIndex = -1;
         }
-        return coordinates;
+        return fieldPosition;
     }
 
     public void setKickedVisibility(){
@@ -507,6 +341,10 @@ public class BoardToPlayboard {
         for(int index : players.get(player-1)){
             stage.getActors().get(index).setVisible(status);
         }
+    }
+
+    public CoordinateCalculation getHelper(){
+        return this.helper;
     }
 
     public Stage getStage(){

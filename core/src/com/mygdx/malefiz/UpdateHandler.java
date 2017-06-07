@@ -77,7 +77,7 @@ public class UpdateHandler {
             //View anpassen
             Actor actor1 = stage.getActors().get(move1.getActorIndex());
             Actor actor2 = stage.getActors().get(move2.getActorIndex());
-            Coordinates coordinates3 = view.setHighlight(move3.getColumn(), move3.getRow(), true); //Gibt die richtigen X und Y Koordinaten zurück
+            Coordinates coordinates3 = view.getHelper().getCoordinatesOfField(move3.getColumn(), move3.getRow()); //Gibt die richtigen X und Y Koordinaten zurück
 
             //move gekicktes Element
             MoveToAction moveAction1 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
@@ -116,12 +116,12 @@ public class UpdateHandler {
 
             //Board anpassen
             array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-            array[move1.getColumn()][move1.getRow()] = new Field('.');
+            array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
 
             //View anpassen
             Gdx.app.log("Client","Player moved: "+move1.getActorIndex());
             Actor actor1 = stage.getActors().get(move1.getActorIndex());
-            Coordinates coordinates2 = view.setHighlight(move2.getColumn(), move2.getRow(), true);
+            Coordinates coordinates2 = view.getHelper().getCoordinatesOfField(move2.getColumn(), move2.getRow());
 
             MoveToAction moveAction1 = new MoveToAction();
             moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());

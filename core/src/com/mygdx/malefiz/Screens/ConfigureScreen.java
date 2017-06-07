@@ -35,7 +35,7 @@ public class ConfigureScreen implements Screen {
     private SpriteBatch batch;
     private Stage stage;
     private TextureAtlas atlas;
-    protected Skin skin;
+    private Skin skin;
     private OrthographicCamera camera;
     private Viewport viewport;
     private Image img_background_menu;
@@ -186,14 +186,14 @@ public class ConfigureScreen implements Screen {
 
     @Override
     public void dispose() {
-        skin.dispose();
-        atlas.dispose();
-        stage.dispose();
         if(server != null){
             server.stopServer();
         }
         if(client != null){
             client.terminate();
         }
+        skin.dispose();
+        atlas.dispose();
+        stage.dispose();
     }
 }
