@@ -103,6 +103,12 @@ public class BoardToPlayboard {
         stage.draw();
     }
 
+    /**
+     * Generierung eines Feldes auf/in der Stage
+     * @param coordinates Koordinaten, wo sich dieses Feld auf/in der Stage befindet
+     * @param column Column und row geben an, wo sich dieses Feld im boardArray befindet
+     * @param row
+     */
     private void adjustView(Coordinates coordinates, int column, int row){
         Image field = getFieldType(column, row);
 
@@ -112,7 +118,7 @@ public class BoardToPlayboard {
 
             field.addAction(action);
             stage.addActor(field);
-            setPlayerHighlight(column, row, coordinates.getxOffset(), coordinates.getyOffset());
+            setPlayerHighlight(column, row, coordinates);
         }
     }
 
@@ -128,6 +134,11 @@ public class BoardToPlayboard {
     }
 
 
+    /**
+     * Setzen eines Highlights, auf dessen Position ein Kegel oder ein Block gesetzt werden kann
+     * @param column Column und Row geben an, wo sich dieses befindet
+     * @param row
+     */
     public void setHighlight(int column, int row){
         Coordinates coordinates = helper.getCoordinatesOfField(column, row);
         MoveToAction action = new MoveToAction();
@@ -139,11 +150,16 @@ public class BoardToPlayboard {
     }
 
 
-    private  void setPlayerHighlight(int column, int row, float offsetX, float offsetY){
-//        if(board[column][row].getField_state().ordinal() == player.getNumber()) {
+    /**
+     * Setzen der Highlights aller Spieler (gebraucht werden zwar nur die Highlights der eigenen Kegel, aber um unterschiedliche Indizes in stage.getActors() zu verhindern, werden für alle Spieler Highlights generiert)
+     * @param column Column und row geben an, was für ein Feld überprüft werden soll, ob es ein Player ist
+     * @param row
+     * @param coordinates Die Koordinaten geben an, wo das Highlight generiert werden soll (Hier die Koordinaten des jeweiligen Kegels)
+     */
+    private  void setPlayerHighlight(int column, int row, Coordinates coordinates){
         if(board_main.isPlayer(column, row)) {
             MoveToAction action = new MoveToAction();
-            action.setPosition(offsetX, offsetY);
+            action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
             Image field = new Image(playerHighlight.getDrawable());
             field.addAction(action);
             field.setVisible(false);
@@ -155,9 +171,14 @@ public class BoardToPlayboard {
             players.get(board[column][row].getField_state().ordinal() - 1).add(stage.getActors().size - 1);
             stage.addActor(field);
         }
-//        }
     }
 
+    /**
+     * Bestimmen des Feldes, das generiert werden soll
+     * @param column Column und row bestimmen ein Feld im zweidimensionalen Array (boardArray). Zurückgegeben wird die Klasse Field, anhand der man bestimmen kann, was generiert wird (Player, Block, etc.)
+     * @param row
+     * @return Das Feld wird als Image zurückgegeben
+     */
     private  Image getFieldType(int column, int row){
         Image field = null;
         switch (board[column][row].getField_state()) {
@@ -199,17 +220,36 @@ public class BoardToPlayboard {
         return field;
     }
 
+    /**
+     * Anzeigen aller Highlights eines Spielers
+     * @param status Wert, ob Highlight angezeigt oder versteckt wird
+     */
     public  void setPlayerFiguresHighlighted(boolean status){
         for (int index : player.getHighlightedFiguresIndizes()) {
             setPlayerFigureHighlighted(index, status);
         }
-        playYourTurn();
+        if(status) {//"Du bist dran"-Sound soll nur abgespielt werden, wenn alle Highlights durch den Dice angezeigt werden
+            playYourTurn();
+        }
     }
 
+
+    /**
+     * Anzeigen des Highlights eines Kegels
+     * @param index ActorIndex des Highlightes eines Spielers
+     * @param status Wert, ob das Highlight nun angezeigt oder versteckt wird
+     */
     public  void setPlayerFigureHighlighted(int index, boolean status){
         stage.getActors().get(index).setVisible(status);
     }
 
+    /**
+     * Hier wird die View and den getätigten Move angepasst
+     * @param actorIndex Index des Actors bzw. Highlights zu dem gegangen wird. Bewegt wird normalerweise der Actor mit dem Index, der in actorActive steht (bzw. actorActive-1, wegen Highlight UND Spieler)
+     * @param blockIsMoving Falls ein Block bewegt wird (==true) dann wird der Actor mit dem Index kickedIndex zum Actor mit dem Index actorIndex bewegt
+     * @param column Column und row wird gebraucht, damit man die Werte im PlayerClickListener (column, row) aktualisiert werden. (Player1 ist jetzt auf einem anderen Feld; column und row wird dementsprechend angepasst)
+     * @param row
+     */
     public   void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
         if(actorActive != -1 && !blockIsMoving) {
             moveFigure.play();
@@ -223,15 +263,6 @@ public class BoardToPlayboard {
 
             adjustPlayerClickListener(column, row, actorActive);
             adjustPlayerClickListener(column, row, actorActive-1);
-
-
-
-
-            //Hier alle gehighlighteten Positionen löschen
-            //Wenn nach der Berechnung der Route die Highlights angezeigt werden, Size von
-            //stage.getActors() speichern!!
-            //danach kann man alle leicht wieder löschen (alle nach index (size-1)
-            //stage.getActors().get(actorIndex).remove();
         }
         else if(blockIsMoving){
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
@@ -252,6 +283,14 @@ public class BoardToPlayboard {
         }
     }
 
+    /**
+     * Die Highlights bzw. berechneten Positionen, die gesetzt werden, wenn man den Zug mit dem ausgewählten Kegel tätigen will, werden hier wieder alle gelöscht
+     * Das Löschen orientiert sich nach dem gespeicherten Wert in actorsCount. actorsCount beinhaltet die Anzahl der Actoren, bevor die Highlights gesetzt wurden
+     * also stage.getActors() <=> List<Actor>
+     * und davon die Länge bzw. Anzahl: stage.getActors().size()
+     * nun werden alle Actoren über dieser Größe gelöscht
+     * die Highlights werden nacheinander gelöscht, bis die Anzahl der Actoren wieder passt
+     */
     public  void removeHighlights(){
         while(stage.getActors().size>actorsCount && actorsCount != -1){
             stage.getActors().get(actorsCount).remove();
@@ -259,6 +298,12 @@ public class BoardToPlayboard {
         actorsCount = -1;
     }
 
+    /**
+     * Bewegung zum Feld wird vorbereitet
+     * @param actorIndex Die Bewegung geht vom Startpunkt (Player1, etc.) aus zu den Koordinaten von dem Highlight, auf das geklickt wurde. Anhand des ActorIndexes des Highlights bekommt man den Actor mit den Koordinaten
+     * @param duration Dauer der Bewegung vom Start bis zum Endpunkt
+     * @return Zurückgeben der vorbereiteten MoveToAction
+     */
     private  MoveToAction getMoveToAction(int actorIndex, float duration){
         MoveToAction action = new MoveToAction();
         action.setPosition(stage.getActors().get(actorIndex).getX(), stage.getActors().get(actorIndex).getY());
@@ -266,8 +311,11 @@ public class BoardToPlayboard {
         return action;
     }
 
+    /**
+     *
+     * @param index Index des Actors in stage.getActors() der sich in Zukunft bewegen wird. Zum Beispiel wenn auf den eigenen Kegel geklickt wurde, um ihn auf ein gehighlightetes Feld zu bewegen
+     */
     public  void setActorActive(int index){
-        //Actor Active ist der Index der gerade ausgewählten Figur
         actorActive = index;
     }
 
@@ -281,6 +329,11 @@ public class BoardToPlayboard {
         }
     }
 
+    /**
+     * Setzen ActorIndexes des Blockes/Spielers, der gekickt wurde
+     * @param index ActorIndex des Highlightes. Um die Figur darunter (Block oder Player) zu ermitteln, holt man dessen Koordinaten und vergleicht sie mit den Actoren in stage.getActors()
+     * @param isVisible Falls ein Block gekickt wurde, wird er, bis er erneut platziert wird auf visible false gesetzt
+     */
     public  void setKickedIndex(int index, boolean isVisible){
         float x = stage.getActors().get(index).getX();
         float y = stage.getActors().get(index).getY();
@@ -295,6 +348,10 @@ public class BoardToPlayboard {
         stage.getActors().get(kickedIndex).setVisible(isVisible);
     }
 
+    /**
+     * Player wird gekickt und somit wieder in seinen Startbereich gesetzt. Die column und row, wo dieser Startbereich liegt, wurden zuvor in der Funktion movePlayerToStart von Board gesetzt
+     * @return Die Koordinaten des Startbereiches, in dem der Kegel nun platziert wurde, werden zurückgegeben
+     */
     public  FieldPosition moveKicked(){
         FieldPosition fieldPosition = null;
         if(kickedIndex != -1){
@@ -312,6 +369,9 @@ public class BoardToPlayboard {
         return fieldPosition;
     }
 
+    /**
+     * Der Block, der neu positioniert wird, wird nach seiner Bewegung, zu den entsprechenden Koordinaten, wieder auf visible true gesetzt
+     */
     public void setKickedVisibility(){
         stage.getActors().get(kickedIndex).setVisible(true);
     }
@@ -324,6 +384,9 @@ public class BoardToPlayboard {
         return actorActive;
     }
 
+    /**
+     * Überprüft, ob der Spieler mit seinem Zug fertig ist und sendet falls dies zutrifft das Update an den Server .
+     */
     public  void checkFinished(){
         boolean status = true;
         for (int index : player.getHighlightedFiguresIndizes()) {
@@ -337,6 +400,11 @@ public class BoardToPlayboard {
         }
     }
 
+    /**
+     * Seten der Sichtbarkeit alles Spieler (nötig, falls ein Spieler während des Spiels aufhört)
+     * @param player PlayerNummer, welcher Spieler aufgehört hat
+     * @param status Status, ob dieser Spieler anzegeigt oder versteckt wird
+     */
     public void setPlayerVisibility(int player, boolean status){
         for(int index : players.get(player-1)){
             stage.getActors().get(index).setVisible(status);
