@@ -1,7 +1,6 @@
 package com.mygdx.malefiz;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Created by kstri on 07.06.2017.
@@ -9,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class CoordinateCalculation {
     private Stage stage;
-    private float lineOffset, pointOffset;
+    private float lineOffset;
+    private float pointOffset;
 
     public CoordinateCalculation(Stage stage){
         float percentOffset = 0.009333333F;
@@ -33,7 +33,10 @@ public class CoordinateCalculation {
     }
 
     private Coordinates setFirstFields(int column, int row){
-        float yOffset, tempXOffset1, tempXOffset2;
+        float yOffset;
+        float tempXOffset1;
+        float tempXOffset2;
+
         if(column == 0){
             yOffset = (float) (stage.getHeight()*0.015);
             tempXOffset1 = (float) (stage.getWidth() * 0.105);
@@ -50,55 +53,21 @@ public class CoordinateCalculation {
 
     private  float getXOffsetOfFirstRows(float offsetOdd, float offsetEven,int row){
         int result;
-        float resultXOffset = 0;
-        boolean rowsOdd = false;
-        switch (row){
-            //Odd
-            case 1:
-                result = 0;
-                rowsOdd = true;
-                break;
+        float offset;
+        float resultXOffset;
+        boolean rowsOdd = (row-1) %4 == 0;
 
-            case 5:
-                result = 1;
-                rowsOdd = true;
-                break;
-
-            case 9:
-                result = 2;
-                rowsOdd = true;
-                break;
-
-            case 13:
-                result = 3;
-                rowsOdd = true;
-                break;
-
-            //even
-            case 3:
-                result = 0;
-                break;
-
-            case 7:
-                result = 1;
-                break;
-
-            case 11:
-                result = 2;
-                break;
-
-            case 15:
-                result = 3;
-                break;
-
-            default:
-                result = -1;
-                break;
+        if(rowsOdd){
+            result = (row-1)/4;
+            offset = offsetOdd;
         }
-        if(result != -1){
-            float offset = rowsOdd ? offsetOdd : offsetEven;
-            resultXOffset = offset + (float) (stage.getWidth() * 0.223)*result;
+        else{
+            result = (row-3)/4;
+            offset = offsetEven;
         }
+
+        resultXOffset = offset + (float) (stage.getWidth() * 0.223)*result;
+
         return resultXOffset;
     }
 

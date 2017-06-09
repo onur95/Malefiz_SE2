@@ -13,7 +13,7 @@ public class Board {
     private  Player player;
     private  BoardToPlayboard view;
     private  Field[][] boardArray; //Das aktuelle Spielfeld
-    private  final String[] meta =   //Das Grundgerüst des Spielfeldes
+    private static final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
                     "ooooooooBoooooooo",
                     "o...............o",
@@ -91,13 +91,10 @@ public class Board {
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
                 char field = boardMeta[2].charAt(k);
-                if(field != '.'){
-                    int playerNumber = Character.getNumericValue(field);
-                    if(playerNumber==player.getNumber()){
-                        fieldTemp.setColumn(2);
-                        fieldTemp.setRow(k);
-                        break;
-                    }
+                if(Character.isDigit(field) && Character.getNumericValue(field) == player.getNumber()){
+                    fieldTemp.setColumn(2);
+                    fieldTemp.setRow(k);
+                    break;
                 }
             }
         }
@@ -115,14 +112,14 @@ public class Board {
     private  boolean checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
         boolean status = false;
         if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
-            FieldStates state = boardArray[column][row].getField_state();
+            FieldStates state = boardArray[column][row].getFieldState();
             status = checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
         }
         return status;
     }
 
-    private  boolean checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore, boolean addHighlight){
-        dice--;
+    private  boolean checkDiceField(FieldStates myState, int column, int row, int diceBefore, FieldPosition positionBefore, boolean addHighlight){
+        int dice = diceBefore - 1;
         boolean status = false;
         boolean secondStatus = false;
         if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
@@ -141,19 +138,19 @@ public class Board {
     }
 
     public  boolean isPlayer(int ordinal){
-        return (ordinal >= 1 && ordinal <= 4);
+        return ordinal >= 1 && ordinal <= 4;
     }
 
     public  boolean isPlayer(int column, int row){
-        return isPlayer(boardArray[column][row].getField_state().ordinal());
+        return isPlayer(boardArray[column][row].getFieldState().ordinal());
     }
 
     public  boolean isBlock(int column, int row){
-        return (boardArray[column][row].getField_state() == FieldStates.BLOCK);
+        return boardArray[column][row].getFieldState() == FieldStates.BLOCK;
     }
 
     public  boolean isField(int column, int row){
-        return (boardArray[column][row].getField_state() == FieldStates.FIELD);
+        return boardArray[column][row].getFieldState() == FieldStates.FIELD;
     }
 
     public  FieldPosition getFieldActive(){
@@ -164,13 +161,9 @@ public class Board {
 
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < boardArray[x].length; y++){
-                if(boardMeta[x].charAt(y) != '.'){
-                    int playerNumber = Character.getNumericValue(boardMeta[x].charAt(y));
-
-                    if(playerNumber == boardArray[column][row].getField_state().ordinal() && boardArray[x][y].getField_state() == FieldStates.NOFIELD){
-                        newPlayerPosition = new FieldPosition(x,y);
-                        boardArray[x][y] = new Field(boardMeta[x].charAt(y));
-                    }
+                if(Character.isDigit(boardMeta[x].charAt(y)) && Character.getNumericValue(boardMeta[x].charAt(y)) == boardArray[column][row].getFieldState().ordinal() && boardArray[x][y].getFieldState() == FieldStates.NOFIELD){
+                    newPlayerPosition = new FieldPosition(x,y);
+                    boardArray[x][y] = new Field(boardMeta[x].charAt(y));
                 }
             }
         }
@@ -183,7 +176,7 @@ public class Board {
     public  void setAllHighlighted(){
         for(int x = 0; x < boardArray.length; x++) {
             for (int y = 0; y < boardArray[x].length; y++) {
-                if(boardArray[x][y].getField_state() == FieldStates.FIELD){
+                if(boardArray[x][y].getFieldState() == FieldStates.FIELD){
                     view.setHighlight(x,y);
                 }
             }
@@ -193,7 +186,7 @@ public class Board {
     public void removePlayer(int player){
         for(int column = 0; column < boardArray.length; column++) {
             for(int row = 0; row < boardArray[column].length; row++){
-                if(boardArray[column][row].getField_state().ordinal() == player){
+                if(boardArray[column][row].getFieldState().ordinal() == player){
                     boardArray[column][row] = new Field('.');
                 }
             }

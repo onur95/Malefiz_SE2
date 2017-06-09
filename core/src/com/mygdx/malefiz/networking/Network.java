@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.GNwKryo;
+package com.mygdx.malefiz.networking;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Network {
     // Register Datatypes to transmit -- Endpoint = Server or Client
-    static public void registerKryoClasses(EndPoint endPoint) {
+    public static void registerKryoClasses(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(ClientMessage.class);
         kryo.register(ServerEcho.class);
@@ -21,26 +21,25 @@ public class Network {
     }
 
     // Transmission from Client to Server
-    static public class ClientMessage {
+    public static class ClientMessage {
         int playerTurn;
         List<BoardUpdate> update;
     }
 
-    static public class PlayerDisconnected {
+    public static class PlayerDisconnected {
         int player;
     }
 
-    static public class StartClient {
-        int player, playerCount;
+    public static class StartClient {
+        int player;
+        int playerCount;
     }
 
     // Transmission from Server to client
-    static public class ServerEcho {
-        int playerTurn, playerTurnBefore;
+    public static class ServerEcho {
+        int playerTurn;
+        int playerTurnBefore;
         List<BoardUpdate> update;
     }
-
-
-
 
 }

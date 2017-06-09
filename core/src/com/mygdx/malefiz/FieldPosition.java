@@ -5,7 +5,8 @@ package com.mygdx.malefiz;
  */
 
 public class FieldPosition {
-    private int column, row;
+    private int column;
+    private int row;
 
     public FieldPosition(int column, int row){
         this.column = column;

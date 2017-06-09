@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.mygdx.malefiz.GNwKryo.GameClient;
+import com.mygdx.malefiz.networking.GameClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class UpdateHandler {
             BoardUpdate move3 = update.get(2);
 
 
-            boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getField_state().ordinal() == client.getPlayerNumber();
+            boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getFieldState().ordinal() == client.getPlayerNumber();
 
             //Board anpassen
             array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];

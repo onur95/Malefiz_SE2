@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.GNwKryo;
+package com.mygdx.malefiz.networking;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -21,9 +21,9 @@ public class GameServerListener extends Listener {
         LOGGER.log(Level.FINE, "Server: Message received");
         // Received object from connection
 
-        if (object instanceof Network.ClientMessage) {
+        if (object instanceof com.mygdx.malefiz.networking.Network.ClientMessage) {
             // Parse Data to use it.
-            Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
+            com.mygdx.malefiz.networking.Network.ClientMessage clientTransmission = (com.mygdx.malefiz.networking.Network.ClientMessage) object;
             server.sendMessage(clientTransmission.update, clientTransmission.playerTurn);
             //message Senden mit clientTransmission
         }
@@ -36,7 +36,7 @@ public class GameServerListener extends Listener {
 
     @Override
     public void disconnected(Connection connection){
-        server.sendMessage(server.removeClient(connection)+1);
+        server.sendMessage(server.removeClient()+1);
     }
 
 

@@ -15,15 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.GNwKryo.GameClient;
+import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.Screens.GameMenu;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	private Stage stage;
 	private Dice dice;
-	private Texture txt_playground;
-	private Image img_playground;
+	private Texture txtPlayground;
+	private Image imgPlayground;
 	private final Malefiz mal;
 	private GameClient client;
 	private SoundManager soundManager;
@@ -56,10 +56,10 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		im.addProcessor(gd);
 		im.addProcessor(stage);
 		Gdx.input.setInputProcessor(im);
-		txt_playground = new Texture("Playboard.jpg");
-		img_playground=new Image(txt_playground);
-		stage.addActor(img_playground);
-		camera=((OrthographicCamera)stage.getCamera());
+		txtPlayground = new Texture("Playboard.jpg");
+		imgPlayground=new Image(txtPlayground);
+		stage.addActor(imgPlayground);
+		camera=(OrthographicCamera)stage.getCamera();
 		currentZoom=camera.zoom;
 		board.init(player, view);
 		Label yourTurn=new Label("It's your turn!",skin);
@@ -79,31 +79,18 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		stage.addActor(menu.createExit());
 		stage.addActor(menu.createMenu());
 		stage.addActor(yourTurn);
-//		dice.randomNumber();
-//		pfad=dice.getResult(dice.getResultNumber());
-//		DiceAnimation diceAnimation = new DiceAnimation();
-//		diceAnimation.create(pfad);
-//		dice.setDiceAnimation(diceAnimation);
-
-
-	}
-
-	public Stage getStage(){
-		return this.stage;
 	}
 
 	@Override
 	public void show() {
-
+		//nothing to change yet
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//stage.addActor(img_playground);
 		stage.act();
 		stage.draw();
-		//BoardToPlayboard.generate();
 		float xGrav=Gdx.input.getAccelerometerX();
 		float yGrav=Gdx.input.getAccelerometerY();
 		float zGrav=Gdx.input.getAccelerometerZ();
@@ -120,17 +107,17 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	@Override
 	public void pause() {
-
+		//should be implemented
 	}
 
 	@Override
 	public void resume() {
-
+		//will be implemented
 	}
 
 	@Override
 	public void hide() {
-
+		//not sure if it will be implemented
 	}
 
 	@Override
@@ -195,6 +182,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	@Override
 	public void pinchStop() {
-
+		//don't know if we implement this
 	}
 }

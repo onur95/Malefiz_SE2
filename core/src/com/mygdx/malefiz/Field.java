@@ -16,50 +16,50 @@ import static com.mygdx.malefiz.FieldStates.PLAYER4;
  */
 
 public class Field {
-    private FieldStates field_state;
+    private FieldStates fieldState;
 
-    public Field(char field_type){
-        init(field_type);
+    public Field(char fieldType){
+        init(fieldType);
     }
 
-    public void init(char field_type){
-        switch (field_type){
+    public void init(char fieldType){
+        switch (fieldType){
             case 'G':
-                this.field_state = GOAL;
+                this.fieldState = GOAL;
                 break;
 
             case 'B':
-                this.field_state = BLOCK;
+                this.fieldState = BLOCK;
                 break;
 
             case 'o':
-                this.field_state = FIELD;
+                this.fieldState = FIELD;
                 break;
 
             case '1':
-                this.field_state = PLAYER1;
+                this.fieldState = PLAYER1;
                 break;
 
             case '2':
-                this.field_state = PLAYER2;
+                this.fieldState = PLAYER2;
                 break;
 
             case '3':
-                this.field_state = PLAYER3;
+                this.fieldState = PLAYER3;
                 break;
 
             case '4':
-                this.field_state = PLAYER4;
+                this.fieldState = PLAYER4;
                 break;
 
-            case '.':
-                this.field_state = NOFIELD;
+            default: // '.' is default
+                this.fieldState = NOFIELD;
                 break;
         }
     }
 
-    public FieldStates getField_state(){
-        return this.field_state;
+    public FieldStates getFieldState(){
+        return this.fieldState;
     }
 
 }

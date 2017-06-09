@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class HighlightClickListener extends ClickListener {
 
-    private int column, row, actorIndex;
+    private int column;
+    private int row;
+    private int actorIndex;
     private BoardToPlayboard view;
     private Board board;
     private UpdateHandler handler;

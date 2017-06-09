@@ -15,8 +15,6 @@ public class Dice {
     private boolean renderRunning = false;
     private boolean playerSet = false;
 
-    //static Malefiz game;
-
     public Dice(boolean shakedStatus){
         this.shaked = shakedStatus;
     }
@@ -31,28 +29,7 @@ public class Dice {
 
     //Pfad für animation je nach augenzahl wird festgelegt
     public String getResult(int result){
-        String res="badlogic.jpg";
-        switch (result) {
-            case 1:
-                res="Dice (1).png";
-                break;
-            case 2:
-                res="Dice (2).png";
-                break;
-            case 3:
-                res="Dice (3).png";
-                break;
-            case 4:
-                res="Dice (4).png";
-                break;
-            case 5:
-                res="Dice (5).png";
-                break;
-            case 6:
-                res="Dice (6).png";
-                break;
-        }
-        return res;
+        return "Dice ("+result+").png";
     }
 
     public  int getResultNumber() {return result;}
@@ -62,7 +39,7 @@ public class Dice {
         if(diceAnimation == null){
             return;
         }
-        
+
         if(!shaked && force > 11.0) {
                 shaked = true;
                 diceAnimation.create(getResult(randomNumber()));
@@ -89,9 +66,9 @@ public class Dice {
     }
 
     public void setDiceAnimation(){
-        DiceAnimation diceAnimation = new DiceAnimation();
-        diceAnimation.create(getResult(randomNumber()));
-        this.diceAnimation = diceAnimation;
+        DiceAnimation animation = new DiceAnimation();
+        animation.create(getResult(randomNumber()));
+        this.diceAnimation = animation;
     }
 
     public void setRenderRunning(boolean renderRunning){

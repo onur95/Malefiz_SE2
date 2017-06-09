@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.GNwKryo;
+package com.mygdx.malefiz.networking;
 
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.malefiz.BoardUpdate;
@@ -11,7 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClient {
-    private int TCP_PORT, UDP_PORT, TIMEOUT, player;
+    private int TCPPort;
+    private int UDPPort;
+    private int TIMEOUT;
+    private int player;
     private static final Logger LOGGER = Logger.getLogger( GameClient.class.getName() );
     private Client client;
     private UpdateHandler handler;
@@ -19,20 +22,20 @@ public class GameClient {
     private String serverIp;
 
     public GameClient(int tcp, int udp, int timeout, Malefiz game){
-        this.TCP_PORT = tcp;
-        this.UDP_PORT = udp;
+        this.TCPPort = tcp;
+        this.UDPPort = udp;
         this.TIMEOUT = timeout;
         this.game = game;
 
         client = new Client();
-        Network.registerKryoClasses(client);
+        com.mygdx.malefiz.networking.Network.registerKryoClasses(client);
     }
 
     public void connect(String serverIP){
         try{
             //Starts Client
             client.start();
-            client.connect(TIMEOUT, serverIP, TCP_PORT, UDP_PORT);
+            client.connect(TIMEOUT, serverIP, TCPPort, UDPPort);
 
             client.addListener(new GameClientListener(this));
 
@@ -64,7 +67,7 @@ public class GameClient {
     // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
     // Data sent in transmission <=> Params processed in GameServerListener
     public void sendData(List<BoardUpdate> update, int playerTurn){
-        Network.ClientMessage transmission = new Network.ClientMessage();
+        com.mygdx.malefiz.networking.Network.ClientMessage transmission = new com.mygdx.malefiz.networking.Network.ClientMessage();
         transmission.update = update;
         transmission.playerTurn = playerTurn;
 

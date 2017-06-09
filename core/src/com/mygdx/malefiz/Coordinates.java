@@ -5,7 +5,8 @@ package com.mygdx.malefiz;
  */
 
 public class Coordinates {
-    private float xOffset, yOffset;
+    private float xOffset;
+    private float yOffset;
 
     public Coordinates(float xOffset, float yOffset) {
         this.xOffset = xOffset;

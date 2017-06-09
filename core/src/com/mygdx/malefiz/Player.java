@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Player {
     private int number;
-    private List<Integer> highlightedFiguresIndizes = new ArrayList<Integer>();
-    private List<FieldPosition> figurePositions = new ArrayList<FieldPosition>();
+    private List<Integer> highlightedFiguresIndizes = new ArrayList<>();
+    private List<FieldPosition> figurePositions = new ArrayList<>();
 
     public Player(int number){
         this.number = number;

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  */
 
 public class BoardToPlayboard {
-    private Field[][] board;
     private Image player1;
     private Image player2;
     private Image player3;
@@ -33,7 +32,7 @@ public class BoardToPlayboard {
     private int playerCount;
     private UpdateHandler handler;
     private Player player;
-    private Board board_main;
+    private Board board;
     private Dice dice;
     private List<List<Integer>> players;
     private CoordinateCalculation helper;
@@ -42,10 +41,10 @@ public class BoardToPlayboard {
     private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
 
 
-    private void init_players(){
-        players = new ArrayList<List<Integer>>();
+    private void initPlayers(){
+        players = new ArrayList<>();
         for(int i = 0; i<playerCount; i++){
-            List list = new ArrayList<Integer>();
+            List list = new ArrayList<>(5);
             list.add(0);
             players.add(list);
         }
@@ -53,16 +52,15 @@ public class BoardToPlayboard {
 
     public  void init(UpdateHandler handler, Player player, Stage stage, Board board, Dice dice, SoundManager soundManager){
         this.player = player;
-        this.board_main = board;
+        this.board = board;
         this.handler = handler;
         this.dice = dice;
-        this.board = board_main.getBoardArray();
         this.stage = stage;
         this.soundManager = soundManager;
         playerCount = handler.getPlayerCount();
         helper = new CoordinateCalculation(stage);
-        playerMovesPossible = new ArrayList<Integer>();
-        init_players();
+        playerMovesPossible = new ArrayList<>();
+        initPlayers();
         setImages();
         generate();
     }
@@ -78,8 +76,8 @@ public class BoardToPlayboard {
     }
 
     public void generate(){
-        for(int column = 0; column < board.length; column++) {
-            for (int row = 0; row < board[column].length; row++) {
+        for(int column = 0; column < board.getBoardArray().length; column++) {
+            for (int row = 0; row < board.getBoardArray()[column].length; row++) {
                 Coordinates coordinates = helper.getCoordinatesOfField(column, row);
                 adjustView(coordinates, column, row);
             }
@@ -116,7 +114,7 @@ public class BoardToPlayboard {
      * @return
      */
     private  boolean checkPlayerCount(int column, int row){
-        return !board_main.isPlayer(column, row) || (board[column][row].getField_state().ordinal() <= playerCount && board_main.isPlayer(column, row));
+        return !board.isPlayer(column, row) || (board.getBoardArray()[column][row].getFieldState().ordinal() <= playerCount && board.isPlayer(column, row));
     }
 
 
@@ -131,7 +129,7 @@ public class BoardToPlayboard {
         action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
         Image field = new Image(highlight.getDrawable());
         field.addAction(action);
-        field.addListener(new HighlightClickListener(column, row, stage.getActors().size, board_main, this, handler));
+        field.addListener(new HighlightClickListener(column, row, stage.getActors().size, board, this, handler));
         stage.addActor(field);
     }
 
@@ -143,18 +141,18 @@ public class BoardToPlayboard {
      * @param coordinates Die Koordinaten geben an, wo das Highlight generiert werden soll (Hier die Koordinaten des jeweiligen Kegels)
      */
     private  void setPlayerHighlight(int column, int row, Coordinates coordinates){
-        if(board_main.isPlayer(column, row)) {
+        if(board.isPlayer(column, row)) {
             MoveToAction action = new MoveToAction();
             action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
             Image field = new Image(playerHighlight.getDrawable());
             field.addAction(action);
             field.setVisible(false);
 
-            if (board[column][row].getField_state().ordinal() == player.getNumber()) {
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, board_main, this, dice));
+            if (board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()) {
+                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, board, this, dice));
                 player.addHighlightFigure(stage.getActors().size);
             }
-            players.get(board[column][row].getField_state().ordinal() - 1).add(stage.getActors().size - 1);
+            players.get(board.getBoardArray()[column][row].getFieldState().ordinal() - 1).add(stage.getActors().size - 1);
             stage.addActor(field);
         }
     }
@@ -167,7 +165,7 @@ public class BoardToPlayboard {
      */
     private  Image getFieldType(int column, int row){
         Image field;
-        switch (board[column][row].getField_state()) {
+        switch (board.getBoardArray()[column][row].getFieldState()) {
             case PLAYER1:
                 field = new Image(player1.getDrawable());
                 break;
@@ -199,10 +197,10 @@ public class BoardToPlayboard {
                 break;
         }
 
-        if(field != null && board[column][row].getField_state().ordinal() == player.getNumber()){
+        if(field != null && board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
-            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board_main, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
             player.addFigurePosition(column, row);
         }
         return field;
@@ -214,7 +212,7 @@ public class BoardToPlayboard {
      */
     public  void setPlayerFiguresHighlighted(boolean status){
         if(status){
-            playerMovesPossible = new ArrayList<Integer>();
+            playerMovesPossible = new ArrayList<>();
             if(!isMovePossible()) {
                 LOGGER.log(Level.FINE, "Client: No move possible");
                 handler.sendMessage(player.getNumber());
@@ -238,13 +236,13 @@ public class BoardToPlayboard {
     private boolean isMovePossible(){
         playerMovesPossible.clear();
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
-            board_main.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
-            boolean movePossible = board_main.higlightPositionsMovement(dice.getResultNumber(), board_main.getRealFieldActive(), null, false);
+            board.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
+            boolean movePossible = board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, false);
             if(movePossible){
                 playerMovesPossible.add(i);
             }
         }
-        return playerMovesPossible.size() > 0;
+        return !playerMovesPossible.isEmpty();
     }
 
 
@@ -378,8 +376,8 @@ public class BoardToPlayboard {
     public  FieldPosition moveKicked(){
         FieldPosition fieldPosition = null;
         if(kickedIndex != -1){
-            int column = board_main.getNewPlayerPosition().getColumn();
-            int row = board_main.getNewPlayerPosition().getRow();
+            int column = board.getNewPlayerPosition().getColumn();
+            int row = board.getNewPlayerPosition().getRow();
             fieldPosition = new FieldPosition(column, row);
             Coordinates coordinates = helper.getCoordinatesOfField(column, row);
 

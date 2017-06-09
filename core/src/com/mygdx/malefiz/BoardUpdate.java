@@ -6,7 +6,9 @@ package com.mygdx.malefiz;
 import java.io.Serializable;
 
 public class BoardUpdate implements Serializable{
-    private int actorIndex, column, row;
+    private int actorIndex;
+    private int column;
+    private int row;
 
     public BoardUpdate(){
         //Wird für die Deserialization benötigt

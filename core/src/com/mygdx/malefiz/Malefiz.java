@@ -10,16 +10,13 @@ import com.mygdx.malefiz.Screens.MainMenuScreen;
 
 public class Malefiz extends Game {
 
-    public Stage stage;
+    private Stage stage;
 
     public void create() {
         this.stage=new Stage();
         this.setScreen(new MainMenuScreen(this));
     }
 
-    public void render() {
-        super.render(); //important!
-    }
 
     public void dispose() {
         stage.dispose();

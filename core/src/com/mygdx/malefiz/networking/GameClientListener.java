@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.GNwKryo;
+package com.mygdx.malefiz.networking;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

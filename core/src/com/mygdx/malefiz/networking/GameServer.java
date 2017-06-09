@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.GNwKryo;
+package com.mygdx.malefiz.networking;
 
 
 import com.esotericsoftware.kryonet.Connection;
@@ -16,23 +16,24 @@ import java.util.logging.Logger;
 
 
 public class GameServer {
-    private int TCP_PORT, UDP_PORT;
+    private int TCPPort;
+    private int UDPPort;
     private static final Logger LOGGER = Logger.getLogger( GameServer.class.getName() );
     private Server server;
-    private int max_usercount;
+    private int maxUsercount;
     private int players = 0;           // Aktuelle Anzahl an Spielern im Spiel
     private List<Connection> clients;
     private List<Integer> leavedPlayers;
     private boolean gameStarted = false;
     private int lastTurn = 1; //wird gebraucht, damit der nächste Spieler dran kommt, falls der Spieler vor ihm das Spiel verlässt
 
-    public GameServer(int tcp, int udp, int max_usercount){
-        this.TCP_PORT = tcp;
-        this.UDP_PORT = udp;
-        clients = new ArrayList<Connection>(4);
-        leavedPlayers = new ArrayList<Integer>(4);
+    public GameServer(int tcp, int udp, int maxUsercount){
+        this.TCPPort = tcp;
+        this.UDPPort = udp;
+        clients = new ArrayList<>(4);
+        leavedPlayers = new ArrayList<>(4);
         server = new Server();
-        this.max_usercount = max_usercount;
+        this.maxUsercount = maxUsercount;
 
         // Assign all datatransfer classes to server.
         Network.registerKryoClasses(server);
@@ -40,19 +41,17 @@ public class GameServer {
     }
 
     public void startServer(){
-//Line interferes with tests.        Gdx.app.log("Server","Startet.");
         server.start();
         server.addListener(new GameServerListener(this));
         try{
-            server.bind(TCP_PORT, UDP_PORT);
+            server.bind(TCPPort, UDPPort);
         }catch(IOException e){
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
 
-    // TODO: Needs a call once game is aborted
+
     public void stopServer(){
-        //Gdx.app.log("Server","Stopt.");
         players = 0;   // Necessary for shutdown + windup. Bugs for some reason
         server.close();
         clients.clear();
@@ -65,7 +64,7 @@ public class GameServer {
         // This is common in most tutorials, thus implemented that way aswell.
         try {
             Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
-            Enumeration<InetAddress> enumInetAddress = null;
+            Enumeration<InetAddress> enumInetAddress;
             // <=> Set enum for all acceptable Networkinterfaces ..
             while (enumNetworkInterfaces.hasMoreElements()) {   // ... as long as there are more NetworkInterfaces
                 NetworkInterface networkInterface = enumNetworkInterfaces.nextElement();
@@ -91,10 +90,10 @@ public class GameServer {
 
         transmission.update = update;
         transmission.playerTurnBefore = playerturn;
-        playerturn = nextPlayer(playerturn);
+        int newPlayerturn = nextPlayer(playerturn);
 
-        transmission.playerTurn = playerturn;
-        lastTurn = playerturn;
+        transmission.playerTurn = newPlayerturn;
+        lastTurn = newPlayerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
         LOGGER.log(Level.FINE, "Server: Transmitted Data to Clients");
@@ -107,7 +106,7 @@ public class GameServer {
     }
 
     public void addClient(Connection connection){
-        if(players < max_usercount) {
+        if(players < maxUsercount) {
             clients.add(connection);
         }
 
@@ -115,7 +114,7 @@ public class GameServer {
 
         LOGGER.log(Level.FINE, "Server: Client connected; playercount="+players);
 
-        if(players == max_usercount){
+        if(players == maxUsercount){
             for(int i=1; i<=players; i++) {
                 Network.StartClient startClient = new Network.StartClient();
                 startClient.player = i;
@@ -124,7 +123,7 @@ public class GameServer {
             }
             gameStarted = true;
         }
-        else if(players > max_usercount){
+        else if(players > maxUsercount){
             Network.StartClient startClient = new Network.StartClient();
             startClient.player = -1;
             connection.sendTCP(startClient); //close; Spieleranzahl bereits erreicht
@@ -132,16 +131,16 @@ public class GameServer {
     }
 
     private int nextPlayer(int playerTurn){
-        playerTurn = adjustPlayerTurn(playerTurn+1);
-        if(leavedPlayers.size() != 0 && leavedPlayers.size() <= 3){
-            while(leavedPlayers.contains(playerTurn)){
-                playerTurn = adjustPlayerTurn(playerTurn+1);
+        int newPlayerTurn = adjustPlayerTurn(playerTurn+1);
+        if(!leavedPlayers.isEmpty() && leavedPlayers.size() <= 3){
+            while(leavedPlayers.contains(newPlayerTurn)){
+                newPlayerTurn = adjustPlayerTurn(newPlayerTurn+1);
             }
         }
-        return playerTurn;
+        return newPlayerTurn;
     }
 
-    public int removeClient(Connection connection){
+    public int removeClient(){
         int clientIndex = -1;
         for(int i = 0; i < clients.size(); i++){
             if(!clients.get(i).isConnected()){
@@ -170,9 +169,6 @@ public class GameServer {
     }
 
     public int adjustPlayerTurn(int playerTurn){
-        if(playerTurn > max_usercount){
-            playerTurn = 1;
-        }
-        return playerTurn;
+        return playerTurn > maxUsercount ? 1 : playerTurn;
     }
 }
