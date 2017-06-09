@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Network {
+
+    private Network() {
+        //Smell: Add a private constructor to hide the implicit public one
+    }
+
     // Register Datatypes to transmit -- Endpoint = Server or Client
     public static void registerKryoClasses(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
@@ -16,7 +21,7 @@ public class Network {
         kryo.register(PlayerDisconnected.class);
         kryo.register(StartClient.class);
         kryo.register(ArrayList.class); //sonst Exception beim Senden im Client (ArrayList not registered)
-        kryo.register(BoardUpdate.class); //sonst Exception beim Senden im Client (ArrayList not registered)
+        kryo.register(BoardUpdate.class); //sonst Exception beim Senden im Client (BoardUpdate not registered)
 
     }
 

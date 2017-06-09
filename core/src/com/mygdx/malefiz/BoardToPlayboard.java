@@ -1,6 +1,5 @@
 package com.mygdx.malefiz;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -211,18 +210,15 @@ public class BoardToPlayboard {
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
      */
     public  void setPlayerFiguresHighlighted(boolean status){
-        if(status){
-            playerMovesPossible = new ArrayList<>();
-            if(!isMovePossible()) {
-                LOGGER.log(Level.FINE, "Client: No move possible");
-                handler.sendMessage(player.getNumber());
-                return;
-            }
-            else{
-                for (int i = 0; i< player.getHighlightedFiguresIndizes().size(); i++) {
-                    if(playerMovesPossible.contains(i)) {
-                        setPlayerFigureHighlighted(player.getHighlightedFiguresIndizes().get(i), status);
-                    }
+        if(status && !isMovePossible()){
+            LOGGER.log(Level.FINE, "Client: No move possible");
+            handler.sendMessage(player.getNumber());
+            return;
+        }
+        else if(status){
+            for (int i = 0; i< player.getHighlightedFiguresIndizes().size(); i++) {
+                if(playerMovesPossible.contains(i)) {
+                    setPlayerFigureHighlighted(player.getHighlightedFiguresIndizes().get(i), status);
                 }
             }
         }
@@ -234,7 +230,7 @@ public class BoardToPlayboard {
     }
 
     private boolean isMovePossible(){
-        playerMovesPossible.clear();
+        playerMovesPossible = new ArrayList<>();
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
             board.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
             boolean movePossible = board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, false);

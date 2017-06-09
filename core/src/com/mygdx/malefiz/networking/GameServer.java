@@ -16,8 +16,8 @@ import java.util.logging.Logger;
 
 
 public class GameServer {
-    private int TCPPort;
-    private int UDPPort;
+    private int tcpPort;
+    private int udpPort;
     private static final Logger LOGGER = Logger.getLogger( GameServer.class.getName() );
     private Server server;
     private int maxUsercount;
@@ -28,8 +28,8 @@ public class GameServer {
     private int lastTurn = 1; //wird gebraucht, damit der nächste Spieler dran kommt, falls der Spieler vor ihm das Spiel verlässt
 
     public GameServer(int tcp, int udp, int maxUsercount){
-        this.TCPPort = tcp;
-        this.UDPPort = udp;
+        this.tcpPort = tcp;
+        this.udpPort = udp;
         clients = new ArrayList<>(4);
         leavedPlayers = new ArrayList<>(4);
         server = new Server();
@@ -44,7 +44,7 @@ public class GameServer {
         server.start();
         server.addListener(new GameServerListener(this));
         try{
-            server.bind(TCPPort, UDPPort);
+            server.bind(tcpPort, udpPort);
         }catch(IOException e){
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
@@ -56,32 +56,6 @@ public class GameServer {
         server.close();
         clients.clear();
         leavedPlayers.clear();
-    }
-
-    public String fetchPublicIP(){
-        String ipAddress = "";
-
-        // This is common in most tutorials, thus implemented that way aswell.
-        try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
-            Enumeration<InetAddress> enumInetAddress;
-            // <=> Set enum for all acceptable Networkinterfaces ..
-            while (enumNetworkInterfaces.hasMoreElements()) {   // ... as long as there are more NetworkInterfaces
-                NetworkInterface networkInterface = enumNetworkInterfaces.nextElement();
-                enumInetAddress = networkInterface.getInetAddresses();
-                while (enumInetAddress.hasMoreElements()) { // .. as long as there are more passable adresses.
-                    InetAddress inetAddress = enumInetAddress.nextElement();
-                    if (inetAddress.isSiteLocalAddress()) { // If the add has that local address,
-
-                        ipAddress = "IP of device: " + inetAddress.getHostAddress() + "\n"; // Give us the remote Host-IP
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            LOGGER.log(Level.SEVERE, e.toString(), e);
-            ipAddress = ipAddress + "Error in getIpAddress() ::" + e.toString() + "\n";
-        }
-        return ipAddress;
     }
 
     public void sendMessage(List<BoardUpdate> update, int playerturn){

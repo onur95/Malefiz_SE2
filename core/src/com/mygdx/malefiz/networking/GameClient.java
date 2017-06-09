@@ -11,9 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GameClient {
-    private int TCPPort;
-    private int UDPPort;
-    private int TIMEOUT;
+    private int tcpPort;
+    private int udpPort;
+    private int timeout;
     private int player;
     private static final Logger LOGGER = Logger.getLogger( GameClient.class.getName() );
     private Client client;
@@ -22,9 +22,9 @@ public class GameClient {
     private String serverIp;
 
     public GameClient(int tcp, int udp, int timeout, Malefiz game){
-        this.TCPPort = tcp;
-        this.UDPPort = udp;
-        this.TIMEOUT = timeout;
+        this.tcpPort = tcp;
+        this.udpPort = udp;
+        this.timeout = timeout;
         this.game = game;
 
         client = new Client();
@@ -35,7 +35,7 @@ public class GameClient {
         try{
             //Starts Client
             client.start();
-            client.connect(TIMEOUT, serverIP, TCPPort, UDPPort);
+            client.connect(timeout, serverIP, tcpPort, udpPort);
 
             client.addListener(new GameClientListener(this));
 

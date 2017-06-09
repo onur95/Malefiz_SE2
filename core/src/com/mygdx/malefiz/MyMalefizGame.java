@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.malefiz.networking.GameClient;
-import com.mygdx.malefiz.Screens.GameMenu;
+import com.mygdx.malefiz.screens.GameMenu;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
@@ -24,7 +24,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private Dice dice;
 	private Texture txtPlayground;
 	private Image imgPlayground;
-	private final Malefiz mal;
 	private GameClient client;
 	private SoundManager soundManager;
 	private OrthographicCamera camera;
@@ -32,9 +31,8 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private TextureAtlas atlas;
 	private Skin skin;
 
-	public MyMalefizGame (final Malefiz mal, GameClient client, int playerCount) {
+	public MyMalefizGame (GameClient client, int playerCount) {
 		this.client = client;
-		this.mal=mal;
 		soundManager = new SoundManager();
 		boolean shakeStatus = true;
 		if(client.getPlayerNumber() == 1){
@@ -112,12 +110,12 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	@Override
 	public void resume() {
-		//will be implemented
+		//will be programmed
 	}
 
 	@Override
 	public void hide() {
-		//not sure if it will be implemented
+		//not sure if we will use this
 	}
 
 	@Override

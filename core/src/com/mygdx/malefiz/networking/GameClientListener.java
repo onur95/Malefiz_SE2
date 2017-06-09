@@ -43,7 +43,7 @@ public class GameClientListener extends Listener {
 
                     @Override
                     public void run() {
-                        ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(client.getGame(), client, startClient.playerCount));
+                        ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(client, startClient.playerCount));
                     }
                 });
 

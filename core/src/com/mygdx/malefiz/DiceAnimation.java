@@ -17,8 +17,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class DiceAnimation  {
 
     // Zeilen & Spalten des SPrite sheets
-    private final int cols = 12;
-    private final int rows = 2;
+    private static final int cols = 12;
+    private static final int rows = 2;
 
     // Deklarierung
     private Animation<TextureRegion> animation; // Must declare frame type (TextureRegion)

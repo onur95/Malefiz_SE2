@@ -5,5 +5,5 @@ package com.mygdx.malefiz;
  */
 
 public enum Sounds {
-    PLAYERTURN, MOVE, PLAYERKICKED;
+    PLAYERTURN, MOVE, PLAYERKICKED, BLOCKPLACED;
 }

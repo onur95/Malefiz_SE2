@@ -30,7 +30,7 @@ public class UpdateHandler {
         client.setHandler(this);
         this.client = client;
         this.dice = dice;
-        update = new ArrayList<BoardUpdate>(3);
+        update = new ArrayList<>(3);
         this.playerCount = playerCount;
         this.soundManager = soundManager;
     }

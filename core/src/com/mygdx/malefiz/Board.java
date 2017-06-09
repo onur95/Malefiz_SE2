@@ -1,7 +1,5 @@
 package com.mygdx.malefiz;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

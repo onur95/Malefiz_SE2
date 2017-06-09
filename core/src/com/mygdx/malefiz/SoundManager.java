@@ -9,19 +9,15 @@ import com.badlogic.gdx.audio.Sound;
 
 public class SoundManager {
     private final Sound yourTurn;
-    private final Sound kickPlayer;
-    private final Sound kickedPlayerMove;
+    private final Sound playerKicked;
     private final Sound placeBlock;
-    private final Sound kickedOwnFigure;
     private final Sound moveFigure;
 
 
     public SoundManager(){
         yourTurn= Gdx.audio.newSound(Gdx.files.internal("soundeffects/your-turn.wav"));
-        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
-        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
+        playerKicked = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
         placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
-        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
         moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
     }
 
@@ -34,6 +30,14 @@ public class SoundManager {
 
             case PLAYERTURN:
                 yourTurn.play();
+                break;
+
+            case PLAYERKICKED:
+                playerKicked.play();
+                break;
+
+            default:
+                placeBlock.play();
                 break;
         }
     }
