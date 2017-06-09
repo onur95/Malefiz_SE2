@@ -3,11 +3,7 @@ package com.mygdx.malefiz.Tests;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
-
-<<<<<<< HEAD
-=======
 import org.junit.Test;
->>>>>>> origin/master
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
