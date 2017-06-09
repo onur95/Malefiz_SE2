@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -77,6 +78,11 @@ public class ConfigureScreen implements Screen {
         final TextField playerNumber = new TextField("3", skin);
         playerNumber.setBounds(650,470,50,50);
         playerNumber.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
+        final Label connectionInfo= new Label("Waiting for other Players to connect",skin);
+        connectionInfo.setColor(Color.RED);
+        connectionInfo.setBounds(375,100,350,200);
+        connectionInfo.setFontScale(1.5f);
+        connectionInfo.setVisible(false);
         //Add listeners to buttons
 
         imageButtonStartServer.addListener(new ClickListener(){
@@ -96,6 +102,8 @@ public class ConfigureScreen implements Screen {
 
                     client = new GameClient(44775, 44776, 10000, game);
                     try{
+                        connectionInfo.setVisible(true);
+                        connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                         client.connect("");
                         Gdx.app.log("Client", "Successfully connected to server.");
                     }catch(Exception e){
@@ -116,6 +124,12 @@ public class ConfigureScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Return to Mainmenu
+                if(server != null){
+                    server.stopServer();
+                }
+                if(client != null){
+                    client.terminate();
+                }
                 ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
             }
         });
@@ -145,6 +159,7 @@ public class ConfigureScreen implements Screen {
         stage.addActor(imageButtonReturn);
         stage.addActor(setPlayersInfo);
         stage.addActor(playerNumber);
+        stage.addActor(connectionInfo);
     }
 
     @Override

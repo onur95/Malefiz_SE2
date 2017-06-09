@@ -4,6 +4,10 @@ import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 
+<<<<<<< HEAD
+=======
+import org.junit.Test;
+>>>>>>> origin/master
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -54,9 +58,10 @@ public class NetworkTests {
         for(int i = testcases; i == 0; i--){
             clients[i].terminate();
         }
-        server.stopServer();
+        // server.stopServer(); Redundant: Once the last one disconnects, the server shuts down automatically
     }
 
+    /*
     @Test
     public void sendMessageClientToServer(){
         server = new GameServer(tcpPort, udpPort, maxUserCount);
@@ -65,7 +70,7 @@ public class NetworkTests {
         client = new GameClient(tcpPort, udpPort, timeout, game);
         client.connect(ip);
 
-       // client.sendData(); // What the flying fuck
+       // client.sendData(); >> CheatEngine. NOW.
     }
 
     @Test
@@ -78,5 +83,5 @@ public class NetworkTests {
 
         //server.sendMessage();
     }
-
+*/
 }

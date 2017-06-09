@@ -3,7 +3,9 @@ package com.mygdx.malefiz;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 
 import java.util.ArrayList;
@@ -130,6 +132,8 @@ public class UpdateHandler {
         }
 
         if(playerTurn == client.getPlayerNumber()){
+            Label yourTurn=stage.getRoot().findActor("yourTurn");
+            yourTurn.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
             soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
         }
