@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Screens;
+package com.mygdx.malefiz.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,9 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.networking.GameServer;
-import com.mygdx.malefiz.Malefiz;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,8 +42,8 @@ public class ConfigureScreen implements Screen {
         this.game=game;
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-        imageButtonStartServer=MainMenuScreen.createImageButton("start_server.png",375,335,350,150);
-        imageButtonReturn=MainMenuScreen.createImageButton("return.png",375,220,350,150);
+        imageButtonStartServer= MainMenuScreen.createImageButton("start_server.png",375,335,350,150);
+        imageButtonReturn= MainMenuScreen.createImageButton("return.png",375,220,350,150);
         stage = new Stage(new FillViewport(1024,670));
         txtBackgroundMenu=new Texture("malefiz_mainmenu_background.jpg");
         imgBackgroundMenu=new Image(txtBackgroundMenu);
@@ -71,29 +71,21 @@ public class ConfigureScreen implements Screen {
                 if(playerNumber.getText().length() == 0){
                     return;
                 }
-		        /* Networking */
                 server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
                 try{
                     server.startServer();
-                    LOGGER.log(Level.FINE, "Server: Server successfully started on starting the main game");
                     client = new GameClient(44775, 44776, 10000, game);
-
-                    try{
-                        connectionInfo.setVisible(true);
-                        connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
-                        client.connect("");
-                        LOGGER.log(Level.FINE, "Client: Successfully connected to server");
-                    }catch(Exception e){
-                        client.terminate();
-                        server.stopServer();
-                        LOGGER.log(Level.FINE, "Client: Failed to connect Client of server to server");
-                    }
+                    connectionInfo.setVisible(true);
+                    connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
+                    client.connect("");
+                    LOGGER.log(Level.FINE, "Server, Client: Successfully started and connected");
                 }catch(Exception e){
                     server.stopServer();
+                    if(client != null){
+                        client.terminate();
+                    }
                     LOGGER.log(Level.SEVERE, "Server: Failed to create Server on starting the main game", e);
                 }
-
-
             }
         });
 
@@ -141,12 +133,12 @@ public class ConfigureScreen implements Screen {
 
     @Override
     public void resume() {
-        //no need for it
+        //no use for it
     }
 
     @Override
     public void hide() {
-        //also no need
+        //will not be used
     }
 
     @Override

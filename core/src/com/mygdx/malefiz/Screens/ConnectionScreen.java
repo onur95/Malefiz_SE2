@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Screens;
+package com.mygdx.malefiz.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -17,8 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.Malefiz;
+import com.mygdx.malefiz.networking.GameClient;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ public class ConnectionScreen implements Screen {
         atlas = new TextureAtlas("uiskin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         imageButtonConnect= MainMenuScreen.createImageButton("connect.png",375,335,350,150);
-        imageButtonReturn=MainMenuScreen.createImageButton("return.png",380,220,350,150);
+        imageButtonReturn= MainMenuScreen.createImageButton("return.png",380,220,350,150);
         stage = new Stage(new FillViewport(1024,670));
         txtBackgroundMenu=new Texture("malefiz_mainmenu_background.jpg");
         imgBackgroundMenu=new Image(txtBackgroundMenu);
@@ -64,7 +65,6 @@ public class ConnectionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 final String ip = eIPText.getText();
-
                 client = new GameClient(44775, 44776, 10000, game);
                 try{
                     connectionInfo.setVisible(true);
