@@ -17,8 +17,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class DiceAnimation  {
 
     // Zeilen & Spalten des SPrite sheets
-    private static final int cols = 12;
-    private static final int rows = 2;
+    private static final int COLS = 12;
+    private static final int ROW = 2;
 
     // Deklarierung
     private Animation<TextureRegion> animation; // Must declare frame type (TextureRegion)
@@ -34,13 +34,13 @@ public class DiceAnimation  {
         diceSheet = new Texture(Gdx.files.internal(img));
 
         TextureRegion[][] tmp = TextureRegion.split(diceSheet,
-                diceSheet.getWidth() / cols,
-                diceSheet.getHeight() / rows);
+                diceSheet.getWidth() / COLS,
+                diceSheet.getHeight() / ROW);
 
-        TextureRegion[] walkFrames = new TextureRegion[cols * rows];
+        TextureRegion[] walkFrames = new TextureRegion[COLS * ROW];
         int index = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLS; j++) {
                 walkFrames[index++] = tmp[i][j];
             }
         }
