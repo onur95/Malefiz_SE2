@@ -3,13 +3,19 @@ package com.mygdx.malefiz;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Screens.GameMenu;
@@ -22,11 +28,16 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private Image img_playground;
 	private final Malefiz mal;
 	private GameClient client;
-
+	private OrthographicCamera camera;
+	private float currentZoom;
+	private TextureAtlas atlas;
+	private Skin skin;
 
 	public MyMalefizGame (final Malefiz mal, GameClient client, int playerCount) {
 		this.client = client;
 		this.mal=mal;
+		atlas = new TextureAtlas("uiskin.atlas");
+		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
 		dice = new Dice(client.getPlayerNumber() != 1); //Spieler 1 fängt an; Würfel wird aktiviert
 		Board board = new Board();
 		UpdateHandler handler = new UpdateHandler(client, dice, playerCount);
@@ -42,8 +53,15 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		txt_playground = new Texture("Playboard.jpg");
 		img_playground=new Image(txt_playground);
 		stage.addActor(img_playground);
+		camera=((OrthographicCamera)stage.getCamera());
+		currentZoom=camera.zoom;
 		board.init(player, view);
-
+		Label yourTurn=new Label("It's your turn!",skin);
+		yourTurn.setName("yourTurn");
+		yourTurn.setColor(Color.RED);
+		yourTurn.setBounds(100,500,300,200);
+		yourTurn.setFontScale(4f);
+		yourTurn.setVisible(false);
 		handler.setBoardAndView(view,board);
 
 
@@ -54,6 +72,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		// Disable Menu/Exit-Buttons via Commenting here
 		stage.addActor(menu.createExit());
 		stage.addActor(menu.createMenu());
+		stage.addActor(yourTurn);
 //		dice.randomNumber();
 //		pfad=dice.getResult(dice.getResultNumber());
 //		DiceAnimation diceAnimation = new DiceAnimation();
@@ -134,11 +153,14 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		camera.translate(-deltaX * currentZoom,deltaY * currentZoom);
+		camera.update();
 		return false;
 	}
 
 	@Override
 	public boolean panStop(float x, float y, int pointer, int button) {
+		currentZoom = camera.zoom;
 		return false;
 	}
 
@@ -149,14 +171,18 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
 
-		if(initialDistance>=distance && ((OrthographicCamera)stage.getCamera()).zoom!=1.0f){ //zoom out
-			((OrthographicCamera)stage.getCamera()).zoom += 0.005f;
+		//camera.zoom = (initialDistance / distance) * currentZoom;
+		//camera.update();
 
+		if(initialDistance>=distance && camera.zoom!=1.0f){ //zoom out
+			camera.zoom += 0.005f;
+			camera.update();
 		}
-		else if(initialDistance<=distance && ((OrthographicCamera)stage.getCamera()).zoom!=0.93500006f){ //zoom in
-			((OrthographicCamera) stage.getCamera()).zoom -= 0.005f;
-
+		else if(initialDistance<=distance && camera.zoom!=0.6800003f){ //zoom in
+			camera.zoom -= 0.005f;
+			camera.update();
 		}
+		System.out.println(camera.zoom);
 		return true;
 	}
 

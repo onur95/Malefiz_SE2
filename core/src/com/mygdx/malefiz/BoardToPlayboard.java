@@ -3,15 +3,21 @@ package com.mygdx.malefiz;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
@@ -50,6 +56,8 @@ public class BoardToPlayboard {
     private Dice dice;
     private List<List<Integer>> players;
     private CoordinateCalculation helper;
+    private BitmapFont font;
+    private Batch textbatch;
 
 
     private  void init_sound(){
@@ -78,6 +86,7 @@ public class BoardToPlayboard {
         playerCount = handler.getPlayerCount();
         init_sound();
         init_players();
+        font=new BitmapFont(Gdx.files.internal("default.fnt"));
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
@@ -149,7 +158,6 @@ public class BoardToPlayboard {
         stage.addActor(field);
     }
 
-
     /**
      * Setzen der Highlights aller Spieler (gebraucht werden zwar nur die Highlights der eigenen Kegel, aber um unterschiedliche Indizes in stage.getActors() zu verhindern, werden für alle Spieler Highlights generiert)
      * @param column Column und row geben an, was für ein Feld überprüft werden soll, ob es ein Player ist
@@ -220,6 +228,7 @@ public class BoardToPlayboard {
         return field;
     }
 
+
     /**
      * Anzeigen aller Highlights eines Spielers
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
@@ -230,9 +239,10 @@ public class BoardToPlayboard {
         }
         if(status) {//"Du bist dran"-Sound soll nur abgespielt werden, wenn alle Highlights durch den Dice angezeigt werden
             playYourTurn();
+            Label yourTurn=stage.getRoot().findActor("yourTurn");
+            yourTurn.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
         }
     }
-
 
     /**
      * Anzeigen des Highlights eines Kegels
