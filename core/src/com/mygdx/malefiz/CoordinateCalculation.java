@@ -34,8 +34,6 @@ public class CoordinateCalculation {
 
     private Coordinates setFirstFields(int column, int row){
         float yOffset, tempXOffset1, tempXOffset2;
-        Coordinates coordinates = null;
-        int status = -1; //0--> erste Zeile; 1--> zweite Zeile; -1 --> keine von beiden
         if(column == 0){
             yOffset = (float) (stage.getHeight()*0.015);
             tempXOffset1 = (float) (stage.getWidth() * 0.105);
@@ -47,34 +45,36 @@ public class CoordinateCalculation {
             tempXOffset2 = (float) (stage.getWidth() * 0.212);
         }
 
-        float result = getResultFirstRowsOdd(row);
-
-        if(result > -1){
-            status = 0;
-        }
-
-        tempXOffset1 += (float) (stage.getWidth() * 0.223)*result;
-
-        result = getResultFirstRowsEven(row);
-
-        if(result > -1){
-            status = 1;
-        }
-        tempXOffset2 += (float) (stage.getWidth() * 0.223)*result;
-
-        if(status > -1) {
-            if (status == 0) {
-                coordinates = new Coordinates(tempXOffset1, yOffset);
-            } else { //status == 1
-                coordinates = new Coordinates(tempXOffset2, yOffset);
-            }
-        }
-        return coordinates;
+        return new Coordinates(getXOffsetOfFirstRows(tempXOffset1,tempXOffset2,row), yOffset);
     }
 
-    private  int getResultFirstRowsEven(int row){
+    private  float getXOffsetOfFirstRows(float offsetOdd, float offsetEven,int row){
         int result;
+        float resultXOffset = 0;
+        boolean rowsOdd = false;
         switch (row){
+            //Odd
+            case 1:
+                result = 0;
+                rowsOdd = true;
+                break;
+
+            case 5:
+                result = 1;
+                rowsOdd = true;
+                break;
+
+            case 9:
+                result = 2;
+                rowsOdd = true;
+                break;
+
+            case 13:
+                result = 3;
+                rowsOdd = true;
+                break;
+
+            //even
             case 3:
                 result = 0;
                 break;
@@ -95,33 +95,13 @@ public class CoordinateCalculation {
                 result = -1;
                 break;
         }
-        return result;
-    }
-
-    private  int getResultFirstRowsOdd(int row){
-        int result;
-        switch (row){
-            case 1:
-                result = 0;
-                break;
-
-            case 5:
-                result = 1;
-                break;
-
-            case 9:
-                result = 2;
-                break;
-
-            case 13:
-                result = 3;
-                break;
-
-            default:
-                result = -1;
+        if(result != -1){
+            float offset = rowsOdd ? offsetOdd : offsetEven;
+            resultXOffset = offset + (float) (stage.getWidth() * 0.223)*result;
         }
-        return result;
+        return resultXOffset;
     }
+
 
     private  float getOffsetXNormal(float row){
         float xOffset = 0.02133333333333F; //in Prozent vom Spielfeld
