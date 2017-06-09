@@ -23,6 +23,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Malefiz;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 // TODO: Ausimplementierung der Klasse
 // Necessary ONLY for clients -- Servers are already in some game.
 
@@ -39,8 +42,7 @@ public class ConnectionScreen implements Screen {
     private ImageButton imageButtonReturn;
     private final Malefiz game;
     private GameClient client;
-
-    String input;
+    private static final Logger LOGGER = Logger.getLogger( ConfigureScreen.class.getName() );
 
     public ConnectionScreen(final Malefiz game){
         this.game = game;
@@ -96,10 +98,10 @@ public class ConnectionScreen implements Screen {
                     connectionInfo.setVisible(true);
                     connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                     client.connect(ip);
-                    Gdx.app.log("Client", "Successfully connected to server.");
+                    LOGGER.log(Level.FINE, "Client: Successfully connected to server");
                 }catch(Exception e){
                     client.terminate();
-                    Gdx.app.log("Client", "Failed to Connect to server.", e);
+                    LOGGER.log(Level.SEVERE, "Client: Failed to connect to server", e);
                 }
 
             }

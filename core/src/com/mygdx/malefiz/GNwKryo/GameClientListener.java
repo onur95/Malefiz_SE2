@@ -6,8 +6,12 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.malefiz.MyMalefizGame;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class GameClientListener extends Listener {
     private GameClient client;
+    private static final Logger LOGGER = Logger.getLogger( GameClientListener.class.getName() );
 
     public GameClientListener(GameClient client) {
         super();
@@ -16,13 +20,13 @@ public class GameClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
+        LOGGER.log(Level.FINE, "Client: Message received");
+
         if(client == null || object == null){
             return;
         }
         // Received from Connection that Object
         if(object instanceof Network.ServerEcho){
-//            Gdx.app.log("Client", "Message received");
-            System.out.println("Client :: Message received");
             // Parse data to use it.
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
@@ -55,8 +59,7 @@ public class GameClientListener extends Listener {
     @Override
     public void disconnected(Connection connection){
         client.terminate();
-//        Gdx.app.log("Client", "Server disconnected");
-        System.out.println("Client :: Disconnected");
+        LOGGER.log(Level.FINE, "Client: client disconnected");
     }
 
 }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Klaus on 02.04.2017.
@@ -37,6 +39,7 @@ public class BoardToPlayboard {
     private CoordinateCalculation helper;
     private SoundManager soundManager;
     private List<Integer> playerMovesPossible;
+    private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
 
 
     private void init_players(){
@@ -213,7 +216,7 @@ public class BoardToPlayboard {
         if(status){
             playerMovesPossible = new ArrayList<Integer>();
             if(!isMovePossible()) {
-                Gdx.app.log("Client", "No move possible");
+                LOGGER.log(Level.FINE, "Client: No move possible");
                 handler.sendMessage(player.getNumber());
                 return;
             }
@@ -230,11 +233,9 @@ public class BoardToPlayboard {
                 setPlayerFigureHighlighted(index, status);
             }
         }
-        Gdx.app.log("Own Players",player.getFiguresPosition().toString());
     }
 
     private boolean isMovePossible(){
-        Gdx.app.log("Move", player.getFiguresPosition().toString());
         playerMovesPossible.clear();
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
             board_main.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
@@ -243,7 +244,6 @@ public class BoardToPlayboard {
                 playerMovesPossible.add(i);
             }
         }
-        Gdx.app.log("Move", playerMovesPossible.toString());
         return playerMovesPossible.size() > 0;
     }
 
@@ -293,7 +293,6 @@ public class BoardToPlayboard {
     public void adjustPlayerClickListener(int column, int row, int index){
         for(EventListener event : stage.getActors().get(index).getListeners()){
             if(event.getClass() == PlayerClickListener.class){
-                Gdx.app.log("oldPosition",((PlayerClickListener)event).getRow() + " " + ((PlayerClickListener)event).getColumn());
                 adjustPlayers(((PlayerClickListener)event).getColumn(), ((PlayerClickListener)event).getRow(), column, row);
                 ((PlayerClickListener)event).setColumn(column);
                 ((PlayerClickListener)event).setRow(row);
@@ -306,7 +305,6 @@ public class BoardToPlayboard {
             if(fieldPosition.getColumn() == columnOld && fieldPosition.getRow() == rowOld){
                 fieldPosition.setColumn(columnNew);
                 fieldPosition.setRow(rowNew);
-                Gdx.app.log("newPosition",columnNew + " " + rowNew);
             }
         }
     }

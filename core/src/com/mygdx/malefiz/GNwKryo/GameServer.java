@@ -85,7 +85,6 @@ public class GameServer {
         return ipAddress;
     }
 
-    // TODO: This call is necessary after update of Gamefield.
     public void sendMessage(List<BoardUpdate> update, int playerturn){
         // Build Transmission from Server. Send @Par is necessary - Featured in Network.ServerEcho
         Network.ServerEcho transmission = new Network.ServerEcho();
@@ -98,7 +97,7 @@ public class GameServer {
         lastTurn = playerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
-//        Gdx.app.log("GameServer.sendMessage()", "Message sent to all clients.");
+        LOGGER.log(Level.FINE, "Server: Transmitted Data to Clients");
     }
 
     public void sendMessage(int player){
@@ -108,12 +107,14 @@ public class GameServer {
     }
 
     public void addClient(Connection connection){
-        System.out.println("Client connected");
         if(players < max_usercount) {
             clients.add(connection);
         }
 
         players++;
+
+        LOGGER.log(Level.FINE, "Server: Client connected; playercount="+players);
+
         if(players == max_usercount){
             for(int i=1; i<=players; i++) {
                 Network.StartClient startClient = new Network.StartClient();
@@ -130,15 +131,6 @@ public class GameServer {
         }
     }
 
-    public int getMax_usercount(){
-        return this.max_usercount;
-    }
-
-
-    public void setPlayerCount(int n){
-        this.max_usercount = n;
-    }
-
     private int nextPlayer(int playerTurn){
         playerTurn = adjustPlayerTurn(playerTurn+1);
         if(leavedPlayers.size() != 0 && leavedPlayers.size() <= 3){
@@ -150,7 +142,6 @@ public class GameServer {
     }
 
     public int removeClient(Connection connection){
-        System.out.println("Server :: Client disconnected");
         int clientIndex = -1;
         for(int i = 0; i < clients.size(); i++){
             if(!clients.get(i).isConnected()){
@@ -158,6 +149,7 @@ public class GameServer {
                 break;
             }
         }
+        LOGGER.log(Level.FINE, "Server: Client disconnected; clientIndex="+clientIndex);
         if(gameStarted && clientIndex != -1){
             leavedPlayers.add(clientIndex);
             if(lastTurn == clientIndex+1){
@@ -172,8 +164,7 @@ public class GameServer {
         }
         if(players == 0 && gameStarted){
             stopServer();
-//            Gdx.app.log("Server", "All Players left. Server closed");
-            System.out.println("Server :: All players have left the game. Server closed.");
+            LOGGER.log(Level.FINE, "Server: All players have left the game. Server closed");
         }
         return clientIndex;
     }

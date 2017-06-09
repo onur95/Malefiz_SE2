@@ -1,6 +1,5 @@
 package com.mygdx.malefiz;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -10,6 +9,8 @@ import com.mygdx.malefiz.GNwKryo.GameClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by sebit on 24.05.2017.
@@ -23,6 +24,7 @@ public class UpdateHandler {
     private Dice dice;
     private int playerCount;
     private SoundManager soundManager;
+    private static final Logger LOGGER = Logger.getLogger( UpdateHandler.class.getName() );
 
     public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager){
         client.setHandler(this);
@@ -54,7 +56,7 @@ public class UpdateHandler {
 
     public void updatePlayboard(List<BoardUpdate> update, int playerTurn){
         if(update == null){
-            Gdx.app.log("Client", "Error: update == null");
+            LOGGER.log(Level.SEVERE, "Client: Error: update == null");
             return;
         }
         this.update.clear();
@@ -122,7 +124,6 @@ public class UpdateHandler {
             array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
 
             //View anpassen
-            Gdx.app.log("Client","Player moved: "+move1.getActorIndex());
             Actor actor1 = stage.getActors().get(move1.getActorIndex());
             Coordinates coordinates2 = view.getHelper().getCoordinatesOfField(move2.getColumn(), move2.getRow());
 
@@ -137,8 +138,7 @@ public class UpdateHandler {
             soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
         }
-
-        Gdx.app.log("Client", "Message handled");
+        LOGGER.log(Level.FINE, "Client: Message handled");
     }
 
     public void playerDisconnected(int player){

@@ -50,10 +50,9 @@ public class GameClient {
         return this.game;
     }
 
-    // TODO: MUST HAPPEN somewhere. Otherwise Client/Server remains active
     public void terminate(){
         client.close();
-        //Gdx.app.log("Client","Disconnected.");
+        LOGGER.log(Level.FINE, "Client: Client disconnected");
     }
 
     public void setPlayerNumber(int player){
@@ -63,7 +62,6 @@ public class GameClient {
 
     // Create message sent to the server.
     // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
-    // TODO: This needs a call after player picked a position, thus sending the "new field" to server
     // Data sent in transmission <=> Params processed in GameServerListener
     public void sendData(List<BoardUpdate> update, int playerTurn){
         Network.ClientMessage transmission = new Network.ClientMessage();
@@ -71,7 +69,7 @@ public class GameClient {
         transmission.playerTurn = playerTurn;
 
         client.sendTCP(transmission);       // ** .. Send it to server
-//        Gdx.app.log("Client","Transmitted Data.");
+        LOGGER.log(Level.FINE, "Client: Transmitted Data to Server");
     }
 
     public int getPlayerNumber(){

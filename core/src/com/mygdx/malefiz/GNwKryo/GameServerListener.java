@@ -3,9 +3,13 @@ package com.mygdx.malefiz.GNwKryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class GameServerListener extends Listener {
     private GameServer server;
+    private static final Logger LOGGER = Logger.getLogger( GameServerListener.class.getName() );
 
     public GameServerListener(GameServer server) {
         super();
@@ -14,6 +18,7 @@ public class GameServerListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
+        LOGGER.log(Level.FINE, "Server: Message received");
         // Received object from connection
 
         if (object instanceof Network.ClientMessage) {

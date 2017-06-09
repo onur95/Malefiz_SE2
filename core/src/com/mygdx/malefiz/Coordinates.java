@@ -7,10 +7,6 @@ package com.mygdx.malefiz;
 public class Coordinates {
     private float xOffset, yOffset;
 
-    public Coordinates(){
-
-    }
-
     public Coordinates(float xOffset, float yOffset) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;

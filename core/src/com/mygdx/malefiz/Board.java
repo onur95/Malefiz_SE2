@@ -2,6 +2,9 @@ package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Gdx;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by Klaus on 02.04.2017.
  */
@@ -30,6 +33,7 @@ public class Board {
                     ".1.1.2.2.3.3.4.4."};       // Leftside: 0,0
 
     private  final String[] boardMeta = reverseBoardMeta(meta);
+    private static final Logger LOGGER = Logger.getLogger( Board.class.getName() );
     //G->Goal
     //B->Block
     //o->Normales Feld
@@ -123,7 +127,7 @@ public class Board {
         boolean secondStatus = false;
         if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
-                Gdx.app.log("Board","setHighlight: "+column+", "+row);
+                LOGGER.log(Level.FINE, "Board: setHighlight("+column+" "+row+")");
                 status = true;
                 if(addHighlight) {
                     view.setHighlight(column, row);

@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -178,9 +176,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	 */
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
-
-		//camera.zoom = (initialDistance / distance) * currentZoom;
-		//camera.update();
 		float epsilon = 0.0000001F;
 		if(initialDistance>=distance && Math.abs(camera.zoom - 1.0f) > epsilon){ //zoom out
 			camera.zoom += 0.005f;
@@ -190,7 +185,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 			camera.zoom -= 0.005f;
 			camera.update();
 		}
-		System.out.println(camera.zoom);
 		return true;
 	}
 

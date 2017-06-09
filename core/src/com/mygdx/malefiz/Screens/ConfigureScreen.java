@@ -24,6 +24,9 @@ import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ConfigureScreen implements Screen {
 
     private SpriteBatch batch;
@@ -39,6 +42,7 @@ public class ConfigureScreen implements Screen {
     private final Malefiz game;
     private GameClient client;
     private GameServer server;
+    private static final Logger LOGGER = Logger.getLogger( ConfigureScreen.class.getName() );
 
     public ConfigureScreen(final Malefiz game){
         this.game=game;
@@ -95,25 +99,22 @@ public class ConfigureScreen implements Screen {
                 server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
                 try{
                     server.startServer();
-                    Gdx.app.log("Server","Server successfully started on starting the main game.");
-                    final String ip = server.fetchPublicIP();
-                    System.out.println("ServerIP: "+ip);
-
-
+                    LOGGER.log(Level.FINE, "Server: Server successfully started on starting the main game");
                     client = new GameClient(44775, 44776, 10000, game);
+
                     try{
                         connectionInfo.setVisible(true);
                         connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                         client.connect("");
-                        Gdx.app.log("Client", "Successfully connected to server.");
+                        LOGGER.log(Level.FINE, "Client: Successfully connected to server");
                     }catch(Exception e){
                         client.terminate();
                         server.stopServer();
-                        Gdx.app.log("Client", "Failed to connect cClient of server to server.", e);
+                        LOGGER.log(Level.FINE, "Client: Failed to connect Client of server to server");
                     }
                 }catch(Exception e){
                     server.stopServer();
-                    Gdx.app.log("Server","Failed to create Server on starting the main game.");
+                    LOGGER.log(Level.FINE, "Server: Failed to create Server on starting the main game");
                 }
 
 
