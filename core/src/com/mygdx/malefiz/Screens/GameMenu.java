@@ -90,7 +90,7 @@ public class GameMenu
                 if(object.equals(1L)){
                     CheatEngine cheatEngine = new CheatEngine();
                     // Fetch String from cheatCodeEntry & call corresponding cheat-method
-                    cheatEngine.cheatEngine(cheatCodeEntry.getText());
+                    cheatEngine.cheatCaller(cheatCodeEntry.getText());
                 }
                 if(object.equals(2L)){
                     // Exit to mainmenu

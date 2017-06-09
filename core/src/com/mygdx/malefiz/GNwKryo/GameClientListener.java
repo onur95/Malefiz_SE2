@@ -26,7 +26,8 @@ public class GameClientListener extends Listener {
         }
         // Received from Connection that Object
         if(object instanceof Network.ServerEcho){
-            Gdx.app.log("Client", "Message received");
+//            Gdx.app.log("Client", "Message received");
+            System.out.println("Client :: Message received");
             // Parse data to use it.
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
@@ -59,7 +60,8 @@ public class GameClientListener extends Listener {
     @Override
     public void disconnected(Connection connection){
         client.terminate();
-        Gdx.app.log("Client", "Server disconnected");
+//        Gdx.app.log("Client", "Server disconnected");
+        System.out.println("Client :: Disconnected");
     }
 
 }

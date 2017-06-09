@@ -171,7 +171,8 @@ public class GameServer {
         }
         if(players == 0 && gameStarted){
             stopServer();
-            Gdx.app.log("Server", "All Players left. Server closed");
+//            Gdx.app.log("Server", "All Players left. Server closed");
+            System.out.println("Server :: All players have left the game. Server closed.");
         }
         return clientIndex;
     }
