@@ -1,10 +1,9 @@
 package com.mygdx.malefiz.GNwKryo;
 
-import com.badlogic.gdx.Gdx;
+
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.malefiz.BoardUpdate;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -12,9 +11,13 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class GameServer {
     private int TCP_PORT, UDP_PORT;
+    private static final Logger LOGGER = Logger.getLogger( GameServer.class.getName() );
     private Server server;
     private int max_usercount;
     private int players = 0;           // Aktuelle Anzahl an Spielern im Spiel
@@ -44,6 +47,7 @@ public class GameServer {
             server.bind(TCP_PORT, UDP_PORT);
         }catch(IOException e){
             e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
 
@@ -75,7 +79,11 @@ public class GameServer {
                     }
                 }
             }
-        } catch (SocketException e) {e.printStackTrace(); ipAddress = ipAddress + "Error in getIpAddress() ::" + e.toString() + "\n";}
+        } catch (SocketException e) {
+            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
+            ipAddress = ipAddress + "Error in getIpAddress() ::" + e.toString() + "\n";
+        }
         return ipAddress;
     }
 

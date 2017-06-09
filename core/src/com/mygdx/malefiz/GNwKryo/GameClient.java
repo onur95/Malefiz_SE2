@@ -7,9 +7,12 @@ import com.mygdx.malefiz.UpdateHandler;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameClient {
     private int TCP_PORT, UDP_PORT, TIMEOUT, player;
+    private static final Logger LOGGER = Logger.getLogger( GameClient.class.getName() );
     private Client client;
     private UpdateHandler handler;
     private Malefiz game;
@@ -36,6 +39,7 @@ public class GameClient {
             this.serverIp = serverIP;
         }catch(IOException e){
             e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
 

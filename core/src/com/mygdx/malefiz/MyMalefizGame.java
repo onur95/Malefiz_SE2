@@ -181,12 +181,12 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 		//camera.zoom = (initialDistance / distance) * currentZoom;
 		//camera.update();
-
-		if(initialDistance>=distance && camera.zoom!=1.0f){ //zoom out
+		float epsilon = 0.0000001F;
+		if(initialDistance>=distance && Math.abs(camera.zoom - 1.0f) > epsilon){ //zoom out
 			camera.zoom += 0.005f;
 			camera.update();
 		}
-		else if(initialDistance<=distance && camera.zoom!=0.6800003f){ //zoom in
+		else if(initialDistance<=distance && Math.abs(camera.zoom - 0.6800003f) > epsilon){ //zoom in
 			camera.zoom -= 0.005f;
 			camera.update();
 		}

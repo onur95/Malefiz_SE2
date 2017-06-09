@@ -10,14 +10,13 @@ import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NetworkTests {
-    static protected String ip = "127.0.0.1";   // Emulating Server-IP always throws this
-    static protected int tcpPort = 45455;
-    static protected int udpPort = 45456;
-    static protected int timeout = 10000;
-    int maxUserCount = 4;
-    GameServer server;
-    GameClient client;
-    Malefiz game;
+    private int tcpPort = 45455;
+    private int udpPort = 45456;
+    private int timeout = 10000;
+    private int maxUserCount = 4;
+    private GameServer server;
+    private GameClient client;
+    private Malefiz game;
 
     @Test
     public void createAndStopServer(){
@@ -32,7 +31,7 @@ public class NetworkTests {
         server.startServer();
 
         client = new GameClient(tcpPort, udpPort, timeout,game);
-        client.connect(ip);
+        client.connect("");
 
         client.terminate();
         server.stopServer();
@@ -48,7 +47,7 @@ public class NetworkTests {
 
         for(int i = 0; i < testcases; i++){
             clients[i] = new GameClient(tcpPort, udpPort, timeout, game);
-            clients[i].connect(ip);
+            clients[i].connect("");
         }
 
         for(int i = testcases; i == 0; i--){

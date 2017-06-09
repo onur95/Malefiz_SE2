@@ -362,8 +362,9 @@ public class BoardToPlayboard {
         float x = stage.getActors().get(index).getX();
         float y = stage.getActors().get(index).getY();
         int kicked = 0;
+        float epsilon = 0.0000001F;
         for(Actor actor : stage.getActors()){
-            if(actor.getX() == x && actor.getY() == y){
+            if(Math.abs(actor.getX() - x) < epsilon && Math.abs(actor.getY() - y) < epsilon){
                 kickedIndex = kicked;
                 break;
             }
