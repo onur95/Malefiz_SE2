@@ -1,8 +1,6 @@
 package com.mygdx.malefiz;
 
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.Random;
 
 /**
@@ -69,6 +67,7 @@ public class Dice {
                 diceAnimation.create(getResult(randomNumber()));
                 diceAnimation.render();
                 renderRunning = true;
+                playerSet = false;
 //            }
         }
         else if(renderRunning){

@@ -3,7 +3,6 @@ package com.mygdx.malefiz.GNwKryo;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.mygdx.malefiz.BoardUpdate;
-import com.mygdx.malefiz.MyMalefizGame;
 
 import java.util.ArrayList;
 import java.util.List;

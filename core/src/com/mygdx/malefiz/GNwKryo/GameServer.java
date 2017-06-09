@@ -3,12 +3,7 @@ package com.mygdx.malefiz.GNwKryo;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import com.esotericsoftware.minlog.Log;
 import com.mygdx.malefiz.BoardUpdate;
-import com.mygdx.malefiz.Screens.ConfigureScreen;
-
-import org.omg.CORBA.Context;
-import org.omg.CORBA.ExceptionList;
 
 import java.io.IOException;
 import java.net.InetAddress;

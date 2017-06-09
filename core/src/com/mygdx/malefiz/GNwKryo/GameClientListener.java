@@ -4,12 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.minlog.Log;
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.BoardToPlayboard;
-import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.MyMalefizGame;
-import com.mygdx.malefiz.Player;
 
 public class GameClientListener extends Listener {
     private GameClient client;
@@ -21,7 +16,7 @@ public class GameClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        if(client == null){
+        if(client == null || object == null){
             return;
         }
         // Received from Connection that Object

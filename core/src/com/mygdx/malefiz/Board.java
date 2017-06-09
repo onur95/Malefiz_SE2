@@ -1,9 +1,6 @@
 package com.mygdx.malefiz;
 
-import java.lang.reflect.Array;
-import java.util.List;
-
-import jdk.nashorn.internal.ir.Block;
+import com.badlogic.gdx.Gdx;
 
 /**
  * Created by Klaus on 02.04.2017.
@@ -32,8 +29,6 @@ public class Board {
                     ".1.1.2.2.3.3.4.4.",
                     ".1.1.2.2.3.3.4.4."};       // Leftside: 0,0
 
-// (4)                       "oo4ooBoo1Bo2oo3oB",
-
     private  final String[] boardMeta = reverseBoardMeta(meta);
     //G->Goal
     //B->Block
@@ -54,19 +49,16 @@ public class Board {
                 boardArray[column][char_index] = new Field(boardMeta[column].charAt(char_index));
             }
         }
-        /**Test-Data**/
-//        Player.setNumber(2);
-        /**Test-Data**/
     }
 
     private  String[] reverseBoardMeta(String [] defaultMeta){
-        String[] meta = defaultMeta;
-        for(int i=0;i<meta.length/2;i++){
-            String a = meta[meta.length-i-1];
-            meta[meta.length-i-1] = meta[i] ;
-            meta[i] = a;
+        String[] tempMeta = defaultMeta;
+        for(int i=0;i<tempMeta.length/2;i++){
+            String a = tempMeta[tempMeta.length-i-1];
+            tempMeta[tempMeta.length-i-1] = tempMeta[i] ;
+            tempMeta[i] = a;
         }
-        return meta;
+        return tempMeta;
     }
 
     public  Field[][] getBoardArray(){
@@ -95,40 +87,45 @@ public class Board {
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
                 char field = boardMeta[2].charAt(k);
-                if(field == '.'){continue;}
-                int playerNumber = Character.getNumericValue(field);
-                if(playerNumber==player.getNumber()){
-                    fieldTemp.setColumn(2);
-                    fieldTemp.setRow(k);
-                    break;
+                if(field != '.'){
+                    int playerNumber = Character.getNumericValue(field);
+                    if(playerNumber==player.getNumber()){
+                        fieldTemp.setColumn(2);
+                        fieldTemp.setRow(k);
+                        break;
+                    }
                 }
             }
         }
         return fieldTemp;
     }
 
-    public  void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore) {
-        checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field); //above
-        checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field); //below
-        checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field); //left
-        checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field); //right
+    public  void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore, boolean addHighlight) {
+        checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field, addHighlight); //above
+        checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field, addHighlight); //below
+        checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field, addHighlight); //left
+        checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field, addHighlight); //right
     }
 
-    private  void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter){
+    private  void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
         if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
-            FieldStates state=boardArray[column][row].getField_state();
-            checkDiceField(state,column,row,dice,positionBeforeAfter);
+            FieldStates state = boardArray[column][row].getField_state();
+            checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
         }
     }
 
-    private  void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore){
+    private  void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore, boolean addHighlight){
         dice--;
         if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
-                view.setHighlight(column,row);
+                Gdx.app.log("Board","setHighlight: "+column+", "+row);
+                view.setMovePossible(true);
+                if(addHighlight) {
+                    view.setHighlight(column, row);
+                }
             }
             else{
-                higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore);
+                higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore, addHighlight);
             }
         }
     }

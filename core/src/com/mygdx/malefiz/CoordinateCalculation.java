@@ -1,7 +1,6 @@
 package com.mygdx.malefiz;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
@@ -22,7 +21,6 @@ public class CoordinateCalculation {
     }
 
     public Coordinates getCoordinatesOfField(int column, int row){
-        Image field;
         //Falls die ersten zwei Reihen: anders generieren
         if(column<2){
             return setFirstFields(column, row);

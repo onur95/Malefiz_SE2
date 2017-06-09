@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.mygdx.malefiz.GNwKryo.GameClient;
-import com.mygdx.malefiz.GNwKryo.Network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +20,15 @@ public class UpdateHandler {
     private Board board;
     private Dice dice;
     private int playerCount;
+    private SoundManager soundManager;
 
-    public UpdateHandler(GameClient client, Dice dice, int playerCount){
+    public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager){
         client.setHandler(this);
         this.client = client;
         this.dice = dice;
         update = new ArrayList<BoardUpdate>(3);
         this.playerCount = playerCount;
+        this.soundManager = soundManager;
     }
 
     public void sendMessage(int playerTurn){
@@ -110,7 +111,7 @@ public class UpdateHandler {
 
 
         }
-        else{
+        else if(update.size() ==2){
             BoardUpdate move1 = update.get(0);
             BoardUpdate move2 = update.get(1);
 
@@ -129,6 +130,7 @@ public class UpdateHandler {
         }
 
         if(playerTurn == client.getPlayerNumber()){
+            soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
         }
 

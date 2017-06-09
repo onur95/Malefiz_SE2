@@ -1,10 +1,7 @@
 package com.mygdx.malefiz.GNwKryo;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.Player;
 
 
 public class GameServerListener extends Listener {
@@ -34,7 +31,7 @@ public class GameServerListener extends Listener {
 
     @Override
     public void disconnected(Connection connection){
-        server.sendMessage(server.removeClient(connection));
+        server.sendMessage(server.removeClient(connection)+1);
     }
 
 

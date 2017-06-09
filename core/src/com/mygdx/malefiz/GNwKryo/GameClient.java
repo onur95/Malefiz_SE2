@@ -1,8 +1,6 @@
 package com.mygdx.malefiz.GNwKryo;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.minlog.Log;
 import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.UpdateHandler;

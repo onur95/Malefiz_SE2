@@ -10,13 +10,10 @@ import java.util.List;
 public class Player {
     private int number;
     private List<Integer> highlightedFiguresIndizes = new ArrayList<Integer>();
+    private List<FieldPosition> figurePositions = new ArrayList<FieldPosition>();
 
     public Player(int number){
         this.number = number;
-    }
-
-    public void setNumber(int number1){
-        number = number1;
     }
 
     public int getNumber(){
@@ -27,7 +24,15 @@ public class Player {
         highlightedFiguresIndizes.add(index);
     }
 
+    public void addFigurePosition(int column, int row){
+        figurePositions.add(new FieldPosition(column, row));
+    }
+
     public List<Integer> getHighlightedFiguresIndizes() {
         return highlightedFiguresIndizes;
+    }
+
+    public List<FieldPosition> getFiguresPosition(){
+        return figurePositions;
     }
 }

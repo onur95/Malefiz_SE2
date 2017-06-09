@@ -1,11 +1,5 @@
 package com.mygdx.malefiz.Tests;
 
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.Player;
-
-import org.junit.Test;
-import org.testng.Assert;
-
 public class GameTests {
 //    protected Board board;
 //    protected Player p1, p2, p3, p4;

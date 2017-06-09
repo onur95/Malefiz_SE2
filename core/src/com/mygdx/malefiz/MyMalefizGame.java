@@ -22,14 +22,21 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private Image img_playground;
 	private final Malefiz mal;
 	private GameClient client;
+	private SoundManager soundManager;
 
 
 	public MyMalefizGame (final Malefiz mal, GameClient client, int playerCount) {
 		this.client = client;
 		this.mal=mal;
-		dice = new Dice(client.getPlayerNumber() != 1); //Spieler 1 fängt an; Würfel wird aktiviert
+		soundManager = new SoundManager();
+		boolean shakeStatus = true;
+		if(client.getPlayerNumber() == 1){
+			shakeStatus = false;
+			soundManager.playSound(Sounds.PLAYERTURN);
+		}
+		dice = new Dice(shakeStatus); //Spieler 1 fängt an; Würfel wird aktiviert
 		Board board = new Board();
-		UpdateHandler handler = new UpdateHandler(client, dice, playerCount);
+		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager);
 		BoardToPlayboard view= new BoardToPlayboard();
 		Player player = new Player(client.getPlayerNumber());
 		InputMultiplexer im = new InputMultiplexer();
@@ -47,7 +54,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		handler.setBoardAndView(view,board);
 
 
-		view.init(handler, player, stage, board, dice);
+		view.init(handler, player, stage, board, dice, soundManager);
 		dice.setView(view);
 		dice.setDiceAnimation();
 

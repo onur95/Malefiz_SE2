@@ -27,4 +27,9 @@ public class FieldPosition {
     public void setRow(int row) {
         this.row = row;
     }
+
+    @Override
+    public String toString(){
+        return "column: "+this.column + "; row: "+this.row;
+    }
 }

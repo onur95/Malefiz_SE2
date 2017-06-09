@@ -4,12 +4,9 @@ import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.GNwKryo.GameServer;
 import com.mygdx.malefiz.Malefiz;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.testng.Assert;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NetworkTests {

@@ -1,19 +1,12 @@
 package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.ColorAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +25,7 @@ public class BoardToPlayboard {
     private Image highlight;
     private Image playerHighlight;
     private Stage stage;
-    private float lineOffset;
-    private float pointOffset;
     private int actorActive;
-    private Sound yourTurn;
-    private Sound kickPlayer;
-    private Sound kickedPlayerMove;
-    private Sound placeBlock;
-    private Sound kickedOwnFigure;
-    private Sound moveFigure;
     private int actorsCount = -1;
     private int kickedIndex = -1;
     private int playerCount;
@@ -50,16 +35,10 @@ public class BoardToPlayboard {
     private Dice dice;
     private List<List<Integer>> players;
     private CoordinateCalculation helper;
+    private SoundManager soundManager;
+    private boolean movePossible = false;
+    private List<Integer> playerMovesPossible;
 
-
-    private  void init_sound(){
-        yourTurn=Gdx.audio.newSound(Gdx.files.internal("soundeffects/your-turn.wav"));
-        kickPlayer = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
-        kickedPlayerMove = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
-        placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
-        kickedOwnFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/own-figure-kicked.wav"));
-        moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
-    }
 
     private void init_players(){
         players = new ArrayList<List<Integer>>();
@@ -70,14 +49,23 @@ public class BoardToPlayboard {
         }
     }
 
-    public  void init(UpdateHandler handler, Player player, Stage stage, Board board, Dice dice){
+    public  void init(UpdateHandler handler, Player player, Stage stage, Board board, Dice dice, SoundManager soundManager){
         this.player = player;
         this.board_main = board;
         this.handler = handler;
         this.dice = dice;
+        this.board = board_main.getBoardArray();
+        this.stage = stage;
+        this.soundManager = soundManager;
         playerCount = handler.getPlayerCount();
-        init_sound();
+        helper = new CoordinateCalculation(stage);
+        playerMovesPossible = new ArrayList<Integer>();
         init_players();
+        setImages();
+        generate();
+    }
+
+    public void setImages(){
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
@@ -85,10 +73,6 @@ public class BoardToPlayboard {
         highlight=new Image(new Texture("Highlight.png"));
         playerHighlight=new Image(new Texture("Highlight_2.png"));
         block=new Image(new Texture("Block.png"));
-        this.board = board_main.getBoardArray();
-        this.stage = stage;
-        helper = new CoordinateCalculation(stage);
-        generate();
     }
 
     public void generate(){
@@ -213,6 +197,7 @@ public class BoardToPlayboard {
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
             try{
                 field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board_main, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+                player.addFigurePosition(column, row);
             }catch(NullPointerException e){
                 Gdx.app.log("GetFieldType", e.toString());
             }
@@ -225,13 +210,45 @@ public class BoardToPlayboard {
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
      */
     public  void setPlayerFiguresHighlighted(boolean status){
-        for (int index : player.getHighlightedFiguresIndizes()) {
-            setPlayerFigureHighlighted(index, status);
+        if(status){
+            playerMovesPossible = new ArrayList<Integer>();
+            if(!isMovePossible()) {
+                Gdx.app.log("Client", "No move possible");
+                handler.sendMessage(player.getNumber());
+                return;
+            }
+            else{
+                for (int i = 0; i< player.getHighlightedFiguresIndizes().size(); i++) {
+                    if(playerMovesPossible.contains(i)) {
+                        setPlayerFigureHighlighted(player.getHighlightedFiguresIndizes().get(i), status);
+                    }
+                }
+            }
         }
-        if(status) {//"Du bist dran"-Sound soll nur abgespielt werden, wenn alle Highlights durch den Dice angezeigt werden
-            playYourTurn();
+        else {
+            for (int index : player.getHighlightedFiguresIndizes()) {
+                setPlayerFigureHighlighted(index, status);
+            }
         }
+        Gdx.app.log("Own Players",player.getFiguresPosition().toString());
     }
+
+    private boolean isMovePossible(){
+        Gdx.app.log("Move", player.getFiguresPosition().toString());
+        playerMovesPossible.clear();
+        movePossible = false;
+        for(int i =0; i< player.getFiguresPosition().size(); i++) {
+            board_main.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
+            board_main.higlightPositionsMovement(dice.getResultNumber(), board_main.getRealFieldActive(), null, false);
+            if(movePossible){
+                playerMovesPossible.add(i);
+            }
+            movePossible = false;
+        }
+        Gdx.app.log("Move", playerMovesPossible.toString());
+        return playerMovesPossible.size() > 0;
+    }
+
 
 
     /**
@@ -252,7 +269,8 @@ public class BoardToPlayboard {
      */
     public   void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
         if(actorActive != -1 && !blockIsMoving) {
-            moveFigure.play();
+            soundManager.playSound(Sounds.MOVE);
+
             //Highlight wieder verschwinden lassen
             setPlayerFiguresHighlighted(false);
 
@@ -277,8 +295,20 @@ public class BoardToPlayboard {
     public void adjustPlayerClickListener(int column, int row, int index){
         for(EventListener event : stage.getActors().get(index).getListeners()){
             if(event.getClass() == PlayerClickListener.class){
+                Gdx.app.log("oldPosition",((PlayerClickListener)event).getRow() + " " + ((PlayerClickListener)event).getColumn());
+                adjustPlayers(((PlayerClickListener)event).getColumn(), ((PlayerClickListener)event).getRow(), column, row);
                 ((PlayerClickListener)event).setColumn(column);
                 ((PlayerClickListener)event).setRow(row);
+            }
+        }
+    }
+
+    private void adjustPlayers(int columnOld, int rowOld, int columnNew, int rowNew){
+        for(FieldPosition fieldPosition : player.getFiguresPosition()){
+            if(fieldPosition.getColumn() == columnOld && fieldPosition.getRow() == rowOld){
+                fieldPosition.setColumn(columnNew);
+                fieldPosition.setRow(rowNew);
+                Gdx.app.log("newPosition",columnNew + " " + rowNew);
             }
         }
     }
@@ -317,10 +347,6 @@ public class BoardToPlayboard {
      */
     public  void setActorActive(int index){
         actorActive = index;
-    }
-
-    public  void playYourTurn(){
-        yourTurn.play();
     }
 
     public  void setActorsCount(){
@@ -411,11 +437,19 @@ public class BoardToPlayboard {
         }
     }
 
+    public void setMovePossible(boolean status){
+        movePossible = status;
+    }
+
     public CoordinateCalculation getHelper(){
         return this.helper;
     }
 
     public Stage getStage(){
         return this.stage;
+    }
+
+    public List<Integer> getPlayerMovesPossible() {
+        return playerMovesPossible;
     }
 }

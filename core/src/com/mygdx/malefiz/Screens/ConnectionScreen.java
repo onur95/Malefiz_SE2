@@ -13,16 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.malefiz.GNwKryo.GameClient;
 import com.mygdx.malefiz.Malefiz;
-import com.mygdx.malefiz.MyMalefizGame;
 
 // TODO: Ausimplementierung der Klasse
 // Necessary ONLY for clients -- Servers are already in some game.
@@ -124,12 +120,12 @@ public class ConnectionScreen implements Screen {
     @Override
     public void dispose() {
         // Does this suffice for disposing connectionlist?
-        skin.dispose();
-        atlas.dispose();
-        stage.dispose();
         if(client != null) {
             client.terminate();
         }
+        skin.dispose();
+        atlas.dispose();
+        stage.dispose();
     }
 
     @Override

@@ -1,6 +1,13 @@
 package com.mygdx.malefiz;
 
-import static com.mygdx.malefiz.FieldStates.*;
+import static com.mygdx.malefiz.FieldStates.BLOCK;
+import static com.mygdx.malefiz.FieldStates.FIELD;
+import static com.mygdx.malefiz.FieldStates.GOAL;
+import static com.mygdx.malefiz.FieldStates.NOFIELD;
+import static com.mygdx.malefiz.FieldStates.PLAYER1;
+import static com.mygdx.malefiz.FieldStates.PLAYER2;
+import static com.mygdx.malefiz.FieldStates.PLAYER3;
+import static com.mygdx.malefiz.FieldStates.PLAYER4;
 
 
 

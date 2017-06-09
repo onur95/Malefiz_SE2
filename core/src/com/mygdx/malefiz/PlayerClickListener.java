@@ -31,7 +31,6 @@ public class PlayerClickListener extends ClickListener {
         //Player.getHighlightedFiguresIndizes().contains(actorIndex) --> Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
         if(isPlayersTurnHighlighted()) {
             view.removeHighlights();
-            board.setFieldActive(this.column, this.row);
 
             //alle anderen Highlights der Spielerfiguren bis auf die ausgewählte Figur auf visible: false setzen
             view.setPlayerFiguresHighlighted(false);
@@ -40,8 +39,19 @@ public class PlayerClickListener extends ClickListener {
             view.setActorActive(actorIndex);
             //TODO: warten bis der würfel fertig gewürfelt hat!
             view.setActorsCount();  //Um Highlights rauszulöschen
-            board.higlightPositionsMovement(dice.getResultNumber(),board.getRealFieldActive(),null);
+
+            board.setFieldActive(this.column, this.row);
+            board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, true);
+
         }
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public int getRow() {
+        return row;
     }
 
     public void setColumn(int column) {
@@ -58,6 +68,12 @@ public class PlayerClickListener extends ClickListener {
         for(int index : player.getHighlightedFiguresIndizes()){
             if(view.getStage().getActors().get(index).isVisible()){
                 status = true;
+            }
+        }
+        for(int i = 0; i < player.getFiguresPosition().size(); i++){
+            if(player.getFiguresPosition().get(i).getColumn() == this.column && player.getFiguresPosition().get(i).getRow() == this.row
+                    && !view.getPlayerMovesPossible().contains(i)){
+                status = false;
             }
         }
         return status;
