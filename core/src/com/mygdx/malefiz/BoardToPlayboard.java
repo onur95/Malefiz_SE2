@@ -36,7 +36,6 @@ public class BoardToPlayboard {
     private List<List<Integer>> players;
     private CoordinateCalculation helper;
     private SoundManager soundManager;
-    private boolean movePossible = false;
     private List<Integer> playerMovesPossible;
 
 
@@ -164,7 +163,7 @@ public class BoardToPlayboard {
      * @return Das Feld wird als Image zurückgegeben
      */
     private  Image getFieldType(int column, int row){
-        Image field = null;
+        Image field;
         switch (board[column][row].getField_state()) {
             case PLAYER1:
                 field = new Image(player1.getDrawable());
@@ -191,16 +190,17 @@ public class BoardToPlayboard {
                 //Wenn es gehighlightet ist und man drauf klickt
                 field = new Image();
                 break;
+
+            default:
+                field = null;
+                break;
         }
-        if(board[column][row].getField_state().ordinal() == player.getNumber()){
+
+        if(field != null && board[column][row].getField_state().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
-            try{
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board_main, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
-                player.addFigurePosition(column, row);
-            }catch(NullPointerException e){
-                Gdx.app.log("GetFieldType", e.toString());
-            }
+            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board_main, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            player.addFigurePosition(column, row);
         }
         return field;
     }
@@ -236,14 +236,12 @@ public class BoardToPlayboard {
     private boolean isMovePossible(){
         Gdx.app.log("Move", player.getFiguresPosition().toString());
         playerMovesPossible.clear();
-        movePossible = false;
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
             board_main.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
-            board_main.higlightPositionsMovement(dice.getResultNumber(), board_main.getRealFieldActive(), null, false);
+            boolean movePossible = board_main.higlightPositionsMovement(dice.getResultNumber(), board_main.getRealFieldActive(), null, false);
             if(movePossible){
                 playerMovesPossible.add(i);
             }
-            movePossible = false;
         }
         Gdx.app.log("Move", playerMovesPossible.toString());
         return playerMovesPossible.size() > 0;
@@ -435,10 +433,6 @@ public class BoardToPlayboard {
         for(int index : players.get(player-1)){
             stage.getActors().get(index).setVisible(status);
         }
-    }
-
-    public void setMovePossible(boolean status){
-        movePossible = status;
     }
 
     public CoordinateCalculation getHelper(){

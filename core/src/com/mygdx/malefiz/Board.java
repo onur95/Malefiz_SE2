@@ -100,34 +100,40 @@ public class Board {
         return fieldTemp;
     }
 
-    public  void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore, boolean addHighlight) {
-        checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field, addHighlight); //above
-        checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field, addHighlight); //below
-        checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field, addHighlight); //left
-        checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field, addHighlight); //right
+    public boolean higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore, boolean addHighlight) {
+        boolean val1 = checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field, addHighlight); //above
+        boolean val2 = checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field, addHighlight); //below
+        boolean val3 = checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field, addHighlight); //left
+        boolean val4 = checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field, addHighlight); //right
+        return val1 || val2 || val3 || val4;
     }
 
-    private  void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
+    private  boolean checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
+        boolean status = false;
         if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
             FieldStates state = boardArray[column][row].getField_state();
-            checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
+            status = checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
         }
+        return status;
     }
 
-    private  void checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore, boolean addHighlight){
+    private  boolean checkDiceField(FieldStates myState, int column, int row, int dice, FieldPosition positionBefore, boolean addHighlight){
         dice--;
+        boolean status = false;
+        boolean secondStatus = false;
         if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
             if(dice == 0){
                 Gdx.app.log("Board","setHighlight: "+column+", "+row);
-                view.setMovePossible(true);
+                status = true;
                 if(addHighlight) {
                     view.setHighlight(column, row);
                 }
             }
             else{
-                higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore, addHighlight);
+                secondStatus = higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore, addHighlight);
             }
         }
+        return status || secondStatus;
     }
 
     public  boolean isPlayer(int ordinal){
