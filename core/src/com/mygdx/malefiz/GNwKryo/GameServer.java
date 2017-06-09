@@ -144,7 +144,7 @@ public class GameServer {
     }
 
     public int removeClient(Connection connection){
-        Gdx.app.log("Server", "Client disconnected");
+        System.out.println("Server :: Client disconnected");
         int clientIndex = -1;
         for(int i = 0; i < clients.size(); i++){
             if(!clients.get(i).isConnected()){
