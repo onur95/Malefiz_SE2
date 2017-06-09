@@ -46,7 +46,6 @@ public class GameServer {
         try{
             server.bind(TCP_PORT, UDP_PORT);
         }catch(IOException e){
-            e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
@@ -80,7 +79,6 @@ public class GameServer {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.toString(), e);
             ipAddress = ipAddress + "Error in getIpAddress() ::" + e.toString() + "\n";
         }

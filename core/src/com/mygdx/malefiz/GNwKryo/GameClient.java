@@ -38,7 +38,6 @@ public class GameClient {
 
             this.serverIp = serverIP;
         }catch(IOException e){
-            e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
     }
