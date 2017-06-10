@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.screens;
+package com.mygdx.malefiz.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.Screens.MainMenuScreen;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +65,7 @@ public class ConnectionScreen implements Screen {
         imageButtonConnect.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                Gdx.input.setOnscreenKeyboardVisible(false);
                 final String ip = eIPText.getText();
                 client = new GameClient(44775, 44776, 10000, game);
                 try{

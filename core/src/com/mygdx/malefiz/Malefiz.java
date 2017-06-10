@@ -2,7 +2,7 @@ package com.mygdx.malefiz;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.mygdx.malefiz.screens.MainMenuScreen;
+import com.mygdx.malefiz.Screens.MainMenuScreen;
 
 /**
  * Created by Onur on 04.04.2017.
