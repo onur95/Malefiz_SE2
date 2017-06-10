@@ -1,10 +1,11 @@
-package com.mygdx.malefiz.tests;
+package com.mygdx.malefiz.Tests;
 
+import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.networking.GameServer;
-import com.mygdx.malefiz.Malefiz;
-import org.junit.Test;
+
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

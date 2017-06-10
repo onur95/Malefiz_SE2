@@ -1,6 +1,5 @@
 package com.mygdx.malefiz.networking;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -43,7 +42,7 @@ public class GameClientListener extends Listener {
 
                     @Override
                     public void run() {
-                        ((Game)Gdx.app.getApplicationListener()).setScreen(new MyMalefizGame(client, startClient.playerCount));
+                        client.getGame().setScreen(new MyMalefizGame(client.getGame(),client, startClient.playerCount));
                     }
                 });
 
@@ -52,7 +51,7 @@ public class GameClientListener extends Listener {
                 client.terminate();
             }
         }
-        else if(object instanceof Network.PlayerDisconnected) {//String wird ncoh geändert
+        else if(object instanceof Network.PlayerDisconnected) {//String wird noch geändert
             client.getHandler().playerDisconnected(((Network.PlayerDisconnected) object).player);
         }
     }

@@ -1,6 +1,5 @@
 package com.mygdx.malefiz.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -19,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
-import com.mygdx.malefiz.Screens.MainMenuScreen;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

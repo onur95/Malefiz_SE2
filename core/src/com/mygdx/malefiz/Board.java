@@ -162,6 +162,7 @@ public class Board {
                 if(Character.isDigit(boardMeta[x].charAt(y)) && Character.getNumericValue(boardMeta[x].charAt(y)) == boardArray[column][row].getFieldState().ordinal() && boardArray[x][y].getFieldState() == FieldStates.NOFIELD){
                     newPlayerPosition = new FieldPosition(x,y);
                     boardArray[x][y] = new Field(boardMeta[x].charAt(y));
+                    return;
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.mygdx.malefiz.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -20,7 +19,6 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.networking.GameServer;
-import com.mygdx.malefiz.Screens.MainMenuScreen;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,7 +99,6 @@ public class ConfigureScreen implements Screen {
                 if(client != null){
                     client.terminate();
                 }
-                //((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
                 game.setScreen(new MainMenuScreen(game));
             }
         });

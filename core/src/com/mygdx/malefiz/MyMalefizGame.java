@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.Screens.GameMenu;
+import com.mygdx.malefiz.networking.GameClient;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
@@ -30,9 +30,11 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private float currentZoom;
 	private TextureAtlas atlas;
 	private Skin skin;
+	private final Malefiz game;
 
-	public MyMalefizGame (GameClient client, int playerCount) {
+	public MyMalefizGame (Malefiz game, GameClient client, int playerCount) {
 		this.client = client;
+		this.game = game;
 		soundManager = new SoundManager();
 		boolean shakeStatus = true;
 		if(client.getPlayerNumber() == 1){

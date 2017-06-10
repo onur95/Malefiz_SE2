@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.tests;
+package com.mygdx.malefiz.Tests;
 
 public class GameTests {
 //    protected Board board;
