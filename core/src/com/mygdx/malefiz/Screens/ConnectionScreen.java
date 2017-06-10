@@ -87,7 +87,8 @@ public class ConnectionScreen implements Screen {
                 if(client != null) {
                     client.terminate();
                 }
-                ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+               // ((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                game.setScreen(new MainMenuScreen(game));
             }
         });
 
