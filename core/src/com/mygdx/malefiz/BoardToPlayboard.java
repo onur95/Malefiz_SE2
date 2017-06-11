@@ -362,7 +362,7 @@ public class BoardToPlayboard {
             }
             kicked++;
         }
-        stage.getActors().get(kickedIndex).setVisible(isVisible);
+        setKickedVisibility(isVisible);
     }
 
     /**
@@ -389,8 +389,8 @@ public class BoardToPlayboard {
     /**
      * Der Block, der neu positioniert wird, wird nach seiner Bewegung, zu den entsprechenden Koordinaten, wieder auf visible true gesetzt
      */
-    public void setKickedVisibility(){
-        stage.getActors().get(kickedIndex).setVisible(true);
+    public void setKickedVisibility(boolean status){
+        stage.getActors().get(kickedIndex).setVisible(status);
     }
 
     public  int getKickedIndex(){

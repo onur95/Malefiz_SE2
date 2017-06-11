@@ -11,7 +11,7 @@ public class Board {
     private  Player player;
     private  BoardToPlayboard view;
     private  Field[][] boardArray; //Das aktuelle Spielfeld
-    private static final String[] meta =   //Das Grundgerüst des Spielfeldes
+    private final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
                     "ooooooooBoooooooo",
                     "o...............o",
@@ -74,7 +74,6 @@ public class Board {
     public  void moveTo(int column, int row, boolean isBlock){
         if(isBlock){
             boardArray[column][row] = new Field('B');
-            view.setKickedVisibility();
         }
         else {
             boardArray[column][row] = boardArray[fieldActive.getColumn()][fieldActive.getRow()];
@@ -89,7 +88,7 @@ public class Board {
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
                 char field = boardMeta[2].charAt(k);
-                if(Character.isDigit(field) && Character.getNumericValue(field) == player.getNumber()){
+                if(Character.isDigit(field) && (new Field(field)).getFieldState() == boardArray[fieldActive.getColumn()][fieldActive.getRow()].getFieldState()){
                     fieldTemp.setColumn(2);
                     fieldTemp.setRow(k);
                     break;
@@ -191,6 +190,5 @@ public class Board {
             }
         }
     }
-
 
 }
