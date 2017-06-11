@@ -5,7 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.mygdx.malefiz.coordinates.Coordinates;
+import com.mygdx.malefiz.dice.Dice;
+import com.mygdx.malefiz.field.Field;
+import com.mygdx.malefiz.networking.BoardUpdate;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.sound.SoundManager;
+import com.mygdx.malefiz.sound.Sounds;
+import com.mygdx.malefiz.view.BoardToPlayboard;
 
 import java.util.ArrayList;
 import java.util.List;

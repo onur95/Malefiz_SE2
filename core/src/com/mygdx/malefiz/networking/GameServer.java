@@ -3,7 +3,7 @@ package com.mygdx.malefiz.networking;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
-import com.mygdx.malefiz.BoardUpdate;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

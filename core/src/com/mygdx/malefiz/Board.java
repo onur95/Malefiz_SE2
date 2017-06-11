@@ -1,5 +1,10 @@
 package com.mygdx.malefiz;
 
+import com.mygdx.malefiz.field.Field;
+import com.mygdx.malefiz.field.FieldPosition;
+import com.mygdx.malefiz.field.FieldStates;
+import com.mygdx.malefiz.view.BoardToPlayboard;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,8 +14,8 @@ import java.util.logging.Logger;
 
 public class Board {
     private  Player player;
-    private  BoardToPlayboard view;
-    private  Field[][] boardArray; //Das aktuelle Spielfeld
+    private BoardToPlayboard view;
+    private Field[][] boardArray; //Das aktuelle Spielfeld
     private final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
                     "ooooooooBoooooooo",
@@ -37,8 +42,8 @@ public class Board {
     //o->Normales Feld
     //.->kein benutzbares Feld
     //1-4->Player 1-4
-    private  FieldPosition fieldActive;
-    private  FieldPosition newPlayerPosition;
+    private FieldPosition fieldActive;
+    private FieldPosition newPlayerPosition;
 
 
     public Board(Player play, BoardToPlayboard view){
@@ -83,7 +88,7 @@ public class Board {
         fieldActive = null;
     }
 
-    public  FieldPosition getRealFieldActive(){
+    public FieldPosition getRealFieldActive(){
         FieldPosition fieldTemp = new FieldPosition(fieldActive.getColumn(), fieldActive.getRow()); // wenn =  fieldActive dann Referenz!!!!!
         if(fieldTemp.getColumn() < 2){
             for(int k=0;k<boardMeta[2].length();k++){
@@ -150,7 +155,7 @@ public class Board {
         return boardArray[column][row].getFieldState() == FieldStates.FIELD;
     }
 
-    public  FieldPosition getFieldActive(){
+    public FieldPosition getFieldActive(){
         return fieldActive;
     }
 
@@ -167,7 +172,7 @@ public class Board {
         }
     }
 
-    public  FieldPosition getNewPlayerPosition(){
+    public FieldPosition getNewPlayerPosition(){
         return newPlayerPosition;
     }
 

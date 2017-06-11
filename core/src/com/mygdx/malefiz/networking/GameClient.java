@@ -1,7 +1,6 @@
 package com.mygdx.malefiz.networking;
 
 import com.esotericsoftware.kryonet.Client;
-import com.mygdx.malefiz.BoardUpdate;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.UpdateHandler;
 
@@ -28,7 +27,7 @@ public class GameClient {
         this.game = game;
 
         client = new Client();
-        com.mygdx.malefiz.networking.Network.registerKryoClasses(client);
+        Network.registerKryoClasses(client);
     }
 
     public void connect(String serverIP){
@@ -67,7 +66,7 @@ public class GameClient {
     // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
     // Data sent in transmission <=> Params processed in GameServerListener
     public void sendData(List<BoardUpdate> update, int playerTurn){
-        com.mygdx.malefiz.networking.Network.ClientMessage transmission = new com.mygdx.malefiz.networking.Network.ClientMessage();
+        Network.ClientMessage transmission = new Network.ClientMessage();
         transmission.update = update;
         transmission.playerTurn = playerTurn;
 

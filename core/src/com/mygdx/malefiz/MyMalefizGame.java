@@ -16,7 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.malefiz.Screens.GameMenu;
+import com.mygdx.malefiz.cheats.CheatEngine;
+import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.sound.SoundManager;
+import com.mygdx.malefiz.sound.Sounds;
+import com.mygdx.malefiz.view.BoardToPlayboard;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
@@ -39,10 +44,13 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		setCamera();
 
 		SoundManager soundManager = new SoundManager();
-		GameMenu menu = new GameMenu(stage, client.getServerIp());
 		Player player = new Player(client.getPlayerNumber());
 		BoardToPlayboard view = new BoardToPlayboard();
 		Board board = new Board(player, view);
+
+		CheatEngine cheatEngine = new CheatEngine(view, board);
+
+		GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine);
 		this.dice = new Dice(getShakeStatus(soundManager), view);
 		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
 		view.init(handler, player, stage, board, dice, soundManager);

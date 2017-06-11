@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.coordinates;
 
 /**
  * Created by Lilibeth on 22.05.2017.

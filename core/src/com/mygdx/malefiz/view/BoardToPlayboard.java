@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.view;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -6,6 +6,17 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.malefiz.Board;
+import com.mygdx.malefiz.coordinates.CoordinateCalculation;
+import com.mygdx.malefiz.coordinates.Coordinates;
+import com.mygdx.malefiz.dice.Dice;
+import com.mygdx.malefiz.field.FieldPosition;
+import com.mygdx.malefiz.sound.SoundManager;
+import com.mygdx.malefiz.view.clicklistener.HighlightClickListener;
+import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.view.clicklistener.PlayerClickListener;
+import com.mygdx.malefiz.UpdateHandler;
+import com.mygdx.malefiz.sound.Sounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -368,7 +379,7 @@ public class BoardToPlayboard {
      * Player wird gekickt und somit wieder in seinen Startbereich gesetzt. Die column und row, wo dieser Startbereich liegt, wurden zuvor in der Funktion movePlayerToStart von Board gesetzt
      * @return Die Koordinaten des Startbereiches, in dem der Kegel nun platziert wurde, werden zurückgegeben
      */
-    public  FieldPosition moveKicked(){
+    public FieldPosition moveKicked(){
         FieldPosition fieldPosition = null;
         if(kickedIndex != -1){
             int column = board.getNewPlayerPosition().getColumn();

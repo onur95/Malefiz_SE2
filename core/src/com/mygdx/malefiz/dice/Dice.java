@@ -1,5 +1,7 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.dice;
 
+
+import com.mygdx.malefiz.view.BoardToPlayboard;
 
 import java.util.Random;
 

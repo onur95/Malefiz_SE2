@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.coordinates;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 

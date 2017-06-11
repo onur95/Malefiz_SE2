@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.networking;
 
 
 // Schnittstelle zu Networking

@@ -1,9 +1,15 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.cheats;
+
+import com.mygdx.malefiz.Board;
+import com.mygdx.malefiz.view.BoardToPlayboard;
 
 public class CheatEngine {
+    private BoardToPlayboard view;
+    private Board board;
 
-    public CheatEngine(){
-        // Constructor
+    public CheatEngine(BoardToPlayboard view, Board board){
+        this.board = board;
+        this.view = view;
     }
 
     // Pseudo-Interface for calling right cheat.

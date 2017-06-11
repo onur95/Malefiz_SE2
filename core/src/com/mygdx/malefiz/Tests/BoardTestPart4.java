@@ -1,20 +1,12 @@
 package com.mygdx.malefiz.Tests;
 
 import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.BoardToPlayboard;
-import com.mygdx.malefiz.Field;
-import com.mygdx.malefiz.FieldPosition;
-import com.mygdx.malefiz.FieldStates;
+import com.mygdx.malefiz.view.BoardToPlayboard;
+import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.Player;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;

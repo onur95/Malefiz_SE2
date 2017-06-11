@@ -1,10 +1,9 @@
 package com.mygdx.malefiz.Tests;
 
 import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.BoardToPlayboard;
+import com.mygdx.malefiz.view.BoardToPlayboard;
 import com.mygdx.malefiz.Player;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

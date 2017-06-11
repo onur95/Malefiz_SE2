@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.sound;
 
 /**
  * Created by Klaus on 09.06.2017.

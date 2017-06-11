@@ -1,6 +1,6 @@
 package com.mygdx.malefiz.Tests;
 
-import com.mygdx.malefiz.BoardToPlayboard;
+import com.mygdx.malefiz.view.BoardToPlayboard;
 
 import org.junit.Test;
 

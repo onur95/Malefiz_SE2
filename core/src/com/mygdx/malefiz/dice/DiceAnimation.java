@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.dice;
 
 /**
  * Created by Lilibeth on 26.04.2017.

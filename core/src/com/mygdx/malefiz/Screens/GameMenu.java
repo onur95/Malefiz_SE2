@@ -10,7 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.malefiz.CheatEngineObserver;
+import com.mygdx.malefiz.cheats.CheatEngine;
+import com.mygdx.malefiz.cheats.CheatEngineObserver;
 
 /* Serves the purpose to do something Ingame */
 
@@ -21,14 +22,17 @@ public class GameMenu
     private Stage stage;
     private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
     private String serverIp;
+    // CodeEntry MUST REMAIN GLOBAL. Otherwise Bugs.
+    public CheatEngineObserver ceo;
+    TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
 
-    public GameMenu(Stage stage, String serverIp){
+    public GameMenu(Stage stage, String serverIp, CheatEngine cheatEngine){
         this.stage = stage;
         this.serverIp = serverIp;
+        this.ceo = new CheatEngineObserver(cheatEngine);
     }
 
-    public Actor createExit()
-    {
+    public Actor createExit(){
         exitButton = new TextButton("Exit Game", defSkin);
         exitButton.setPosition(250, 943);
         exitButton.addListener(new ClickListener(){
@@ -53,8 +57,7 @@ public class GameMenu
         return exitButton;
     }
 
-    public Actor createMenu()
-    {
+    public Actor createMenu(){
         menuButton = new TextButton("Game Menu", defSkin);
         menuButton.setPosition(1125, 925);
 
@@ -82,9 +85,6 @@ public class GameMenu
         return menuButton;
     }
 
-    // CodeEntry MUST REMAIN GLOBAL. Otherwise Bugs.
-    public CheatEngineObserver ceo = new CheatEngineObserver();
-    TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
     public void cheatMenu(){
         Dialog dialog = new Dialog("Cheat Menu", defSkin){
             public void result(Object object){

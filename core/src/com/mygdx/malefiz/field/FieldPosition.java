@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.field;
 
 /**
  * Created by kstri on 03.04.2017.

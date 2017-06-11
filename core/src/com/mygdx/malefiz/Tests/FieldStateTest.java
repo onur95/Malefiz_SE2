@@ -1,7 +1,7 @@
 package com.mygdx.malefiz.Tests;
 
-import com.mygdx.malefiz.Field;
-import com.mygdx.malefiz.FieldStates;
+import com.mygdx.malefiz.field.Field;
+import com.mygdx.malefiz.field.FieldStates;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,12 +1,10 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.cheats;
 
 import com.badlogic.gdx.Gdx;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CheatEngineObserver{
     static String code = "";
@@ -21,8 +19,9 @@ public class CheatEngineObserver{
         Gdx.app.log("CheatEngineObserver.setListener on ceo", "Executed.");
     }
 
-    public CheatEngineObserver(){
-        pcs = new PropertyChangeSupport(this);
+    public CheatEngineObserver(CheatEngine ce){
+        this.ce = ce;
+        this.pcs = new PropertyChangeSupport(this);
     }
 
     public void setCheat(String codeEntry){
@@ -53,7 +52,6 @@ public class CheatEngineObserver{
                 // #2 Create Message & Send it
 
                 // Finally execute the CheatCode
-                ce = new CheatEngine();
                 ce.cheatCaller(CheatEngineObserver.code);
             }
         }

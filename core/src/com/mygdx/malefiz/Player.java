@@ -1,5 +1,7 @@
 package com.mygdx.malefiz;
 
+import com.mygdx.malefiz.field.FieldPosition;
+
 import java.util.ArrayList;
 import java.util.List;
 
