@@ -16,7 +16,7 @@ public class NetworkTests {
     private int maxUserCount = 4;
     private GameServer server;
     private GameClient client;
-    private Malefiz game;
+    private Malefiz game = new Malefiz();
 
     @Test
     public void createAndStopServer(){
@@ -53,30 +53,7 @@ public class NetworkTests {
         for(int i = testcases-1; i >= 0; i--){
             clients[i].terminate();
         }
-        // server.stopServer(); Redundant: Once the last one disconnects, the server shuts down automatically
+        // stopServer Redundant: Once the last one disconnects, the server shuts down automatically
     }
 
-    /*
-    @Test
-    public void sendMessageClientToServer(){
-        server = new GameServer(tcpPort, udpPort, maxUserCount);
-        server.startServer();
-
-        client = new GameClient(tcpPort, udpPort, timeout, game);
-        client.connect(ip);
-
-       // client.sendData(); >> CheatEngine. NOW.
-    }
-
-    @Test
-    public void sendMessagServerToClient(){
-        server = new GameServer(tcpPort, udpPort, maxUserCount);
-        server.startServer();
-
-        client = new GameClient(tcpPort, udpPort, timeout, game);
-        client.connect(ip);
-
-        //server.sendMessage();
-    }
-*/
 }

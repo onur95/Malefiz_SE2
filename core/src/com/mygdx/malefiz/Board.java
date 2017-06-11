@@ -16,7 +16,7 @@ public class Board {
     private  Player player;
     private BoardToPlayboard view;
     private Field[][] boardArray; //Das aktuelle Spielfeld
-    private final String[] meta =   //Das Grundgerüst des Spielfeldes
+    private static final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
                     "ooooooooBoooooooo",
                     "o...............o",
@@ -35,7 +35,7 @@ public class Board {
                     ".1.1.2.2.3.3.4.4.",
                     ".1.1.2.2.3.3.4.4."};       // Leftside: 0,0
 
-    private  final String[] boardMeta = reverseBoardMeta(meta);
+    private final String[] boardMeta = reverseBoardMeta(meta);
     private static final Logger LOGGER = Logger.getLogger( Board.class.getName() );
     //G->Goal
     //B->Block
@@ -59,7 +59,7 @@ public class Board {
     }
 
     private  String[] reverseBoardMeta(String [] defaultMeta){
-        String[] tempMeta = defaultMeta;
+        String[] tempMeta = defaultMeta.clone();
         for(int i=0;i<tempMeta.length/2;i++){
             String a = tempMeta[tempMeta.length-i-1];
             tempMeta[tempMeta.length-i-1] = tempMeta[i] ;
@@ -113,18 +113,24 @@ public class Board {
 
     private  boolean checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
         boolean status = false;
-        if(column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
+        if(checkOutOfBounds(column, row) &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
             FieldStates state = boardArray[column][row].getFieldState();
             status = checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
         }
         return status;
     }
 
+    private boolean checkOutOfBounds(int column, int row){
+        return column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length;
+    }
+
     private  boolean checkDiceField(FieldStates myState, int column, int row, int diceBefore, FieldPosition positionBefore, boolean addHighlight){
         int dice = diceBefore - 1;
         boolean status = false;
         boolean secondStatus = false;
-        if(!(myState == FieldStates.NOFIELD || dice == 0 && myState.ordinal() == player.getNumber() || myState == FieldStates.BLOCK && dice > 0)){
+        boolean playerNotKickable = dice == 0 && myState.ordinal() == player.getNumber();
+        boolean blockNotKickable = myState == FieldStates.BLOCK && dice > 0;
+        if(!(myState == FieldStates.NOFIELD || playerNotKickable || blockNotKickable)){
             if(dice == 0){
                 LOGGER.log(Level.FINE, "Board: setHighlight("+column+" "+row+")");
                 status = true;
