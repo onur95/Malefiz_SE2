@@ -182,11 +182,22 @@ public class Board {
         return newPlayerPosition;
     }
 
-    public  void setAllHighlighted(){
+    /**
+     * @param enteredCheat -- boolean used only for cheatentry. Enables *all* fields
+     */
+    public  void setAllHighlighted(boolean enteredCheat){
         for(int x = 0; x < boardArray.length; x++) {
             for (int y = 0; y < boardArray[x].length; y++) {
                 if(boardArray[x][y].getFieldState() == FieldStates.FIELD){
                     view.setHighlight(x,y);
+                }
+                if(enteredCheat == true){
+                    if(boardArray[x][y].getFieldState() == FieldStates.GOAL){
+                        view.setHighlight(x,y);
+                    }
+                    if(boardArray[x][y].getFieldState() == FieldStates.BLOCK){
+                        view.setHighlight(x,y);
+                    }
                 }
             }
         }
