@@ -21,9 +21,9 @@ public class GameServerListener extends Listener {
         LOGGER.log(Level.FINE, "Server: Message received");
         // Received object from connection
 
-        if (object instanceof com.mygdx.malefiz.networking.Network.ClientMessage) {
+        if (object instanceof Network.ClientMessage) {
             // Parse Data to use it.
-            com.mygdx.malefiz.networking.Network.ClientMessage clientTransmission = (com.mygdx.malefiz.networking.Network.ClientMessage) object;
+            Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
             server.sendMessage(clientTransmission.update, clientTransmission.playerTurn);
             //message Senden mit clientTransmission
         }
