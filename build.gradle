@@ -102,10 +102,19 @@ project(":core") {
     }
 
     jacocoTestReport {
+        additionalSourceDirs = files()
+        sourceDirectories = files()
+        executionData = files()
+
         reports {
             xml.enabled = true
-            csv.enabled = true
+            csv.enabled = false
+            html.enabled = true
             html.destination "${buildDir}/jacocoHtml"
+        }
+
+        onlyIf = {
+            true
         }
     }
 
