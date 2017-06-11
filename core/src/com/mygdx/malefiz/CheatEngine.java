@@ -1,10 +1,30 @@
 package com.mygdx.malefiz;
 
 public class CheatEngine {
+
+    public CheatEngine(){
+        // Constructor
+    }
+
     // Pseudo-Interface for calling right cheat.
-    // Static necessary (GameMenu.x.y-Button as Caller)
     public void cheatCaller(String code) {
-        // TODO: Potential StringOps for more concrete cheatoperations
+        // Call via ce in CheatEngineObserver
+        switch(code){
+            case "1":
+                setBlocks();
+                break;
+            case "2":
+                resetPlayer();
+                break;
+            case "3":
+                moveToAnyField();
+                break;
+            default:
+                // Literally do nothing.
+                break;
+
+        }
+        /* Deprecated. Use instead, if switch malfunctions
         if(code.equals("1")){
             setBlocks();
         }
@@ -15,9 +35,9 @@ public class CheatEngine {
             moveToAnyField();
 
         }else{
-            // Entered wrong cheat.
-            // Set to 'ignore' and resume game.
+            // Just resume game.
         }
+        */
 
     }
 
@@ -42,12 +62,11 @@ board.setFieldActive(column,row); //Position des Blockes im Array
 board.setAllHighlighted();
             */
 
-
-
         }
     }
 
     private void resetPlayer() {
+        // TODO
 
     }
 
@@ -59,5 +78,6 @@ board.setAllHighlighted();
 
         }
         */
+
     }
 }
