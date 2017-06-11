@@ -50,7 +50,7 @@ public class NetworkTests {
             clients[i].connect("");
         }
 
-        for(int i = testcases; i >= 0; i--){
+        for(int i = testcases-1; i >= 0; i--){
             clients[i].terminate();
         }
         // server.stopServer(); Redundant: Once the last one disconnects, the server shuts down automatically
