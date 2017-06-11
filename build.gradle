@@ -91,7 +91,9 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
+    apply plugin: "application"
     apply plugin: "jacoco"
+
 
     test {
         finalizedBy jacocoTestReport
@@ -99,23 +101,22 @@ project(":core") {
 
     jacoco {
         toolVersion = "0.7.7.201606060606"
+        reportsDir = file("$buildDir/core/build/test-results/test")
+//        destinationFile("$buildDir/core/build/test-results/test")
+//        classDumpFile = file("$buildDir/core/build/test-results/test")
     }
 
     jacocoTestReport {
-        additionalSourceDirs = files()
-        sourceDirectories = files()
-        executionData = files()
-
         reports {
-            xml.enabled = true
+            xml.enabled = false
             csv.enabled = false
-            html.enabled = true
+            html.enabled = false
             html.destination "${buildDir}/jacocoHtml"
         }
 
-        onlyIf = {
-            true
-        }
+//        onlyIf = {
+//            true
+//        }
     }
 
     dependencies {
