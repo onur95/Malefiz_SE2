@@ -35,7 +35,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 		setSkin();
 		setGestures();
-		setPayground();
+		setPlayground();
 		setCamera();
 
 		SoundManager soundManager = new SoundManager();
@@ -81,7 +81,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
 	}
 
-	private void setPayground(){
+	private void setPlayground(){
 		Texture txtPlayground = new Texture("Playboard.jpg");
 		Image imgPlayground=new Image(txtPlayground);
 

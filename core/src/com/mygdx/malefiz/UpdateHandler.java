@@ -47,11 +47,6 @@ public class UpdateHandler {
         return playerCount;
     }
 
-    public void setBoardAndView(BoardToPlayboard view, Board board){
-        this.view = view;
-        this.board = board;
-    }
-
     public void add(BoardUpdate item){
         update.add(item);
     }
