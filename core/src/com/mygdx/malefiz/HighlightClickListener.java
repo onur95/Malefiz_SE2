@@ -46,6 +46,9 @@ public class HighlightClickListener extends ClickListener {
             handler.add(new BoardUpdate(view.getActorActive()-1,board.getFieldActive().getColumn(), board.getFieldActive().getRow())); //was wird bewegt
             handler.add(new BoardUpdate(kickedIndex != -1 ? kickedIndex : actorIndex, column, row)); //wohin wird es bewegt
         }
+        else{
+            view.setKickedVisibility(true);
+        }
 
         board.moveTo(this.column, this.row, blockIsMoving);
         view.moveToPosition(this.actorIndex, blockIsMoving, column, row);
@@ -60,7 +63,6 @@ public class HighlightClickListener extends ClickListener {
             board.setAllHighlighted();
         }
         if(blockIsMoving){
-            view.setKickedVisibility(true);
             handler.add(new BoardUpdate(actorIndex, column, row)); //Was passiert mit dem Block, der auf der Position ist, auf die der Kegel fährt
         }
         view.checkFinished();

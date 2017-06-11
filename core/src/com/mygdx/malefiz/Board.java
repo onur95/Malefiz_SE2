@@ -119,7 +119,7 @@ public class Board {
         int dice = diceBefore - 1;
         boolean status = false;
         boolean secondStatus = false;
-        if((myState.equals(FieldStates.FIELD) || (dice==0 && myState.equals(FieldStates.BLOCK)) || (myState.ordinal()==player.getNumber() && dice != 0 || isPlayer(myState.ordinal()) && myState.ordinal() != player.getNumber()))&& !myState.equals(FieldStates.NOFIELD)){
+        if(!(myState == FieldStates.NOFIELD || dice == 0 && myState.ordinal() == player.getNumber() || myState == FieldStates.BLOCK && dice > 0)){
             if(dice == 0){
                 LOGGER.log(Level.FINE, "Board: setHighlight("+column+" "+row+")");
                 status = true;
