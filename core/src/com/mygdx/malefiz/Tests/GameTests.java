@@ -12,7 +12,7 @@ public class GameTests {
 //        p3 = new Player();
 //        p4 = new Player();
 //
-//        board.init();
+//        board.setListener();
 //        Assert.assertNotNull(board);
 //
 //        p1.setNumber(1);
@@ -27,7 +27,7 @@ public class GameTests {
 //
 //    @Test
 //    public void moveFigure(){
-//        board.init();
+//        board.setListener();
 //
 //    }
 }

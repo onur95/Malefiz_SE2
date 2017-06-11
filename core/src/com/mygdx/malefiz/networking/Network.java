@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Network {
-
     private Network() {
         //Smell: Add a private constructor to hide the implicit public one
     }

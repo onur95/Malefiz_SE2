@@ -31,7 +31,7 @@ public class BoardToPlayboard {
     private int playerCount;
     private UpdateHandler handler;
     private Player player;
-    private Board board;
+    protected Board board;
     private Dice dice;
     private List<List<Integer>> players;
     private CoordinateCalculation helper;

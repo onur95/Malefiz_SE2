@@ -47,6 +47,9 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
 		view.init(handler, player, stage, board, dice, soundManager);
 
+		// Initiate CheatEngineObserver
+
+
 		// Disable Menu/Exit-Buttons via Commenting here
 		stage.addActor(menu.createExit());
 		stage.addActor(menu.createMenu());
