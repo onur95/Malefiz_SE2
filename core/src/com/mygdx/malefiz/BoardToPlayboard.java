@@ -195,8 +195,6 @@ public class BoardToPlayboard {
                 break;
         }
 
-        System.out.println(board.getBoardArray()[column][row].getFieldState().toString());
-
         if(field != null && board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
