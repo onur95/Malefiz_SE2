@@ -27,6 +27,15 @@ public class BoardTestPart2 {
     private int row;
     private int expectedRow;
 
+    public BoardTestPart2(int column, int row, int expectedColumn, int expectedRow) {
+        player = new Player(player.getNumber()+1);
+        this.row = row;
+        this.column = column;
+        this.expectedRow = expectedRow;
+        this.expectedColumn = expectedColumn;
+        this.board = new Board(player,new BoardToPlayboard());
+    }
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
@@ -40,15 +49,6 @@ public class BoardTestPart2 {
                 {5, 4, 5,4},
                 {3, 5, 3,5 }
         });
-    }
-
-    public BoardTestPart2(int column, int row, int expectedColumn, int expectedRow) {
-        player = new Player(player.getNumber()+1);
-        this.row = row;
-        this.column = column;
-        this.expectedRow = expectedRow;
-        this.expectedColumn = expectedColumn;
-        this.board = new Board(player,new BoardToPlayboard());
     }
 
     @Test

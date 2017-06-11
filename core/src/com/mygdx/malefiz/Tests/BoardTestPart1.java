@@ -23,13 +23,22 @@ import static org.testng.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class BoardTestPart1 {
     private Board board;
-    private Player player = new Player(0);
     private int column;
     private int moveToColumn;
     private int row;
     private int moveToRow;
     private FieldStates expectedFieldState;
     private boolean blockMoving;
+
+    public BoardTestPart1(int column, int row, Object expectedFieldState, int moveToColumn, int moveToRow, boolean blockMoving) {
+        this.expectedFieldState =(FieldStates) expectedFieldState;
+        this.row = row;
+        this.column = column;
+        this.moveToColumn = moveToColumn;
+        this.moveToRow = moveToRow;
+        this.blockMoving = blockMoving;
+        this.board = new Board(new Player(1),new BoardToPlayboard());
+    }
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
@@ -44,17 +53,6 @@ public class BoardTestPart1 {
                 { 5, 4, FieldStates.BLOCK,10, 3, true},
                 { 3, 5, FieldStates.FIELD, 6, 14, false }
         });
-    }
-
-    public BoardTestPart1(int column, int row, Object expectedFieldState, int moveToColumn, int moveToRow, boolean blockMoving) {
-        this.player= new Player(player.getNumber()+1);
-        this.expectedFieldState =(FieldStates) expectedFieldState;
-        this.row = row;
-        this.column = column;
-        this.moveToColumn = moveToColumn;
-        this.moveToRow = moveToRow;
-        this.blockMoving = blockMoving;
-        this.board = new Board(player,new BoardToPlayboard());
     }
 
     @Test

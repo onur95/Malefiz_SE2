@@ -22,6 +22,11 @@ public class FieldStateTest {
     private char input;
     private FieldStates expected;
 
+    public FieldStateTest(char input, Object expected) {
+        this.input = input;
+        this.expected = (FieldStates) expected;
+    }
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
@@ -40,11 +45,6 @@ public class FieldStateTest {
                 { 'Z', FieldStates.NOFIELD},
                 { '0', FieldStates.NOFIELD},
         });
-    }
-
-    public FieldStateTest(char input, Object expected) {
-        this.input = input;
-        this.expected = (FieldStates) expected;
     }
 
     @Test

@@ -7,10 +7,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class CheatEngineObserver{
-    static String code = "";
-
-    PropertyChangeSupport pcs;
-    CheatEngine ce;
+    private String code = "";
+    private PropertyChangeSupport pcs;
+    private CheatEngine ce;
 
     public void setListener(CheatEngineObserver ceo) {
         CheatListener ecl = new CheatListener();
@@ -52,7 +51,7 @@ public class CheatEngineObserver{
                 // #2 Create Message & Send it
 
                 // Finally execute the CheatCode
-                ce.cheatCaller(CheatEngineObserver.code);
+                ce.cheatCaller(code);
             }
         }
     }
