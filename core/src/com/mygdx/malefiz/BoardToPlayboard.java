@@ -57,7 +57,7 @@ public class BoardToPlayboard {
         this.stage = stage;
         this.soundManager = soundManager;
         playerCount = handler.getPlayerCount();
-        helper = new CoordinateCalculation(stage);
+        helper = new CoordinateCalculation(this.stage);
         playerMovesPossible = new ArrayList<>();
         initPlayers();
         setImages();
@@ -94,7 +94,6 @@ public class BoardToPlayboard {
      */
     private void adjustView(Coordinates coordinates, int column, int row){
         Image field = getFieldType(column, row);
-
         if (field != null && checkPlayerCount(column, row)) {
             MoveToAction action = new MoveToAction();
             action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
@@ -195,6 +194,8 @@ public class BoardToPlayboard {
                 field = null;
                 break;
         }
+
+        System.out.println(board.getBoardArray()[column][row].getFieldState().toString());
 
         if(field != null && board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt

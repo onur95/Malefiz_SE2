@@ -21,63 +21,80 @@ import com.mygdx.malefiz.networking.GameClient;
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 	private Stage stage;
-	private Dice dice;
-	private Texture txtPlayground;
-	private Image imgPlayground;
 	private GameClient client;
-	private SoundManager soundManager;
 	private OrthographicCamera camera;
 	private float currentZoom;
-	private TextureAtlas atlas;
 	private Skin skin;
+	private Dice dice;
 	private final Malefiz game;
 
 	public MyMalefizGame (Malefiz game, GameClient client, int playerCount) {
 		this.client = client;
 		this.game = game;
-		soundManager = new SoundManager();
+		this.stage = new Stage(new FitViewport(1500, 1500));
+
+		setSkin();
+		setGestures();
+		setPayground();
+		setCamera();
+
+		SoundManager soundManager = new SoundManager();
+		GameMenu menu = new GameMenu(stage, client.getServerIp());
+		Player player = new Player(client.getPlayerNumber());
+		BoardToPlayboard view = new BoardToPlayboard();
+		Board board = new Board(player, view);
+		this.dice = new Dice(getShakeStatus(soundManager), view);
+		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
+		view.init(handler, player, stage, board, dice, soundManager);
+
+		// Disable Menu/Exit-Buttons via Commenting here
+		stage.addActor(menu.createExit());
+		stage.addActor(menu.createMenu());
+		setYourTurnLabel();
+
+	}
+
+	private void setCamera(){
+		camera=(OrthographicCamera)stage.getCamera();
+		currentZoom=camera.zoom;
+	}
+
+	private boolean getShakeStatus(SoundManager soundManager){
 		boolean shakeStatus = true;
 		if(client.getPlayerNumber() == 1){
 			shakeStatus = false;
 			soundManager.playSound(Sounds.PLAYERTURN);
 		}
-		dice = new Dice(shakeStatus); //Spieler 1 fängt an; Würfel wird aktiviert
-		atlas = new TextureAtlas("uiskin.atlas");
-		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-		dice = new Dice(client.getPlayerNumber() != 1); //Spieler 1 fängt an; Würfel wird aktiviert
-		Board board = new Board();
-		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager);
-		BoardToPlayboard view= new BoardToPlayboard();
-		Player player = new Player(client.getPlayerNumber());
+		return shakeStatus;
+	}
+
+	private void setGestures(){
 		InputMultiplexer im = new InputMultiplexer();
 		GestureDetector gd = new GestureDetector(this);
-		stage=new Stage(new FitViewport(1500, 1500));
-		GameMenu menu = new GameMenu(stage, client.getServerIp());
 		im.addProcessor(gd);
 		im.addProcessor(stage);
 		Gdx.input.setInputProcessor(im);
-		txtPlayground = new Texture("Playboard.jpg");
-		imgPlayground=new Image(txtPlayground);
+	}
+
+	private void setSkin(){
+		TextureAtlas atlas = new TextureAtlas("uiskin.atlas");
+		skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
+	}
+
+	private void setPayground(){
+		Texture txtPlayground = new Texture("Playboard.jpg");
+		Image imgPlayground=new Image(txtPlayground);
+
 		stage.addActor(imgPlayground);
-		camera=(OrthographicCamera)stage.getCamera();
-		currentZoom=camera.zoom;
-		board.init(player, view);
+	}
+
+	private void setYourTurnLabel(){
 		Label yourTurn=new Label("It's your turn!",skin);
 		yourTurn.setName("yourTurn");
 		yourTurn.setColor(Color.RED);
 		yourTurn.setBounds(100,500,300,200);
 		yourTurn.setFontScale(4f);
 		yourTurn.setVisible(false);
-		handler.setBoardAndView(view,board);
-
-
-		view.init(handler, player, stage, board, dice, soundManager);
-		dice.setView(view);
-		dice.setDiceAnimation();
-
-		// Disable Menu/Exit-Buttons via Commenting here
-		stage.addActor(menu.createExit());
-		stage.addActor(menu.createMenu());
 		stage.addActor(yourTurn);
 	}
 

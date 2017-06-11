@@ -26,13 +26,15 @@ public class UpdateHandler {
     private SoundManager soundManager;
     private static final Logger LOGGER = Logger.getLogger( UpdateHandler.class.getName() );
 
-    public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager){
+    public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager, BoardToPlayboard view, Board board){
         client.setHandler(this);
         this.client = client;
         this.dice = dice;
-        update = new ArrayList<>(3);
+        this.update = new ArrayList<>(3);
         this.playerCount = playerCount;
         this.soundManager = soundManager;
+        this.view = view;
+        this.board = board;
     }
 
     public void sendMessage(int playerTurn){

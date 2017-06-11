@@ -41,7 +41,7 @@ public class Board {
     private  FieldPosition newPlayerPosition;
 
 
-    public  void init(Player play, BoardToPlayboard view){
+    public Board(Player play, BoardToPlayboard view){
         this.view = view;
         player = play;
         boardArray = new Field[17][17];

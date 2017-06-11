@@ -15,8 +15,10 @@ public class Dice {
     private boolean renderRunning = false;
     private boolean playerSet = false;
 
-    public Dice(boolean shakedStatus){
+    public Dice(boolean shakedStatus, BoardToPlayboard view){
+        this.diceAnimation = new DiceAnimation();
         this.shaked = shakedStatus;
+        this.view = view;
     }
 
 
@@ -27,22 +29,15 @@ public class Dice {
         return result;
     }
 
-    //Pfad für animation je nach augenzahl wird festgelegt
-    public String getResult(int result){
-        return "Dice ("+result+").png";
-    }
+
 
     public  int getResultNumber() {return result;}
 
     //wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
     public void shake(float force){
-        if(diceAnimation == null){
-            return;
-        }
-
         if(!shaked && force > 11.0) {
                 shaked = true;
-                diceAnimation.create(getResult(randomNumber()));
+                diceAnimation.create("Dice ("+randomNumber()+").png");
                 diceAnimation.render();
                 renderRunning = true;
                 playerSet = false;
@@ -59,16 +54,6 @@ public class Dice {
 
     public void setShaked(boolean status){
         shaked = status;
-    }
-
-    public void setView(BoardToPlayboard view){
-        this.view = view;
-    }
-
-    public void setDiceAnimation(){
-        DiceAnimation animation = new DiceAnimation();
-        animation.create(getResult(randomNumber()));
-        this.diceAnimation = animation;
     }
 
     public void setRenderRunning(boolean renderRunning){
