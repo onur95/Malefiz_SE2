@@ -21,6 +21,12 @@ public class PlayerTests {
     private boolean isPlayer;
     private int expected;
 
+    public PlayerTests(int input, int expected, boolean isPlayer) {
+        this.player= new Player(input);
+        this.expected = expected;
+        this.isPlayer = isPlayer;
+    }
+
     @Before
     public void setBoard(){
         board = new Board(new Player(1), new BoardToPlayboard());
@@ -31,12 +37,6 @@ public class PlayerTests {
         return Arrays.asList(new Object[][] {
                 { 0, 0, false }, { 1, 1, true }, { 2, 2, true }, { 3, 3, true }, { 4, 4, true }, { 5, 5, false }
         });
-    }
-
-    public PlayerTests(int input, int expected, boolean isPlayer) {
-        this.player= new Player(input);
-        this.expected = expected;
-        this.isPlayer = isPlayer;
     }
 
     @Test
