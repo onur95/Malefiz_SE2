@@ -89,6 +89,7 @@ project(":android") {
     }
 }
 
+
 project(":core") {
     apply plugin: "java"
     apply plugin: "jacoco"

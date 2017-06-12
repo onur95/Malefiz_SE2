@@ -162,8 +162,8 @@ public class BoardToPlayboard {
         }
     }
 
-    public void setAllHighlighted(){
-        board.setAllHighlighted();
+    public void setAllHighlighted(boolean enteredCheat){
+        board.setAllHighlighted(enteredCheat);
         setHighlights(0);
     }
 
