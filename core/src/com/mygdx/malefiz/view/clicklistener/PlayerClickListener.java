@@ -17,37 +17,22 @@ public class PlayerClickListener extends ClickListener {
     private int row;
     private int actorIndex;
     private Player player;
-    private Board board;
     private BoardToPlayboard view;
-    private Dice dice;
+    private int selectedFigure;
 
-    public PlayerClickListener(int column, int row, int actorIndex, Player player, Board board, BoardToPlayboard view, Dice dice) {
+    public PlayerClickListener(int column, int row, int actorIndex, Player player, BoardToPlayboard view) {
         this.column = column;
         this.row = row;
         this.actorIndex = actorIndex;
         this.player = player;
         this.view = view;
-        this.board = board;
-        this.dice = dice;
     }
 
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
-        //Player.getHighlightedFiguresIndizes().contains(actorIndex) --> Wird eigentlich nicht gebraucht, da nur der ausgewählte Spieler diesen Listener besitzt
         if(isPlayersTurnHighlighted()) {
-            view.removeHighlights();
-
-            //alle anderen Highlights der Spielerfiguren bis auf die ausgewählte Figur auf visible: false setzen
-            view.setPlayerFiguresHighlighted(false);
-            view.setPlayerFigureHighlighted(actorIndex, true);
-
-            view.setActorActive(actorIndex);
-            view.setActorsCount();  //Um Highlights rauszulöschen
-
-            board.setFieldActive(this.column, this.row);
-            board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, true);
-
+            view.setHighlightsOfFigure(actorIndex,selectedFigure, column, row);
         }
     }
 
@@ -76,9 +61,13 @@ public class PlayerClickListener extends ClickListener {
             }
         }
         for(int i = 0; i < player.getFiguresPosition().size(); i++){
-            if(player.getFiguresPosition().get(i).getColumn() == this.column && player.getFiguresPosition().get(i).getRow() == this.row
-                    && !view.getPlayerMovesPossible().contains(i)){
-                status = false;
+            if(player.getFiguresPosition().get(i).getColumn() == this.column && player.getFiguresPosition().get(i).getRow() == this.row){
+                if(!view.getPlayerMovesPossible().contains(i)) {
+                    status = false;
+                }
+                else{
+                    selectedFigure = i;
+                }
             }
         }
         return status;

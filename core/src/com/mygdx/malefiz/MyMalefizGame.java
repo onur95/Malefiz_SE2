@@ -46,7 +46,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		SoundManager soundManager = new SoundManager();
 		Player player = new Player(client.getPlayerNumber());
 		BoardToPlayboard view = new BoardToPlayboard();
-		Board board = new Board(player, view);
+		Board board = new Board();
 
 		CheatEngine cheatEngine = new CheatEngine(view, board);
 

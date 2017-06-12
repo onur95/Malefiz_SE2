@@ -20,7 +20,7 @@ public class BoardTestPart4 {
 
     @Before
     public void setBoard(){
-        this.board = new Board(new Player(1), new BoardToPlayboard());
+        this.board = new Board();
     }
 
 

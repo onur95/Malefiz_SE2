@@ -37,7 +37,7 @@ public class BoardTestPart1 {
         this.moveToColumn = moveToColumn;
         this.moveToRow = moveToRow;
         this.blockMoving = blockMoving;
-        this.board = new Board(new Player(1),new BoardToPlayboard());
+        this.board = new Board();
     }
 
     @Parameterized.Parameters

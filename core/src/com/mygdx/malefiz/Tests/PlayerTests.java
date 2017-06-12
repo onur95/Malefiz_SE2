@@ -29,7 +29,7 @@ public class PlayerTests {
 
     @Before
     public void setBoard(){
-        board = new Board(new Player(1), new BoardToPlayboard());
+        board = new Board();
     }
 
     @Parameterized.Parameters

@@ -34,7 +34,7 @@ public class BoardTestPart3 {
         this.column = column;
         this.moveToColumn = moveToColumn;
         this.moveToRow = moveToRow;
-        this.board = new Board(new Player(1),new BoardToPlayboard());
+        this.board = new Board();
         this.expectedFieldState = (FieldStates) expectedFieldState;
     }
 

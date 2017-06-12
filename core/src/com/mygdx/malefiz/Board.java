@@ -3,8 +3,9 @@ package com.mygdx.malefiz;
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
-import com.mygdx.malefiz.view.BoardToPlayboard;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,8 +14,6 @@ import java.util.logging.Logger;
  */
 
 public class Board {
-    private  Player player;
-    private BoardToPlayboard view;
     private Field[][] boardArray; //Das aktuelle Spielfeld
     private static final String[] meta =   //Das Grundgerüst des Spielfeldes
             {       "........G........",
@@ -37,21 +36,27 @@ public class Board {
 
     private final String[] boardMeta = reverseBoardMeta(meta);
     private static final Logger LOGGER = Logger.getLogger( Board.class.getName() );
-    //G->Goal
-    //B->Block
-    //o->Normales Feld
-    //.->kein benutzbares Feld
-    //1-4->Player 1-4
     private FieldPosition fieldActive;
     private FieldPosition newPlayerPosition;
+    private List<List<FieldPosition>> highlights;
 
 
-    public Board(Player play, BoardToPlayboard view){
-        this.view = view;
-        player = play;
+    public Board(){
+        this.highlights = new ArrayList<>();
+        initHighlights();
+        initBoard();
+    }
+
+    public void initHighlights(){
+        highlights.clear();
+        for(int i = 0; i < 5; i++){
+            highlights.add(new ArrayList<FieldPosition>());
+        }
+    }
+
+    private void initBoard(){
         boardArray = new Field[17][17];
         for(int column = boardMeta.length-1; column>=0; column--){
-
             for(int char_index = 0; char_index < boardMeta[column].length(); char_index++){
                 boardArray[column][char_index] = new Field(boardMeta[column].charAt(char_index));
             }
@@ -103,46 +108,38 @@ public class Board {
         return fieldTemp;
     }
 
-    public boolean higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore, boolean addHighlight) {
-        boolean val1 = checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field, addHighlight); //above
-        boolean val2 = checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field, addHighlight); //below
-        boolean val3 = checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field, addHighlight); //left
-        boolean val4 = checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field, addHighlight); //right
-        return val1 || val2 || val3 || val4;
+    public void higlightPositionsMovement (int dice, FieldPosition field, FieldPosition positionBefore, int figureIndex, FieldStates playerFieldState) {
+        checkFieldStates(field.getColumn()+1,field.getRow(),dice,positionBefore, field, figureIndex, playerFieldState); //above
+        checkFieldStates(field.getColumn()-1,field.getRow(),dice,positionBefore, field, figureIndex, playerFieldState); //below
+        checkFieldStates(field.getColumn(),field.getRow()-1,dice,positionBefore, field, figureIndex, playerFieldState); //left
+        checkFieldStates(field.getColumn(),field.getRow()+1,dice,positionBefore, field, figureIndex, playerFieldState); //right
     }
 
-    private  boolean checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, boolean addHighlight){
-        boolean status = false;
+    private void checkFieldStates(int column, int row, int dice, FieldPosition positionBefore, FieldPosition positionBeforeAfter, int figureIndex, FieldStates playerFieldState){
         if(checkOutOfBounds(column, row) &&(positionBefore == null || !(column ==positionBefore.getColumn() && row==positionBefore.getRow()))){
             FieldStates state = boardArray[column][row].getFieldState();
-            status = checkDiceField(state, column, row, dice, positionBeforeAfter, addHighlight);
+            checkDiceField(state, column, row, dice, positionBeforeAfter, figureIndex, playerFieldState);
         }
-        return status;
     }
 
     private boolean checkOutOfBounds(int column, int row){
         return column>2 && row >=0 && column<boardArray.length && row<boardArray[column].length;
     }
 
-    private  boolean checkDiceField(FieldStates myState, int column, int row, int diceBefore, FieldPosition positionBefore, boolean addHighlight){
+    private void checkDiceField(FieldStates myState, int column, int row, int diceBefore, FieldPosition positionBefore, int figureIndex, FieldStates playerFieldState){
         int dice = diceBefore - 1;
-        boolean status = false;
-        boolean secondStatus = false;
-        boolean playerNotKickable = dice == 0 && myState.ordinal() == player.getNumber();
+        boolean playerNotKickable = dice == 0 && myState == playerFieldState;
+        System.out.println(myState+" "+playerFieldState);
         boolean blockNotKickable = myState == FieldStates.BLOCK && dice > 0;
         if(!(myState == FieldStates.NOFIELD || playerNotKickable || blockNotKickable)){
             if(dice == 0){
                 LOGGER.log(Level.FINE, "Board: setHighlight("+column+" "+row+")");
-                status = true;
-                if(addHighlight) {
-                    view.setHighlight(column, row);
-                }
+                highlights.get(figureIndex).add(new FieldPosition(column, row));
             }
             else{
-                secondStatus = higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore, addHighlight);
+                higlightPositionsMovement(dice, new FieldPosition(column,row),positionBefore, figureIndex, playerFieldState);
             }
         }
-        return status || secondStatus;
     }
 
     public  boolean isPlayer(int ordinal){
@@ -166,7 +163,6 @@ public class Board {
     }
 
     public  void movePlayerToStart(int column, int row){
-
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < boardArray[x].length; y++){
                 if(Character.isDigit(boardMeta[x].charAt(y)) && Character.getNumericValue(boardMeta[x].charAt(y)) == boardArray[column][row].getFieldState().ordinal() && boardArray[x][y].getFieldState() == FieldStates.NOFIELD){
@@ -183,10 +179,11 @@ public class Board {
     }
 
     public  void setAllHighlighted(){
+        initHighlights();
         for(int x = 0; x < boardArray.length; x++) {
             for (int y = 0; y < boardArray[x].length; y++) {
                 if(boardArray[x][y].getFieldState() == FieldStates.FIELD){
-                    view.setHighlight(x,y);
+                    highlights.get(0).add(new FieldPosition(x,y));
                 }
             }
         }
@@ -200,5 +197,9 @@ public class Board {
                 }
             }
         }
+    }
+
+    public List<List<FieldPosition>> getHighlights(){
+        return highlights;
     }
 }

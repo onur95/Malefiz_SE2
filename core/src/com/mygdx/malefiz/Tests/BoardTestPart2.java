@@ -21,19 +21,17 @@ import static org.testng.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class BoardTestPart2 {
     private Board board;
-    private Player player = new Player(0);
     private int column;
     private int expectedColumn;
     private int row;
     private int expectedRow;
 
     public BoardTestPart2(int column, int row, int expectedColumn, int expectedRow) {
-        player = new Player(player.getNumber()+1);
         this.row = row;
         this.column = column;
         this.expectedRow = expectedRow;
         this.expectedColumn = expectedColumn;
-        this.board = new Board(player,new BoardToPlayboard());
+        this.board = new Board();
     }
 
     @Parameterized.Parameters

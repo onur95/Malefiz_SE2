@@ -65,7 +65,7 @@ public class HighlightClickListener extends ClickListener {
         else if(isBlock){
             view.setActorsCount();
             board.setFieldActive(column,row);
-            board.setAllHighlighted();
+            view.setAllHighlighted();
         }
         if(blockIsMoving){
             handler.add(new BoardUpdate(actorIndex, column, row)); //Was passiert mit dem Block, der auf der Position ist, auf die der Kegel fährt

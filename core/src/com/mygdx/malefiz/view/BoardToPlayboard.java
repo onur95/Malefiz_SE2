@@ -11,6 +11,7 @@ import com.mygdx.malefiz.coordinates.CoordinateCalculation;
 import com.mygdx.malefiz.coordinates.Coordinates;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.FieldPosition;
+import com.mygdx.malefiz.field.FieldStates;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.view.clicklistener.HighlightClickListener;
 import com.mygdx.malefiz.Player;
@@ -54,7 +55,7 @@ public class BoardToPlayboard {
     private void initPlayers(){
         players = new ArrayList<>();
         for(int i = 0; i<playerCount; i++){
-            List list = new ArrayList<>(5);
+            List<Integer> list = new ArrayList<>(5);
             list.add(0);
             players.add(list);
         }
@@ -75,7 +76,7 @@ public class BoardToPlayboard {
         generate();
     }
 
-    public void setImages(){
+    private void setImages(){
         player1=new Image(new Texture("Player1.png"));
         player2=new Image(new Texture("Player2.png"));
         player3=new Image(new Texture("Player3.png"));
@@ -85,7 +86,7 @@ public class BoardToPlayboard {
         block=new Image(new Texture("Block.png"));
     }
 
-    public void generate(){
+    private void generate(){
         for(int column = 0; column < board.getBoardArray().length; column++) {
             for (int row = 0; row < board.getBoardArray()[column].length; row++) {
                 Coordinates coordinates = helper.getCoordinatesOfField(column, row);
@@ -132,7 +133,7 @@ public class BoardToPlayboard {
      * @param column Column und Row geben an, wo sich dieses befindet
      * @param row
      */
-    public void setHighlight(int column, int row){
+    private void setHighlight(int column, int row){
         Coordinates coordinates = helper.getCoordinatesOfField(column, row);
         MoveToAction action = new MoveToAction();
         action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
@@ -140,6 +141,30 @@ public class BoardToPlayboard {
         field.addAction(action);
         field.addListener(new HighlightClickListener(column, row, stage.getActors().size, board, this, handler));
         stage.addActor(field);
+    }
+
+    public void setHighlightsOfFigure(int actorIndex, int selectedFigure, int column, int row){
+        board.setFieldActive(column, row);
+        removeHighlights();
+
+        //alle anderen Highlights der Spielerfiguren bis auf die ausgewählte Figur auf visible: false setzen
+        setPlayerFiguresHighlighted(false);
+        setPlayerFigureHighlighted(actorIndex, true);
+
+        setActorActive(actorIndex);
+        setActorsCount();  //Um Highlights rauszulöschen
+        setHighlights(selectedFigure);
+    }
+
+    private void setHighlights(int selectedFigure){
+        for(FieldPosition position : board.getHighlights().get(selectedFigure)){
+            setHighlight(position.getColumn(), position.getRow());
+        }
+    }
+
+    public void setAllHighlighted(){
+        board.setAllHighlighted();
+        setHighlights(0);
     }
 
 
@@ -158,7 +183,7 @@ public class BoardToPlayboard {
             field.setVisible(false);
 
             if (board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()) {
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, board, this, dice));
+                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, this));
                 player.addHighlightFigure(stage.getActors().size);
             }
             players.get(board.getBoardArray()[column][row].getFieldState().ordinal() - 1).add(stage.getActors().size - 1);
@@ -209,7 +234,7 @@ public class BoardToPlayboard {
         if(field != null && board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
-            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, board, this, dice)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, this)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
             player.addFigurePosition(column, row);
         }
         return field;
@@ -223,7 +248,6 @@ public class BoardToPlayboard {
         if(status && !isMovePossible()){
             LOGGER.log(Level.FINE, "Client: No move possible");
             handler.sendMessage(player.getNumber());
-            return;
         }
         else if(status){
             for (int i = 0; i< player.getHighlightedFiguresIndizes().size(); i++) {
@@ -241,10 +265,13 @@ public class BoardToPlayboard {
 
     private boolean isMovePossible(){
         playerMovesPossible = new ArrayList<>();
+        board.initHighlights();
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
+            System.out.println(player.getFiguresPosition().get(i).toString());
+            FieldStates playerFieldState = board.getBoardArray()[player.getFiguresPosition().get(i).getColumn()][player.getFiguresPosition().get(i).getRow()].getFieldState();
             board.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
-            boolean movePossible = board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, false);
-            if(movePossible){
+            board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, i, playerFieldState);
+            if(!board.getHighlights().get(i).isEmpty()){
                 playerMovesPossible.add(i);
             }
         }
@@ -258,7 +285,7 @@ public class BoardToPlayboard {
      * @param index ActorIndex des Highlightes eines Spielers
      * @param status Wert, ob das Highlight nun angezeigt oder versteckt wird
      */
-    public  void setPlayerFigureHighlighted(int index, boolean status){
+    private  void setPlayerFigureHighlighted(int index, boolean status){
         stage.getActors().get(index).setVisible(status);
     }
 
@@ -321,7 +348,7 @@ public class BoardToPlayboard {
      * nun werden alle Actoren über dieser Größe gelöscht
      * die Highlights werden nacheinander gelöscht, bis die Anzahl der Actoren wieder passt
      */
-    public  void removeHighlights(){
+    private  void removeHighlights(){
         while(stage.getActors().size>actorsCount && actorsCount != -1){
             stage.getActors().get(actorsCount).remove();
         }
@@ -345,7 +372,7 @@ public class BoardToPlayboard {
      *
      * @param index Index des Actors in stage.getActors() der sich in Zukunft bewegen wird. Zum Beispiel wenn auf den eigenen Kegel geklickt wurde, um ihn auf ein gehighlightetes Feld zu bewegen
      */
-    public  void setActorActive(int index){
+    private  void setActorActive(int index){
         actorActive = index;
     }
 
