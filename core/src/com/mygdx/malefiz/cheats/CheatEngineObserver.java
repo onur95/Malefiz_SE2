@@ -11,16 +11,16 @@ public class CheatEngineObserver{
     private PropertyChangeSupport pcs;
     private CheatEngine ce;
 
+    public CheatEngineObserver(CheatEngine ce){
+        this.ce = ce;
+        this.pcs = new PropertyChangeSupport(this);
+    }
+
     public void setListener(CheatEngineObserver ceo) {
         CheatListener ecl = new CheatListener();
         ceo.addPropertyChangeListener(ecl);
 
         Gdx.app.log("CheatEngineObserver.setListener on ceo", "Executed.");
-    }
-
-    public CheatEngineObserver(CheatEngine ce){
-        this.ce = ce;
-        this.pcs = new PropertyChangeSupport(this);
     }
 
     public void setCheat(String codeEntry){
@@ -32,13 +32,13 @@ public class CheatEngineObserver{
 
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener){
+    private void addPropertyChangeListener(PropertyChangeListener listener){
         pcs.addPropertyChangeListener(listener);
     }
 
     /** Subclassed Eventlistener
      */
-    public class CheatListener implements PropertyChangeListener{
+    private class CheatListener implements PropertyChangeListener{
         @Override
         public void propertyChange(PropertyChangeEvent event){
             Gdx.app.log("CEO>>CheatListener", "Listening for incomming Cheats.");

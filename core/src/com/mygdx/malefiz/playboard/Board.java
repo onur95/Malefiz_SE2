@@ -1,4 +1,4 @@
-package com.mygdx.malefiz;
+package com.mygdx.malefiz.playboard;
 
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
@@ -129,7 +129,6 @@ public class Board {
     private void checkDiceField(FieldStates myState, int column, int row, int diceBefore, FieldPosition positionBefore, int figureIndex, FieldStates playerFieldState){
         int dice = diceBefore - 1;
         boolean playerNotKickable = dice == 0 && myState == playerFieldState;
-        System.out.println(myState+" "+playerFieldState);
         boolean blockNotKickable = myState == FieldStates.BLOCK && dice > 0;
         if(!(myState == FieldStates.NOFIELD || playerNotKickable || blockNotKickable)){
             if(dice == 0){

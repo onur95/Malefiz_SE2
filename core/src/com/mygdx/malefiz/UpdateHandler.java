@@ -10,9 +10,10 @@ import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.networking.BoardUpdate;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.playboard.Board;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
-import com.mygdx.malefiz.view.BoardToPlayboard;
 
 import java.util.ArrayList;
 import java.util.List;

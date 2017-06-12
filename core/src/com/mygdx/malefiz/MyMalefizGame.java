@@ -19,9 +19,10 @@ import com.mygdx.malefiz.Screens.GameMenu;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.playboard.Board;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
-import com.mygdx.malefiz.view.BoardToPlayboard;
 
 public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 

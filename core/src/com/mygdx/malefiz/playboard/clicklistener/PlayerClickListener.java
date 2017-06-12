@@ -1,11 +1,9 @@
-package com.mygdx.malefiz.view.clicklistener;
+package com.mygdx.malefiz.playboard.clicklistener;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.malefiz.Board;
 import com.mygdx.malefiz.Player;
-import com.mygdx.malefiz.dice.Dice;
-import com.mygdx.malefiz.view.BoardToPlayboard;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 /**
  * Created by kstri on 03.04.2017.

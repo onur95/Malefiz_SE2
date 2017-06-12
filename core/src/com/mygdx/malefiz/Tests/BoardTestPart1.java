@@ -1,11 +1,9 @@
 package com.mygdx.malefiz.Tests;
 
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.view.BoardToPlayboard;
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
-import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.playboard.Board;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

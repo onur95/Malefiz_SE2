@@ -1,7 +1,8 @@
 package com.mygdx.malefiz.cheats;
 
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.view.BoardToPlayboard;
+import com.mygdx.malefiz.field.FieldStates;
+import com.mygdx.malefiz.playboard.Board;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 public class CheatEngine {
     private BoardToPlayboard view;
@@ -48,7 +49,7 @@ public class CheatEngine {
     private void resetPlayer() {
         for(int x = 0; x < board.getBoardArray().length; x++) {
             for (int y = 0; y < board.getBoardArray()[x].length; y++) {
-                if(board.getBoardArray()[x][y].getFieldState() == com.mygdx.malefiz.field.FieldStates.PLAYER2){
+                if(board.getBoardArray()[x][y].getFieldState() == FieldStates.PLAYER2){
                     board.movePlayerToStart(x,y);
                 }
             }
@@ -61,7 +62,7 @@ public class CheatEngine {
      */
     private void moveToAnyField(){
         if(board.getFieldActive() != null){
-            board.setAllHighlighted(true);
+            view.setAllHighlighted(true);
         }
     }
 }

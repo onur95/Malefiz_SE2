@@ -1,8 +1,7 @@
 package com.mygdx.malefiz.Tests;
 
-import com.mygdx.malefiz.Board;
-import com.mygdx.malefiz.view.BoardToPlayboard;
 import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.playboard.Board;
 
 import org.junit.Before;
 import org.junit.Test;

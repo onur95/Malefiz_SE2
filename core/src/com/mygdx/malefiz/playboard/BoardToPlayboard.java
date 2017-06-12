@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.view;
+package com.mygdx.malefiz.playboard;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -6,17 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.mygdx.malefiz.Board;
+import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.coordinates.CoordinateCalculation;
 import com.mygdx.malefiz.coordinates.Coordinates;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
 import com.mygdx.malefiz.sound.SoundManager;
-import com.mygdx.malefiz.view.clicklistener.HighlightClickListener;
-import com.mygdx.malefiz.Player;
-import com.mygdx.malefiz.view.clicklistener.PlayerClickListener;
-import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.sound.Sounds;
 
 import java.util.ArrayList;
@@ -139,7 +136,7 @@ public class BoardToPlayboard {
         action.setPosition(coordinates.getxOffset(), coordinates.getyOffset());
         Image field = new Image(highlight.getDrawable());
         field.addAction(action);
-        field.addListener(new HighlightClickListener(column, row, stage.getActors().size, board, this, handler));
+        field.addListener(new com.mygdx.malefiz.playboard.clicklistener.HighlightClickListener(column, row, stage.getActors().size, board, this, handler));
         stage.addActor(field);
     }
 
@@ -190,7 +187,7 @@ public class BoardToPlayboard {
             field.setVisible(false);
 
             if (board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()) {
-                field.addListener(new PlayerClickListener(column, row, stage.getActors().size, player, this));
+                field.addListener(new com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener(column, row, stage.getActors().size, player, this));
                 player.addHighlightFigure(stage.getActors().size);
             }
             players.get(board.getBoardArray()[column][row].getFieldState().ordinal() - 1).add(stage.getActors().size - 1);
@@ -241,7 +238,7 @@ public class BoardToPlayboard {
         if(field != null && board.getBoardArray()[column][row].getFieldState().ordinal() == player.getNumber()){
             //Falls es eine Spielfigur des ausgewählten Spielers ist, wird der Figur ein Clicklistener angehängt
             //Dieser ist dafür da um das Highlight der gerade ausgewählten Figur auf eine andere zu ändern
-            field.addListener(new PlayerClickListener(column, row, stage.getActors().size+1, player, this)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
+            field.addListener(new com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener(column, row, stage.getActors().size+1, player, this)); //Weil es muss ja auf das Highlight referenziert werden, das genau 1 darüber liegt
             player.addFigurePosition(column, row);
         }
         return field;
@@ -280,7 +277,6 @@ public class BoardToPlayboard {
         playerMovesPossible = new ArrayList<>();
         board.initHighlights();
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
-            System.out.println(player.getFiguresPosition().get(i).toString());
             FieldStates playerFieldState = board.getBoardArray()[player.getFiguresPosition().get(i).getColumn()][player.getFiguresPosition().get(i).getRow()].getFieldState();
             board.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());
             board.higlightPositionsMovement(dice.getResultNumber(), board.getRealFieldActive(), null, i, playerFieldState);
@@ -336,10 +332,10 @@ public class BoardToPlayboard {
 
     public void adjustPlayerClickListener(int column, int row, int index){
         for(EventListener event : stage.getActors().get(index).getListeners()){
-            if(event.getClass() == PlayerClickListener.class){
-                adjustPlayers(((PlayerClickListener)event).getColumn(), ((PlayerClickListener)event).getRow(), column, row);
-                ((PlayerClickListener)event).setColumn(column);
-                ((PlayerClickListener)event).setRow(row);
+            if(event.getClass() == com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener.class){
+                adjustPlayers(((com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener)event).getColumn(), ((com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener)event).getRow(), column, row);
+                ((com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener)event).setColumn(column);
+                ((com.mygdx.malefiz.playboard.clicklistener.PlayerClickListener)event).setRow(row);
             }
         }
     }
