@@ -102,7 +102,7 @@ public class BoardToPlayboard {
      * Generierung eines Feldes auf/in der Stage
      * @param coordinates Koordinaten, wo sich dieses Feld auf/in der Stage befindet
      * @param column Column und row geben an, wo sich dieses Feld im boardArray befindet
-     * @param row
+     * @param row siehe column
      */
     private void adjustView(Coordinates coordinates, int column, int row){
         Image field = getFieldType(column, row);
@@ -131,7 +131,7 @@ public class BoardToPlayboard {
     /**
      * Setzen eines Highlights, auf dessen Position ein Kegel oder ein Block gesetzt werden kann
      * @param column Column und Row geben an, wo sich dieses befindet
-     * @param row
+     * @param row siehe column
      */
     private void setHighlight(int column, int row){
         Coordinates coordinates = helper.getCoordinatesOfField(column, row);
@@ -143,6 +143,13 @@ public class BoardToPlayboard {
         stage.addActor(field);
     }
 
+    /**
+     * Setzen der Highlights der gerade ausgewählten Spielfigur
+     * @param actorIndex ActorIndex der gerade ausgewählten Figur
+     * @param selectedFigure Index der SpielfigurFigur (0-4), damit auf die Highlights dieser Figur zugegriffen wird
+     * @param column Stelle im Array (BoardArray), die sich bewegen wird
+     * @param row siehe column
+     */
     public void setHighlightsOfFigure(int actorIndex, int selectedFigure, int column, int row){
         board.setFieldActive(column, row);
         removeHighlights();
@@ -171,7 +178,7 @@ public class BoardToPlayboard {
     /**
      * Setzen der Highlights aller Spieler (gebraucht werden zwar nur die Highlights der eigenen Kegel, aber um unterschiedliche Indizes in stage.getActors() zu verhindern, werden für alle Spieler Highlights generiert)
      * @param column Column und row geben an, was für ein Feld überprüft werden soll, ob es ein Player ist
-     * @param row
+     * @param row siehe column
      * @param coordinates Die Koordinaten geben an, wo das Highlight generiert werden soll (Hier die Koordinaten des jeweiligen Kegels)
      */
     private  void setPlayerHighlight(int column, int row, Coordinates coordinates){
@@ -194,7 +201,7 @@ public class BoardToPlayboard {
     /**
      * Bestimmen des Feldes, das generiert werden soll
      * @param column Column und row bestimmen ein Feld im zweidimensionalen Array (boardArray). Zurückgegeben wird die Klasse Field, anhand der man bestimmen kann, was generiert wird (Player, Block, etc.)
-     * @param row
+     * @param row siehe column
      * @return Das Feld wird als Image zurückgegeben
      */
     private  Image getFieldType(int column, int row){
@@ -263,6 +270,12 @@ public class BoardToPlayboard {
         }
     }
 
+    /**
+     * Hier passieren zwei entscheidende Sachen
+     * 1. Für jede Spielfigur werden die Highlights berechnet
+     * 2. Außerdem werden nur die Figuren gehighlighted, die sich mit der gewürfelten Zahl auch bewegen können
+     * @return
+     */
     private boolean isMovePossible(){
         playerMovesPossible = new ArrayList<>();
         board.initHighlights();
@@ -294,7 +307,7 @@ public class BoardToPlayboard {
      * @param actorIndex Index des Actors bzw. Highlights zu dem gegangen wird. Bewegt wird normalerweise der Actor mit dem Index, der in actorActive steht (bzw. actorActive-1, wegen Highlight UND Spieler)
      * @param blockIsMoving Falls ein Block bewegt wird (==true) dann wird der Actor mit dem Index kickedIndex zum Actor mit dem Index actorIndex bewegt
      * @param column Column und row wird gebraucht, damit man die Werte im PlayerClickListener (column, row) aktualisiert werden. (Player1 ist jetzt auf einem anderen Feld; column und row wird dementsprechend angepasst)
-     * @param row
+     * @param row siehe column
      */
     public   void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
         if(actorActive != -1 && !blockIsMoving) {
