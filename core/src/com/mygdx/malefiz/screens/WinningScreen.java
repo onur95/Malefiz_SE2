@@ -49,7 +49,7 @@ public class WinningScreen implements Screen {
         backtomenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                stopServerAndClient();
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -57,6 +57,7 @@ public class WinningScreen implements Screen {
         exitgame.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                stopServerAndClient();
                 Gdx.app.exit();
             }
         });

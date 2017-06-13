@@ -57,6 +57,7 @@ public class LosingScreen implements Screen {
         exitgame.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                stopServerAndClient();
                 Gdx.app.exit();
             }
         });
