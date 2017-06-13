@@ -43,7 +43,7 @@ public class NetworkTests {
         server.startServer();
 
         int testcases = 5;                                  //*** Absolutely horrifying when 100
-        GameClient clients[] = new GameClient[testcases];
+        GameClient[] clients = new GameClient[testcases];
 
         for(int i = 0; i < testcases; i++){
             clients[i] = new GameClient(tcpPort, udpPort, timeout, game,server);

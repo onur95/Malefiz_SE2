@@ -1,18 +1,13 @@
 package com.mygdx.malefiz.tests;
 
 
-
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
 import com.mygdx.malefiz.playboard.Board;
 
-import org.junit.Before;
-import org.junit.runners.Parameterized;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -56,7 +51,7 @@ public class BoardTestPart5 {
                     "oo12o2ooooooooooo",
                     "..1...2...3...4..",
                     "...1.....3.3.4.4.",
-                    ".......2.3.3.4.4."};
+                    ".......2.3.3.4.4."
          */
 
         //Setzen der Highlights
@@ -70,8 +65,6 @@ public class BoardTestPart5 {
         expectedMoveOfFigure(9,6, false);
         expectedMoveOfFigure(7,2, false);
         expectedMoveOfFigure(7,6, true);
-        System.out.println(highlights.size());
-
 
 
         //moves von Figur 2 (4,4)
