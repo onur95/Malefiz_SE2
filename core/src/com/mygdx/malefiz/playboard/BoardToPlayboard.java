@@ -254,7 +254,7 @@ public class BoardToPlayboard {
      */
     public  void setPlayerFiguresHighlighted(boolean status){
         if(status && !isMovePossible()){
-            LOGGER.log(Level.FINE, "Client: No move possible");
+            LOGGER.log(Level.INFO, "Client: No move possible");
             handler.sendMessage(player.getNumber());
         }
         else if(status){

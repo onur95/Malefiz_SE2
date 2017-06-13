@@ -19,7 +19,7 @@ public class GameClientListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        LOGGER.log(Level.FINE, "Client: Message received");
+        LOGGER.log(Level.INFO, "Client: Message received");
 
         if(client == null || object == null){
             return;
@@ -42,7 +42,7 @@ public class GameClientListener extends Listener {
 
                     @Override
                     public void run() {
-                        client.getGame().setScreen(new MyMalefizGame(client.getGame(),client, startClient.playerCount));
+                        client.getGame().setScreen(new MyMalefizGame(client, startClient.playerCount));
                     }
                 });
 
@@ -58,7 +58,7 @@ public class GameClientListener extends Listener {
     @Override
     public void disconnected(Connection connection){
         client.terminate();
-        LOGGER.log(Level.FINE, "Client: client disconnected");
+        LOGGER.log(Level.INFO, "Client: client disconnected");
     }
 
 }

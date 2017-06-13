@@ -78,7 +78,7 @@ public class ConfigureScreen implements Screen {
                     connectionInfo.setVisible(true);
                     connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                     client.connect("");
-                    LOGGER.log(Level.FINE, "Server, Client: Successfully started and connected");
+                    LOGGER.log(Level.INFO, "Server, Client: Successfully started and connected");
                 }catch(Exception e){
                     server.stopServer();
                     if(client != null){

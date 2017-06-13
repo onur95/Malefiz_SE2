@@ -22,30 +22,22 @@ import static org.testng.Assert.assertEquals;
  */
 
 public class BoardTestPart5 {
+    private int playerCount = 0;
+    private List<FieldPosition> expectedMove;
+    private List<List<FieldPosition>> highlights;
 
     @Test
     public void testGeneratedHighlights(){
         Board board = new Board();
-        List<List<FieldPosition>> highlights = new ArrayList<>();
-        List<FieldPosition> moveFigure = new ArrayList<>();
+        highlights = new ArrayList<>();
+        expectedMove = new ArrayList<>();
 
-        board.setFieldActive(0, 1); //Figur von Spieler 1
-        board.moveTo(8, 4, false);
-
-        board.setFieldActive(0, 3); //Figur von Spieler 1
-        board.moveTo(4, 4, false);
-
-        board.setFieldActive(1, 1); //Figur von Spieler 1
-        board.moveTo(3, 2, false);
-
-        board.setFieldActive(0, 5); //Figur von Spieler 2
-        board.moveTo(7, 6, false);
-
-        board.setFieldActive(1, 5); //Figur von Spieler 2
-        board.moveTo(3, 5, false);
-
-        board.setFieldActive(1, 7); //Figur von Spieler 2
-        board.moveTo(3, 3, false);
+        moveFigure(board,0,1,8,4); //Figur von Spieler 1
+        moveFigure(board,0,3,4,4); //Figur von Spieler 1
+        moveFigure(board,1,1,3,2); //Figur von Spieler 1
+        moveFigure(board,0,5,7,6); //Figur von Spieler 2
+        moveFigure(board,1,5,3,5); //Figur von Spieler 2
+        moveFigure(board,1,7,3,3); //Figur von Spieler 2
 
         /*entspricht
                     "........G........",
@@ -68,54 +60,32 @@ public class BoardTestPart5 {
          */
 
         //Setzen der Highlights
-        board.setFieldActive(8,4);
-        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, 0, FieldStates.PLAYER1);
-
-        board.setFieldActive(4,4);
-        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, 1, FieldStates.PLAYER1);
-
-        board.setFieldActive(3,2);
-        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, 2, FieldStates.PLAYER1);
-
-        board.setFieldActive(1,3);
-        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, 3, FieldStates.PLAYER1);
-
-        board.setFieldActive(2,2);
-        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, 4, FieldStates.PLAYER1);
-
+        setHighlight(board, 8,4);
+        setHighlight(board, 4,4);
+        setHighlight(board, 3,2);
+        setHighlight(board, 1,3);
+        setHighlight(board, 2,2);
 
         //moves von Figur 1 (8,4)
-        moveFigure.add(new FieldPosition(9,6));
-        moveFigure.add(new FieldPosition(7,2));
-        moveFigure.add(new FieldPosition(7,6));
+        expectedMoveOfFigure(9,6, false);
+        expectedMoveOfFigure(7,2, false);
+        expectedMoveOfFigure(7,6, true);
+        System.out.println(highlights.size());
 
-        highlights.add(moveFigure);
-        moveFigure = new ArrayList<>();
+
 
         //moves von Figur 2 (4,4)
-        moveFigure.add(new FieldPosition(3,6));
-
-        highlights.add(moveFigure);
-        moveFigure = new ArrayList<>();
+        expectedMoveOfFigure(3,6, true);
 
         //moves von Figur 3 (3,2)
-        moveFigure.add(new FieldPosition(3,5));
-        moveFigure.add(new FieldPosition(4,0));
-
-        highlights.add(moveFigure);
-        moveFigure = new ArrayList<>();
+        expectedMoveOfFigure(3,5, false);
+        expectedMoveOfFigure(4,0, true);
 
         //moves von Figur 4 (1,3)
-        moveFigure.add(new FieldPosition(3,0));
-        moveFigure.add(new FieldPosition(3,4));
-
-        highlights.add(moveFigure);
-        moveFigure = new ArrayList<>();
-
         //moves von Figur 5 (2,2)
-        moveFigure.add(new FieldPosition(3,0));
-        moveFigure.add(new FieldPosition(3,4));
-        highlights.add(moveFigure);
+        for(int i = 0; i < 2; i++) {
+            startFieldMove();
+        }
 
 
         assertEquals(highlights.size(), board.getHighlights().size());
@@ -126,6 +96,34 @@ public class BoardTestPart5 {
             }
         }
 
+    }
+
+    private void moveFigure(Board board, int column, int row, int toColumn, int toRow){
+        board.setFieldActive(column, row);
+        board.moveTo(toColumn, toRow, false);
+    }
+
+    private void setHighlight(Board board, int column, int row){
+        board.setFieldActive(column,row);
+        board.higlightPositionsMovement(3, board.getRealFieldActive(), null, playerCount, FieldStates.PLAYER1);
+        playerCount++;
+    }
+
+    private void expectedMoveOfFigure(int column, int row, boolean clearList){
+        expectedMove.add(new FieldPosition(column,row));
+        if(clearList){
+            addExcpectedMove();
+        }
+    }
+
+    private void addExcpectedMove(){
+        highlights.add(expectedMove);
+        expectedMove = new ArrayList<>();
+    }
+
+    private void startFieldMove(){
+        expectedMoveOfFigure(3,0, false);
+        expectedMoveOfFigure(3,4, true);
     }
 
 }

@@ -132,7 +132,7 @@ public class Board {
         boolean blockNotKickable = myState == FieldStates.BLOCK && dice > 0;
         if(!(myState == FieldStates.NOFIELD || playerNotKickable || blockNotKickable)){
             if(dice == 0){
-                LOGGER.log(Level.FINE, "Board: setHighlight("+column+" "+row+")");
+                LOGGER.log(Level.INFO, "Board: setHighlight("+column+" "+row+")");
                 highlights.get(figureIndex).add(new FieldPosition(column, row));
             }
             else{

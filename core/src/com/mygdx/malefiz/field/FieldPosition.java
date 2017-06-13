@@ -30,6 +30,14 @@ public class FieldPosition {
     }
 
     @Override
+    public int hashCode(){
+        int result = 17;
+        result = 31 * result + getRow();
+        result = 31 * result + getColumn();
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o instanceof FieldPosition) {
             FieldPosition rhs = (FieldPosition) o;

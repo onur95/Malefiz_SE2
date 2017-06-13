@@ -145,7 +145,7 @@ public class UpdateHandler {
             soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
         }
-        LOGGER.log(Level.FINE, "Client: Message handled");
+        LOGGER.log(Level.INFO, "Client: Message handled");
     }
 
     public void playerDisconnected(int player){

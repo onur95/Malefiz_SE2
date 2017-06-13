@@ -18,7 +18,7 @@ public class GameServerListener extends Listener {
 
     @Override
     public void received(Connection connection, Object object) {
-        LOGGER.log(Level.FINE, "Server: Message received");
+        LOGGER.log(Level.INFO, "Server: Message received");
         // Received object from connection
 
         if (object instanceof Network.ClientMessage) {

@@ -70,7 +70,7 @@ public class ConnectionScreen implements Screen {
                     connectionInfo.setVisible(true);
                     connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                     client.connect(ip);
-                    LOGGER.log(Level.FINE, "Client: Successfully connected to server");
+                    LOGGER.log(Level.INFO, "Client: Successfully connected to server");
                 }catch(Exception e){
                     client.terminate();
                     LOGGER.log(Level.SEVERE, "Client: Failed to connect to server", e);

@@ -66,7 +66,7 @@ public class GameServer {
         lastTurn = newPlayerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
-        LOGGER.log(Level.FINE, "Server: Transmitted Data to Clients");
+        LOGGER.log(Level.INFO, "Server: Transmitted Data to Clients");
     }
 
     public void sendMessage(int player){
@@ -82,7 +82,7 @@ public class GameServer {
 
         players++;
 
-        LOGGER.log(Level.FINE, "Server: Client connected; playercount="+players);
+        LOGGER.log(Level.INFO, "Server: Client connected; playercount="+players);
 
         if(players == maxUsercount){
             for(int i=1; i<=players; i++) {
@@ -118,7 +118,7 @@ public class GameServer {
                 break;
             }
         }
-        LOGGER.log(Level.FINE, "Server: Client disconnected; clientIndex="+clientIndex);
+        LOGGER.log(Level.INFO, "Server: Client disconnected; clientIndex="+clientIndex);
         if(gameStarted && clientIndex != -1){
             leavedPlayers.add(clientIndex);
             if(lastTurn == clientIndex+1){
@@ -133,7 +133,7 @@ public class GameServer {
         }
         if(players == 0 && gameStarted){
             stopServer();
-            LOGGER.log(Level.FINE, "Server: All players have left the game. Server closed");
+            LOGGER.log(Level.INFO, "Server: All players have left the game. Server closed");
         }
         return clientIndex;
     }

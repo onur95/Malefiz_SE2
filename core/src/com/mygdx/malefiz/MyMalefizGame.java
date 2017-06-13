@@ -32,11 +32,10 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private float currentZoom;
 	private Skin skin;
 	private Dice dice;
-	private final Malefiz game;
 
-	public MyMalefizGame (Malefiz game, GameClient client, int playerCount) {
+	public MyMalefizGame (GameClient client, int playerCount) {
 		this.client = client;
-		this.game = game;
+		//client besitzt das Game
 		this.stage = new Stage(new FitViewport(1500, 1500));
 
 		setSkin();

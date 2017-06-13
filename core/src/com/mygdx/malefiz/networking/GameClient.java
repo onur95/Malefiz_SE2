@@ -60,7 +60,7 @@ public class GameClient {
 
     public void terminate(){
         client.close();
-        LOGGER.log(Level.FINE, "Client: Client disconnected");
+        LOGGER.log(Level.INFO, "Client: Client disconnected");
     }
 
     public void setPlayerNumber(int player){
@@ -77,7 +77,7 @@ public class GameClient {
         transmission.playerTurn = playerTurn;
 
         client.sendTCP(transmission);       // ** .. Send it to server
-        LOGGER.log(Level.FINE, "Client: Transmitted Data to Server");
+        LOGGER.log(Level.INFO, "Client: Transmitted Data to Server");
     }
 
     public int getPlayerNumber(){
