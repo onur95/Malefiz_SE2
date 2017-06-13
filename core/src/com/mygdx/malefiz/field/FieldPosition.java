@@ -30,7 +30,16 @@ public class FieldPosition {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o instanceof FieldPosition) {
+            FieldPosition rhs = (FieldPosition) o;
+            return this.getRow() == rhs.getRow() && this.getColumn() == rhs.getColumn();
+        }
+        return false;
+    }
+
+    @Override
     public String toString(){
-        return "column: "+this.column + "; row: "+this.row;
+        return "column: "+this.column + " row: "+this.row;
     }
 }
