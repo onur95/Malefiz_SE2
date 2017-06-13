@@ -1,12 +1,16 @@
 package com.mygdx.malefiz.playboard;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.Screens.LosingScreen;
+import com.mygdx.malefiz.Screens.WinningScreen;
 import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.coordinates.CoordinateCalculation;
 import com.mygdx.malefiz.coordinates.Coordinates;
@@ -305,7 +309,7 @@ public class BoardToPlayboard {
      * @param column Column und row wird gebraucht, damit man die Werte im PlayerClickListener (column, row) aktualisiert werden. (Player1 ist jetzt auf einem anderen Feld; column und row wird dementsprechend angepasst)
      * @param row siehe column
      */
-    public   void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
+    public void moveToPosition(int actorIndex, boolean blockIsMoving, int column, int row){
         if(actorActive != -1 && !blockIsMoving) {
             soundManager.playSound(Sounds.MOVE);
 
@@ -319,6 +323,8 @@ public class BoardToPlayboard {
 
             adjustPlayerClickListener(column, row, actorActive);
             adjustPlayerClickListener(column, row, actorActive-1);
+
+            setWinningLosingScreen(column,row,true);
         }
         else if(blockIsMoving){
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
@@ -328,6 +334,31 @@ public class BoardToPlayboard {
         removeHighlights();
 
         actorActive = -1;
+    }
+
+    public void setWinningLosingScreen(int column, int row,boolean isWinner){
+        final Malefiz game=handler.getClient().getGame();
+        if(board.getBoardArray()[column][row].getFieldState()!= FieldStates.GOAL){
+            return;
+        }
+        if(isWinner){
+            Gdx.app.postRunnable(new Runnable() {
+
+                @Override
+                public void run() {
+                    game.setScreen(new WinningScreen(game,handler.getClient()));
+                }
+            });
+        }
+        else {
+            Gdx.app.postRunnable(new Runnable() {
+
+                @Override
+                public void run() {
+                    game.setScreen(new LosingScreen(game,handler.getClient()));
+                }
+            });
+        }
     }
 
     public void adjustPlayerClickListener(int column, int row, int index){

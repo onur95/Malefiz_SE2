@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
+import com.mygdx.malefiz.networking.GameClient;
 
 /**
  * Created by Onur on 10.06.2017.
@@ -26,9 +27,11 @@ public class LosingScreen implements Screen {
     private Image imgLoser;
     private ImageButton backtomenu;
     private ImageButton exitgame;
+    private GameClient client;
 
-    public LosingScreen(final Malefiz game){
+    public LosingScreen(final Malefiz game, GameClient client){
         this.game=game;
+        this.client=client;
         stage = new Stage(new FillViewport(1024,670));
         txtBackground=new Texture("malefiz_mainmenu_background.jpg");
         imgBackground=new Image(txtBackground);
@@ -46,7 +49,7 @@ public class LosingScreen implements Screen {
         backtomenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //((Game)Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen(game));
+                stopServerAndClient();
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -62,6 +65,13 @@ public class LosingScreen implements Screen {
         stage.addActor(imgLoser);
         stage.addActor(backtomenu);
         stage.addActor(exitgame);
+    }
+
+    private void stopServerAndClient(){
+        if(client.getServer()!=null) {
+            client.getServer().stopServer();
+        }
+        client.terminate();
     }
 
     @Override

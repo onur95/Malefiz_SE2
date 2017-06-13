@@ -19,12 +19,14 @@ public class GameClient {
     private UpdateHandler handler;
     private Malefiz game;
     private String serverIp;
+    private GameServer server;
 
-    public GameClient(int tcp, int udp, int timeout, Malefiz game){
+    public GameClient(int tcp, int udp, int timeout, Malefiz game, GameServer server){
         this.tcpPort = tcp;
         this.udpPort = udp;
         this.timeout = timeout;
         this.game = game;
+        this.server=server;
 
         client = new Client();
         Network.registerKryoClasses(client);
@@ -50,6 +52,10 @@ public class GameClient {
 
     public Malefiz getGame(){
         return this.game;
+    }
+
+    public GameServer getServer() {
+        return server;
     }
 
     public void terminate(){

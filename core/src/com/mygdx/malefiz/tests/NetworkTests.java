@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Tests;
+package com.mygdx.malefiz.tests;
 
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
@@ -30,7 +30,7 @@ public class NetworkTests {
         server = new GameServer(tcpPort, udpPort, maxUserCount);
         server.startServer();
 
-        client = new GameClient(tcpPort, udpPort, timeout,game);
+        client = new GameClient(tcpPort, udpPort, timeout,game,server);
         client.connect("");
 
         client.terminate();
@@ -46,7 +46,7 @@ public class NetworkTests {
         GameClient clients[] = new GameClient[testcases];
 
         for(int i = 0; i < testcases; i++){
-            clients[i] = new GameClient(tcpPort, udpPort, timeout, game);
+            clients[i] = new GameClient(tcpPort, udpPort, timeout, game,server);
             clients[i].connect("");
         }
 

@@ -65,7 +65,7 @@ public class ConnectionScreen implements Screen {
             public void clicked(InputEvent event, float x, float y){
                 Gdx.input.setOnscreenKeyboardVisible(false);
                 final String ip = eIPText.getText();
-                client = new GameClient(44775, 44776, 10000, game);
+                client = new GameClient(44775, 44776, 10000, game,null);
                 try{
                     connectionInfo.setVisible(true);
                     connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));

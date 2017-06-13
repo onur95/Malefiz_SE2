@@ -135,6 +135,8 @@ public class UpdateHandler {
             MoveToAction moveAction1 = new MoveToAction();
             moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
             actor1.addAction(moveAction1);
+
+            view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
         }
 
         if(playerTurn == client.getPlayerNumber()){
@@ -151,4 +153,7 @@ public class UpdateHandler {
         board.removePlayer(player);
     }
 
+    public GameClient getClient() {
+        return client;
+    }
 }

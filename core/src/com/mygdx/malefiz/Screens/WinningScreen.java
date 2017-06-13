@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
+import com.mygdx.malefiz.networking.GameClient;
 
 /**
  * Created by Onur on 10.06.2017.
@@ -26,9 +27,11 @@ public class WinningScreen implements Screen {
     private Image imgBackground;
     private Texture txtWinner;
     private Image imgWinner;
+    private GameClient client;
 
-    public WinningScreen(final Malefiz game){
+    public WinningScreen(final Malefiz game,GameClient client){
         this.game=game;
+        this.client=client;
         stage = new Stage(new FillViewport(1024,670));
         txtBackground=new Texture("malefiz_mainmenu_background.jpg");
         imgBackground=new Image(txtBackground);
@@ -62,6 +65,13 @@ public class WinningScreen implements Screen {
         stage.addActor(imgWinner);
         stage.addActor(backtomenu);
         stage.addActor(exitgame);
+    }
+
+    private void stopServerAndClient(){
+        if(client.getServer()!=null) {
+            client.getServer().stopServer();
+        }
+        client.terminate();
     }
 
     @Override

@@ -74,7 +74,7 @@ public class ConfigureScreen implements Screen {
                 server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
                 try{
                     server.startServer();
-                    client = new GameClient(44775, 44776, 10000, game);
+                    client = new GameClient(44775, 44776, 10000, game,server);
                     connectionInfo.setVisible(true);
                     connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
                     client.connect("");
