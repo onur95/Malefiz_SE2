@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Screens;
+package com.mygdx.malefiz.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -38,8 +38,8 @@ public class WinningScreen implements Screen {
         txtWinner=new Texture("winner_slogan.png");
         imgWinner=new Image(txtWinner);
         imgWinner.setBounds(375,425,400,200);
-        backtomenu=MainMenuScreen.createImageButton("back_to_menu.png",375,320,350,150);
-        exitgame=MainMenuScreen.createImageButton("exit_button.png",375,200,350,150);
+        backtomenu= MainMenuScreen.createImageButton("back_to_menu.png",375,320,350,150);
+        exitgame= MainMenuScreen.createImageButton("exit_button.png",375,200,350,150);
         Gdx.input.setInputProcessor(stage);
     }
 

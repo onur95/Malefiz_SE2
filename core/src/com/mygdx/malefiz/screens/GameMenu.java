@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.Screens;
+package com.mygdx.malefiz.screens;
 
 
 import com.badlogic.gdx.Gdx;

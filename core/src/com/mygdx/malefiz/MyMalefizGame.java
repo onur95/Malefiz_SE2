@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.Screens.GameMenu;
+import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
