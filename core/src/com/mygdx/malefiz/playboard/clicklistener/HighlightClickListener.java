@@ -8,6 +8,9 @@ import com.mygdx.malefiz.networking.BoardUpdate;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by kstri on 03.04.2017.
  */
@@ -20,6 +23,7 @@ public class HighlightClickListener extends ClickListener {
     private BoardToPlayboard view;
     private Board board;
     private UpdateHandler handler;
+    private static final Logger LOGGER = Logger.getLogger( HighlightClickListener.class.getName() );
 
     public HighlightClickListener(int column, int row, int actorIndex, Board board, BoardToPlayboard view, UpdateHandler handler) {
         this.column = column;
@@ -33,6 +37,7 @@ public class HighlightClickListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y)
     {
+        LOGGER.log(Level.INFO, "Highlight: "+column+" row: "+row+" fieldstate: "+board.getBoardArray()[column][row].getFieldState());
         boolean isBlock = board.isBlock(column, row);
         boolean isPlayer = board.isPlayer(column, row);
         if(isPlayer){

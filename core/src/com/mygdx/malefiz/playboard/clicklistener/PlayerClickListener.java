@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.malefiz.Player;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by kstri on 03.04.2017.
  */
@@ -17,6 +20,7 @@ public class PlayerClickListener extends ClickListener {
     private Player player;
     private BoardToPlayboard view;
     private int selectedFigure;
+    private static final Logger LOGGER = Logger.getLogger( PlayerClickListener.class.getName() );
 
     public PlayerClickListener(int column, int row, int actorIndex, Player player, BoardToPlayboard view) {
         this.column = column;
@@ -30,6 +34,7 @@ public class PlayerClickListener extends ClickListener {
     public void clicked(InputEvent event, float x, float y)
     {
         if(isPlayersTurnHighlighted()) {
+            LOGGER.log(Level.INFO, "Player clicked: column: "+column+" row: "+row+" fieldstate: "+view.getBoard().getBoardArray()[column][row].getFieldState());
             view.setHighlightsOfFigure(actorIndex,selectedFigure, column, row);
         }
     }

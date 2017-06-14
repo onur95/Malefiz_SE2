@@ -516,4 +516,8 @@ public class BoardToPlayboard {
     public List<Integer> getPlayerMovesPossible() {
         return playerMovesPossible;
     }
+
+    public Board getBoard(){
+        return this.board;
+    }
 }

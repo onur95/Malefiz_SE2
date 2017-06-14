@@ -1,5 +1,6 @@
 package com.mygdx.malefiz;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -85,21 +86,21 @@ public class UpdateHandler {
 
 
             //View anpassen
-            Actor actor1 = stage.getActors().get(move1.getActorIndex());
-            Actor actor2 = stage.getActors().get(move2.getActorIndex());
+            final Actor actor1 = stage.getActors().get(move1.getActorIndex());
+            final Actor actor2 = stage.getActors().get(move2.getActorIndex());
             Coordinates coordinates3 = view.getHelper().getCoordinatesOfField(move3.getColumn(), move3.getRow()); //Gibt die richtigen X und Y Koordinaten zurück
 
             //move gekicktes Element
             MoveToAction moveAction1 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
             moveAction1.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
             moveAction1.setDuration(1F);
-            actor2.addAction(moveAction1);
+            // actor2 mit moveAction1
 
             //move
             MoveToAction moveAction2 = new MoveToAction();
             moveAction2.setPosition(actor2.getX(), actor2.getY());
             moveAction2.setDuration(1F);
-            actor1.addAction(moveAction2);
+            // actor1 mit moveAction2
 
             if(ownPlayerKicked) {
                 Actor actorPlayer = stage.getActors().get(move2.getActorIndex()+1); //ist der Kegel, +1 das Highlight des Kegels
@@ -112,6 +113,7 @@ public class UpdateHandler {
                 view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex()+1);
             }
 
+            move(actor1,actor2, moveAction1, moveAction2, board.isPlayer(move2.getColumn(),move2.getRow()));
 
 
             //Aufpassen wenn gekickter Kegel der eigene ist (Highlight auch verschieben)
@@ -134,7 +136,10 @@ public class UpdateHandler {
 
             MoveToAction moveAction1 = new MoveToAction();
             moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
+            moveAction1.setDuration(1F);
             actor1.addAction(moveAction1);
+
+            soundManager.playSound(Sounds.MOVE);
 
             view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
         }
@@ -146,6 +151,28 @@ public class UpdateHandler {
             dice.setShaked(false);
         }
         LOGGER.log(Level.INFO, "Client: Message handled");
+    }
+
+    private void move(Actor actor1,final Actor actor2, final MoveToAction moveAction1, MoveToAction moveAction2, final boolean playerKicked){
+        Action switchScreenAction = new Action(){
+            @Override
+            public boolean act(float delta){
+                playSecondSound(actor2, moveAction1, playerKicked);
+                return true;
+            }
+        };
+        actor1.addAction(Actions.sequence(moveAction2, switchScreenAction)); //gekicktes Element
+        soundManager.playSound(Sounds.MOVE);
+    }
+
+    private void playSecondSound(Actor actor, MoveToAction moveToAction, boolean playerKicked){
+        actor.addAction(moveToAction);
+        if(playerKicked){
+            soundManager.playSound(Sounds.PLAYERKICKED);
+        }
+        else{
+            soundManager.playSound(Sounds.BLOCKPLACED);
+        }
     }
 
     public void playerDisconnected(int player){
