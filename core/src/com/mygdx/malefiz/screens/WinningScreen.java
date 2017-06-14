@@ -29,6 +29,11 @@ public class WinningScreen implements Screen {
     private Image imgWinner;
     private GameClient client;
 
+    /**
+     * Called once the screen is created
+     * @param game
+     * @param client
+     */
     public WinningScreen(final Malefiz game,GameClient client){
         this.game=game;
         this.client=client;
@@ -43,6 +48,9 @@ public class WinningScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     @Override
     public void show() {
 
@@ -75,6 +83,10 @@ public class WinningScreen implements Screen {
         client.terminate();
     }
 
+    /**
+     * Called when the screen should render itself
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -84,26 +96,38 @@ public class WinningScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen resizes itself
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Called when the screen pauses. e.g. incoming call
+     */
     @Override
-    public void pause() {
+    public void pause() {}
 
-    }
-
+    /**
+     * Called when the screen resumes from a paused state
+     */
     @Override
-    public void resume() {
+    public void resume() {}
 
-    }
-
+    /**
+     * Called when this screen is no longer the current
+     * screen for a Game
+     */
     @Override
-    public void hide() {
+    public void hide() {}
 
-    }
-
+    /**
+     * Called when this screen should release all resources
+     */
     @Override
     public void dispose() {
         stage.dispose();

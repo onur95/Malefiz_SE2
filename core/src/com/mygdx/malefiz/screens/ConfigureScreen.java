@@ -37,6 +37,10 @@ public class ConfigureScreen implements Screen {
     private GameServer server;
     private static final Logger LOGGER = Logger.getLogger( ConfigureScreen.class.getName() );
 
+    /**
+     * Called once the screen is created
+     * @param game
+     */
     public ConfigureScreen(final Malefiz game){
         this.game=game;
         atlas = new TextureAtlas("uiskin.atlas");
@@ -49,6 +53,9 @@ public class ConfigureScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     @Override
     public void show() {
         Label setPlayersInfo = new Label("The maximum amount of players: ", skin);
@@ -103,7 +110,6 @@ public class ConfigureScreen implements Screen {
             }
         });
 
-        //Add table to stage*/
         stage.addActor(imgBackgroundMenu);
         stage.addActor(imageButtonStartServer);
         stage.addActor(imageButtonReturn);
@@ -112,6 +118,10 @@ public class ConfigureScreen implements Screen {
         stage.addActor(connectionInfo);
     }
 
+    /**
+     * Called when the screen should render itself
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -121,26 +131,38 @@ public class ConfigureScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen resizes itself
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height);
     }
 
+    /**
+     * Called when the screen pauses. e.g. incoming call
+     */
     @Override
-    public void pause() {
-        //not needed
-    }
+    public void pause() {}
 
+    /**
+     * Called when the screen resumes from a paused state
+     */
     @Override
-    public void resume() {
-        //no use for it
-    }
+    public void resume() {}
 
+    /**
+     * Called when this screen is no longer the current
+     * screen for a Game
+     */
     @Override
-    public void hide() {
-        //will not be used
-    }
+    public void hide() {}
 
+    /**
+     * Called when this screen should release all resources
+     */
     @Override
     public void dispose() {
         if(server != null){

@@ -30,6 +30,10 @@ public class MainMenuScreen implements Screen {
     private ImageButton imageButtonExit;
     private final Malefiz game;
 
+    /**
+     * Called once the screen is created
+     * @param game
+     */
     public MainMenuScreen(final Malefiz game){
         this.game=game;
         imageButtonNewGame=createImageButton("new_game_setup.png",375,335,350,150);
@@ -44,6 +48,9 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     @Override
     public void show() {
 
@@ -81,6 +88,10 @@ public class MainMenuScreen implements Screen {
         return imageButton;
     }
 
+    /**
+     * Called when the screen should render itself
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -90,26 +101,38 @@ public class MainMenuScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen resizes itself
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Called when the screen pauses. e.g. incoming call
+     */
     @Override
-    public void pause() {
-        //no need for it
-    }
+    public void pause() {}
 
+    /**
+     * Called when the screen resumes from a paused state
+     */
     @Override
-    public void resume() {
-        //will not be used
-    }
+    public void resume() {}
 
+    /**
+     * Called when this screen is no longer the current
+     * screen for a Game
+     */
     @Override
-    public void hide() {
-        //I don't know for what this is
-    }
+    public void hide() {}
 
+    /**
+     * Called when this screen should release all resources
+     */
     @Override
     public void dispose() {
        stage.dispose();

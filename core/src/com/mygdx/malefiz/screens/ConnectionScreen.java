@@ -34,6 +34,10 @@ public class ConnectionScreen implements Screen {
     private GameClient client;
     private static final Logger LOGGER = Logger.getLogger( ConfigureScreen.class.getName() );
 
+    /**
+     * Called once the screen is created
+     * @param game
+     */
     public ConnectionScreen(final Malefiz game){
         this.game = game;
         atlas = new TextureAtlas("uiskin.atlas");
@@ -47,6 +51,10 @@ public class ConnectionScreen implements Screen {
 
     }
 
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
+    @Override
     public void show() {
         //Create editable Textfields
         final TextField eIPText = new TextField("Enter public IP. (F.ex.: 10.226.172.156)", skin);
@@ -97,6 +105,9 @@ public class ConnectionScreen implements Screen {
         stage.addActor(connectionInfo);
     }
 
+    /**
+     * Called when this screen should release all resources
+     */
     @Override
     public void dispose() {
         // Does this suffice for disposing connectionlist?
@@ -108,6 +119,10 @@ public class ConnectionScreen implements Screen {
         stage.dispose();
     }
 
+    /**
+     * Called when the screen should render itself
+     * @param delta
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
@@ -117,21 +132,30 @@ public class ConnectionScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when this screen is no longer the current
+     * screen for a Game
+     */
     @Override
-    public void hide() {
-        //no use for it
-    }
+    public void hide() {}
 
+    /**
+     * Called when the screen pauses. e.g. incoming call
+     */
     @Override
-    public void pause() {
-        //not needed
-    }
+    public void pause() {}
 
+    /**
+     * Called when the screen resumes from a paused state
+     */
     @Override
-    public void resume() {
-        //also no need
-    }
+    public void resume() {}
 
+    /**
+     * Called when the screen resizes itself
+     * @param width
+     * @param height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width,height);
