@@ -115,20 +115,26 @@ public class MainMenuScreen implements Screen {
      * Called when the screen pauses. e.g. incoming call
      */
     @Override
-    public void pause() {}
+    public void pause() {
+        //not needed
+    }
 
     /**
      * Called when the screen resumes from a paused state
      */
     @Override
-    public void resume() {}
+    public void resume() {
+        //not needed
+    }
 
     /**
      * Called when this screen is no longer the current
      * screen for a Game
      */
     @Override
-    public void hide() {}
+    public void hide() {
+        //not needed
+    }
 
     /**
      * Called when this screen should release all resources

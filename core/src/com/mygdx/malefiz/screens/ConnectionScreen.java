@@ -137,19 +137,25 @@ public class ConnectionScreen implements Screen {
      * screen for a Game
      */
     @Override
-    public void hide() {}
+    public void hide() {
+        //not needed
+    }
 
     /**
      * Called when the screen pauses. e.g. incoming call
      */
     @Override
-    public void pause() {}
+    public void pause() {
+        //not needed
+    }
 
     /**
      * Called when the screen resumes from a paused state
      */
     @Override
-    public void resume() {}
+    public void resume() {
+        //not needed
+    }
 
     /**
      * Called when the screen resizes itself
