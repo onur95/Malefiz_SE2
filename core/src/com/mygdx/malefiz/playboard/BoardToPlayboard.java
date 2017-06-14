@@ -2,9 +2,11 @@ package com.mygdx.malefiz.playboard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.malefiz.Malefiz;
@@ -331,6 +333,7 @@ public class BoardToPlayboard {
             MoveToAction action2 = getMoveToAction(actorIndex, 0);
             stage.getActors().get(kickedIndex).addAction(action2);
             kickedIndex = -1;
+            soundManager.playSound(Sounds.BLOCKPLACED);
         }
         removeHighlights();
 
@@ -449,6 +452,13 @@ public class BoardToPlayboard {
      */
     public FieldPosition moveKicked(){
         FieldPosition fieldPosition = null;
+        Action playSoundAction = new Action(){
+            @Override
+            public boolean act(float delta){
+                soundManager.playSound(Sounds.PLAYERKICKED);
+                return true;
+            }
+        };
         if(kickedIndex != -1){
             int column = board.getNewPlayerPosition().getColumn();
             int row = board.getNewPlayerPosition().getRow();
@@ -458,7 +468,7 @@ public class BoardToPlayboard {
             MoveToAction action = new MoveToAction();
             action.setPosition(coordinates.getxOffset(),coordinates.getyOffset());
             action.setDuration(1F);
-            stage.getActors().get(kickedIndex).addAction(action);
+            stage.getActors().get(kickedIndex).addAction(Actions.sequence(Actions.delay(1F),playSoundAction, action));
             kickedIndex = -1;
         }
         return fieldPosition;

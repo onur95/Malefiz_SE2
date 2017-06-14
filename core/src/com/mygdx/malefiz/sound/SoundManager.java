@@ -16,7 +16,7 @@ public class SoundManager {
 
     public SoundManager(){
         yourTurn= Gdx.audio.newSound(Gdx.files.internal("soundeffects/your-turn.wav"));
-        playerKicked = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kick-player.wav"));
+        playerKicked = Gdx.audio.newSound(Gdx.files.internal("soundeffects/kicked-player-move-back.wav"));
         placeBlock = Gdx.audio.newSound(Gdx.files.internal("soundeffects/place-block.wav"));
         moveFigure = Gdx.audio.newSound(Gdx.files.internal("soundeffects/move-figure2.wav"));
     }
