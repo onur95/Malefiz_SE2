@@ -82,7 +82,9 @@ public class UpdateHandler {
             //Board anpassen
             array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
             array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-            array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
+            if(!move3.equals(move1)) {
+                array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
+            }
 
 
             //View anpassen

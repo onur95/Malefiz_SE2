@@ -204,4 +204,8 @@ public class Board {
     public List<List<FieldPosition>> getHighlights(){
         return highlights;
     }
+
+    public String[] getBoardMeta() {
+        return boardMeta;
+    }
 }

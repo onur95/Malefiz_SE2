@@ -9,14 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.Player;
-import com.mygdx.malefiz.screens.LosingScreen;
-import com.mygdx.malefiz.screens.WinningScreen;
 import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.coordinates.CoordinateCalculation;
 import com.mygdx.malefiz.coordinates.Coordinates;
 import com.mygdx.malefiz.dice.Dice;
+import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
+import com.mygdx.malefiz.screens.LosingScreen;
+import com.mygdx.malefiz.screens.WinningScreen;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
 
@@ -338,7 +339,7 @@ public class BoardToPlayboard {
 
     public void setWinningLosingScreen(int column, int row,boolean isWinner){
         final Malefiz game=handler.getClient().getGame();
-        if(board.getBoardArray()[column][row].getFieldState()!= FieldStates.GOAL){
+        if(new Field(board.getBoardMeta()[column].charAt(row)).getFieldState()!= FieldStates.GOAL){
             return;
         }
         if(isWinner){
