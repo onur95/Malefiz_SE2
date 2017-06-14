@@ -17,6 +17,24 @@ dependencies {
     compile 'junit:junit:4.12'
 }
 
+apply plugin: "jacoco"
+
+test {
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
 
 eclipse.project {
     name = appName + "-core"
