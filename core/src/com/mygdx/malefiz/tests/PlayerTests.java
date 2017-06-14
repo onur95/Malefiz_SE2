@@ -1,6 +1,7 @@
 package com.mygdx.malefiz.tests;
 
 import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.playboard.Board;
 
 import org.junit.Before;
@@ -42,5 +43,22 @@ public class PlayerTests {
     public void test() {
         assertEquals(player.getNumber(), expected);
         assertEquals(board.isPlayer(player.getNumber()), isPlayer);
+    }
+
+    @Test
+    public void testLists(){
+        player.addFigurePosition(expected, expected);
+        player.addHighlightFigure(expected);
+        player.addHighlightFigure(expected+1);
+
+        assertEquals(player.getFiguresPosition().size(),1);
+        assertEquals(player.getHighlightedFiguresIndizes().size(),2);
+        assertEquals(player.getHighlightedFiguresIndizes().contains(expected), true);
+        assertEquals(player.getHighlightedFiguresIndizes().contains(expected+1), true);
+        assertEquals(player.getFiguresPosition().contains(new FieldPosition(expected, expected)), true);
+
+        assertEquals(player.getHighlightedFiguresIndizes().contains(expected-1), false);
+        assertEquals(player.getFiguresPosition().contains(new FieldPosition(expected+1, expected+1)), false);
+
     }
 }
