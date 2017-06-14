@@ -80,11 +80,17 @@ public class UpdateHandler {
             boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getFieldState().ordinal() == client.getPlayerNumber();
 
             //Board anpassen
+            Field temp = array[move3.getColumn()][move3.getRow()];
             array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
-            array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-            if(!move3.equals(move1)) {
+            if(move3.getRow() == move1.getRow() && move3.getColumn() == move1.getColumn()) {
+                array[move2.getColumn()][move2.getRow()] = temp;
+            }
+            else{
+                array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
                 array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
             }
+
+
 
 
             //View anpassen
