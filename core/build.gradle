@@ -4,8 +4,6 @@ targetCompatibility = 1.7
 sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs += ["src/"]
-sourceSets.test.java.srcDirs += ["src"]
 
 dependencies {
     // Required -- JUnit 4 framework
@@ -20,8 +18,10 @@ dependencies {
 eclipse.project {
     name = appName + "-core"
 }
-
+/*
 apply plugin: "jacoco"
+sourceSets.main.java.srcDirs += ["src/"]
+sourceSets.test.java.srcDirs += ["src"]
 jacoco {
     toolVersion = "0.7.7.201606060606"
     reportsDir = file("${buildDir}/reports")
@@ -56,3 +56,4 @@ jacocoTestReport {
         html.destination "${reportsDir}/jacocoHtml/"
     }
 }
+*/

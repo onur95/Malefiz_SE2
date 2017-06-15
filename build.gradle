@@ -90,6 +90,35 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
+    apply plugin: "jacoco"
+    sourceSets.main.java.srcDirs += ["src/"]
+    sourceSets.test.java.srcDirs += ["src"]
+
+    test {
+        test.finalizedBy jacocoTestReport
+    }
+
+    jacoco {
+        toolVersion = "0.7.7.201606060606"
+    }
+
+    jacocoTestReport {
+        doFirst{
+            try{
+                classDirectories = files(classDirectories.files.collect{
+                    fileTree(dir: it, exclude: 'com/android/**')
+                })
+            }catch(e){
+                println ">> Jacoco-Exclusion of android failed :: ${e.message}"
+            }
+        }
+        reports {
+            xml.enabled true
+            csv.enabled true
+            html.enabled true
+            html.destination "${buildDir}/jacocoHtml"
+        }
+    }
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -109,3 +138,4 @@ project(":core") {
 tasks.eclipse.doLast {
     delete ".project"
 }
+
