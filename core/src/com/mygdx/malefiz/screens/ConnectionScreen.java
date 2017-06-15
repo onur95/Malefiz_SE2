@@ -57,7 +57,7 @@ public class ConnectionScreen implements Screen {
     @Override
     public void show() {
         //Create editable Textfields
-        final TextField eIPText = new TextField("Enter public IP. (F.ex.: 10.226.172.156)", skin);
+        final TextField eIPText = new TextField("IP:", skin);
         eIPText.setBounds(400,450,300,100);
         final Label connectionInfo= new Label("Waiting for other Players to connect",skin);
         connectionInfo.setColor(Color.RED);

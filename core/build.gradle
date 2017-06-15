@@ -6,7 +6,6 @@ sourceCompatibility = 1.7
 
 sourceSets.main.java.srcDirs = ["src/"]
 sourceSets.test.java.srcDirs = ["src"]
-//sourceSets.main.java.srcDirs = [ "src/com/mygdx/malefiz/Tests/" ]
 
 dependencies {
     // Required -- JUnit 4 framework
@@ -17,26 +16,32 @@ dependencies {
     compile 'junit:junit:4.12'
 }
 
-apply plugin: "jacoco"
-
-test {
-    finalizedBy jacocoTestReport
-}
-
-jacoco {
-    toolVersion = "0.7.7.201606060606"
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination "${buildDir}/jacocoHtml"
-    }
-}
-
 
 eclipse.project {
     name = appName + "-core"
 }
 
+apply plugin: "jacoco"
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+    reportsDir = file("${buildDir}/reports/jacoco")
+
+}
+
+test {
+    jacoco{
+        append = false
+        destinationFile = file("${buildDir}/jacoco/jacocoTests.exec")
+        classDumpFile = file("${buildDir}/jacoco/classpathdumps/")
+    }
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.enabled true
+        html.destination "${buildDir}/jacoco/htmlOuts/"
+    }
+}

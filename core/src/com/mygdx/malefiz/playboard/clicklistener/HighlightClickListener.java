@@ -75,6 +75,8 @@ public class HighlightClickListener extends ClickListener {
         if(blockIsMoving){
             handler.add(new BoardUpdate(actorIndex, column, row)); //Was passiert mit dem Block, der auf der Position ist, auf die der Kegel fährt
         }
+
+        board.removeHighlights();   // Removing highlights after activated cheat.
         view.checkFinished();
 
     }

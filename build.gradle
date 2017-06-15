@@ -93,7 +93,6 @@ project(":android") {
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -112,38 +111,3 @@ project(":core") {
 tasks.eclipse.doLast {
     delete ".project"
 }
-
-// CTRL + - on EN :: Kept for later reference
-//    apply plugin: "jacoco"
-//
-//    jacoco {
-//        toolVersion = "0.7.6.201602180812"
-//    }
-//
-//    def coverageSourceDirs = [
-//            'src'
-//    ]
-//
-//    test {
-//        finalizedBy jacocoTestReport
-//    }
-//
-//    jacocoTestReport {
-//        classDirectories = fileTree(
-//                dir: '../core/build/classes/main/com/mygdx/malefiz/Tests/',
-//                excludes: ['**/R.class',
-//'**/R$*.class',
-//'**/*$ViewInjector*.*',
-//'**/BuildConfig.*',
-//'**/Manifest*.*']
-//)
-//additionalSourceDirs = files(coverageSourceDirs)
-//sourceDirectories = files(coverageSourceDirs)
-//executionData = files('../android/build/jacoco/testReleaseUnitTest.exec ')
-//
-//reports {
-//    xml.enabled = true
-//    csv.enabled = true
-//    html.destination "${buildDir}/jacocoHtml"
-//}
-//}

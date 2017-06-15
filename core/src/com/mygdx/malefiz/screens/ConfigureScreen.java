@@ -61,7 +61,7 @@ public class ConfigureScreen implements Screen {
         Label setPlayersInfo = new Label("The maximum amount of players: ", skin);
         setPlayersInfo.setBounds(375,450,250,90);
         setPlayersInfo.setColor(Color.RED);
-        final TextField playerNumber = new TextField("3", skin);
+        final TextField playerNumber = new TextField("2", skin);
         playerNumber.setBounds(650,470,50,50);
         playerNumber.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
         final Label connectionInfo= new Label("Waiting for other Players to connect",skin);
