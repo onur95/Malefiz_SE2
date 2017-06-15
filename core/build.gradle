@@ -18,7 +18,7 @@ dependencies {
 eclipse.project {
     name = appName + "-core"
 }
-/*
+/* Keep for later reference
 apply plugin: "jacoco"
 sourceSets.main.java.srcDirs += ["src/"]
 sourceSets.test.java.srcDirs += ["src"]

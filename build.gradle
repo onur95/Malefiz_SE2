@@ -91,11 +91,9 @@ project(":android") {
 project(":core") {
     apply plugin: "java"
     apply plugin: "jacoco"
-    sourceSets.main.java.srcDirs += ["src/"]
-    sourceSets.test.java.srcDirs += ["src"]
 
     test {
-        test.finalizedBy jacocoTestReport
+        finalizedBy jacocoTestReport
     }
 
     jacoco {
@@ -103,19 +101,9 @@ project(":core") {
     }
 
     jacocoTestReport {
-        doFirst{
-            try{
-                classDirectories = files(classDirectories.files.collect{
-                    fileTree(dir: it, exclude: 'com/android/**', 'com/desktop/**')
-                })
-            }catch(e){
-                println ">> Jacoco-Exclusion of android or desktop has failed :: ${e.message}"
-            }
-        }
         reports {
-            xml.enabled true
-            csv.enabled true
-            html.enabled true
+            xml.enabled false
+            csv.enabled false
             html.destination "${buildDir}/jacocoHtml"
         }
     }
