@@ -106,10 +106,10 @@ project(":core") {
         doFirst{
             try{
                 classDirectories = files(classDirectories.files.collect{
-                    fileTree(dir: it, exclude: 'com/android/**')
+                    fileTree(dir: it, exclude: 'com/android/**', 'com/desktop/**')
                 })
             }catch(e){
-                println ">> Jacoco-Exclusion of android failed :: ${e.message}"
+                println ">> Jacoco-Exclusion of android or desktop has failed :: ${e.message}"
             }
         }
         reports {
