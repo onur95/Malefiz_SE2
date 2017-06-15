@@ -91,6 +91,8 @@ project(":android") {
 project(":core") {
     apply plugin: "java"
     apply plugin: "jacoco"
+    sourceSets.main.java.srcDirs += ["src/"]
+    sourceSets.test.java.srcDirs += ["src"]
 
     test {
         finalizedBy jacocoTestReport
