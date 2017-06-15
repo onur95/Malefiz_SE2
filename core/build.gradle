@@ -37,6 +37,18 @@ test {
 }
 
 jacocoTestReport {
+
+    doFirst{
+        try{
+
+            classDirectories = files(classDirectories.files.collect{
+                fileTree(dir: it, exclude: 'com/android/**')
+            })
+        }catch(e){
+            println ">> Jacoco-Exclusion of android failed :: ${e.message}"
+        }
+    }
+
     reports {
         xml.enabled true
         csv.enabled true
