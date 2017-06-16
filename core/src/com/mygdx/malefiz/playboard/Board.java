@@ -54,13 +54,6 @@ public class Board {
         }
     }
 
-    /**
-     * Testing-meth
-     */
-    public void removeHighlights(){
-        highlights.clear();
-    }
-
     private void initBoard(){
         boardArray = new Field[17][17];
         for(int column = boardMeta.length-1; column>=0; column--){
