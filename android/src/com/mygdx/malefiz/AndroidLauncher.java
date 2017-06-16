@@ -1,4 +1,4 @@
-package com.mygdx.malefiz.sauce;
+package com.mygdx.malefiz;
 
 import android.os.Bundle;
 

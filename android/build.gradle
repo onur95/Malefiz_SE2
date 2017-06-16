@@ -12,13 +12,12 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
-        /* TODO
         test {
             java.srcDirs = ['src/test/java']
         }
 
         instrumentTest.setRoot('src/androidtest/java')
-        */
+
 
         instrumentTest.setRoot('com.mygdx.malefiz.sauce.tests')
     }
@@ -32,18 +31,15 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         multiDexEnabled true
-        /*<! TODO
+
        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        */
    }
-   /*<! TODO
+
    lintOptions {
        textReport true
        textOutput 'stdout'
        disable 'InvalidPackage'
    }
-   */
-
 }
 
 
