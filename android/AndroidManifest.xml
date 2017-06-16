@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
-    <!--<uses-sdk android:minSdkVersion="9" android:targetSdkVersion="25" /> -->
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="25" />
 
     <application
         android:allowBackup="true"

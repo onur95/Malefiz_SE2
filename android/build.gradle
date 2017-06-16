@@ -17,10 +17,8 @@ android {
         }
 
         instrumentTest.setRoot('src/androidtest/java')
-
-
-        instrumentTest.setRoot('com.mygdx.malefiz.sauce.tests')
     }
+
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
         exclude 'META-INF/NOTICE' // will not include NOTICE file
@@ -28,7 +26,7 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.malefiz.sauce"
-        minSdkVersion 9
+        minSdkVersion 18
         targetSdkVersion 25
         multiDexEnabled true
 
