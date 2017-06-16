@@ -12,7 +12,15 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
-        instrumentTest.setRoot('tests')
+        /* TODO
+        test {
+            java.srcDirs = ['src/test/java']
+        }
+
+        instrumentTest.setRoot('src/androidtest/java')
+        */
+
+        instrumentTest.setRoot('com.mygdx.malefiz.sauce.tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
@@ -24,7 +32,18 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         multiDexEnabled true
-    }
+        /*<! TODO
+       testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        */
+   }
+   /*<! TODO
+   lintOptions {
+       textReport true
+       textOutput 'stdout'
+       disable 'InvalidPackage'
+   }
+   */
+
 }
 
 
@@ -127,5 +146,42 @@ idea {
                 }
             }
         }
+    }
+}
+
+/* >> Copyright: Würmer & Aufzüge-Dude */
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = '0.7.6.201602180812'
+}
+
+// Edit covered scope if needed
+// For my part I like having the coverage of both application and com.mygdx.malefiz.sauce.tests
+def coverageSourceDirs = [
+        'src'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports "
+
+    classDirectories = fileTree(
+            dir: '../android/build/intermediates/classes',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
+
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('../android/build/jacoco/testReleaseUnitTest.exec ')
+
+    reports {
+        xml.enabled = true
+        csv.enabled = true
+        html.enabled = true
     }
 }
