@@ -28,7 +28,7 @@ android {
         exclude 'META-INF/LICENSE'
     }
     defaultConfig {
-        applicationId "com.mygdx.malefiz"
+        applicationId "com.mygdx.malefiz.sauce"
         minSdkVersion 9
         targetSdkVersion 25
         multiDexEnabled true
@@ -93,7 +93,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.mygdx.malefiz/com.mygdx.malefiz.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.mygdx.malefiz.sauce/com.mygdx.malefiz.sauce.AndroidLauncher'
 }
 // sets up the Android Eclipse project, using the old Ant based build.
 eclipse {
