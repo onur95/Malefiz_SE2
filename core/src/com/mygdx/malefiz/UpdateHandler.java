@@ -78,7 +78,7 @@ public class UpdateHandler {
 
 
             boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getFieldState().ordinal() == client.getPlayerNumber();
-
+            boolean isPlayer = board.isPlayer(move2.getColumn(),move2.getRow());
             //Board anpassen
             Field temp = array[move3.getColumn()][move3.getRow()];
             array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
@@ -121,7 +121,7 @@ public class UpdateHandler {
                 view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex()+1);
             }
 
-            move(actor1,actor2, moveAction1, moveAction2, board.isPlayer(move2.getColumn(),move2.getRow()));
+            move(actor1,actor2, moveAction1, moveAction2, isPlayer);
 
 
             //Aufpassen wenn gekickter Kegel der eigene ist (Highlight auch verschieben)
