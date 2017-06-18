@@ -37,7 +37,7 @@ public class Dice {
 
     //wenn das gerät geschüttelt wird wird boolean auf true gesetzt & dadurch die animation gestartet.
     public void shake(float force){
-        if(!shaked && force > 11.0) {
+        if(!shaked && force > 15.0) {
                 shaked = true;
                 diceAnimation.create("Dice ("+randomNumber()+").png");
                 diceAnimation.render();

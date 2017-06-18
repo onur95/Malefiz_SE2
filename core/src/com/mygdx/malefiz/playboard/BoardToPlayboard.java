@@ -284,7 +284,7 @@ public class BoardToPlayboard {
         }
         else {
             for (int index : player.getHighlightedFiguresIndizes()) {
-                if(playerMovesPossible.contains(index)){
+                if(playerMovesPossible.contains(index) || cheatEnabled){
                     setPlayerFigureHighlighted(index, status);
 
                 }
