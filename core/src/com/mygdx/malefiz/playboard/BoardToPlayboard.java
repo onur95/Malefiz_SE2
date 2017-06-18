@@ -18,6 +18,7 @@ import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
+import com.mygdx.malefiz.networking.Network;
 import com.mygdx.malefiz.screens.LosingScreen;
 import com.mygdx.malefiz.screens.WinningScreen;
 import com.mygdx.malefiz.sound.SoundManager;
@@ -54,6 +55,15 @@ public class BoardToPlayboard {
     private SoundManager soundManager;
     private List<Integer> playerMovesPossible;
     private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
+    private static boolean cheatEnabled = false;
+
+    public static void setCheatEnabled(boolean val){
+        cheatEnabled = val;
+    }
+
+    public boolean getCheatEnabled(){
+        return cheatEnabled;
+    }
 
 
     private void initPlayers(){
@@ -164,7 +174,12 @@ public class BoardToPlayboard {
 
         setActorActive(actorIndex);
         setActorsCount();  //Um Highlights rauszulöschen
-        setHighlights(selectedFigure);
+        if(cheatEnabled){
+            setAllHighlighted(true);
+        }
+        else {
+            setHighlights(selectedFigure);
+        }
     }
 
     private void setHighlights(int selectedFigure){
@@ -256,7 +271,7 @@ public class BoardToPlayboard {
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
      */
     public  void setPlayerFiguresHighlighted(boolean status){
-        if(status && !isMovePossible()){
+        if(status && !isMovePossible() && !cheatEnabled){
             LOGGER.log(Level.INFO, "Client: No move possible");
             handler.sendMessage(player.getNumber());
         }
@@ -269,7 +284,10 @@ public class BoardToPlayboard {
         }
         else {
             for (int index : player.getHighlightedFiguresIndizes()) {
-                setPlayerFigureHighlighted(index, status);
+                if(cheatEnabled || playerMovesPossible.contains(index)){
+                    setPlayerFigureHighlighted(index, status);
+
+                }
             }
         }
     }
@@ -501,6 +519,7 @@ public class BoardToPlayboard {
         }
 
         if(status && kickedIndex == -1 && actorActive == -1){
+            setCheatEnabled(false);
             handler.sendMessage(player.getNumber());
         }
     }
@@ -530,5 +549,11 @@ public class BoardToPlayboard {
 
     public Board getBoard(){
         return this.board;
+    }
+
+    public void initCheaterMessage(){
+        Network.cheaterMessage cm = new Network.cheaterMessage();
+        cm.cheater = player.getNumber();
+
     }
 }

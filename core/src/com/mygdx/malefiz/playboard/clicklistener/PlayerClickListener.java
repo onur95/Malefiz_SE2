@@ -56,6 +56,10 @@ public class PlayerClickListener extends ClickListener {
     }
 
     private boolean isPlayersTurnHighlighted(){
+/*
+        im PlayerClickListener ändast in der Funktion isPlayersTurnHighlighted des zweite if in der
+        zweitn for-schleifm zu: if(!view.getPlayerMovesPossible().contains(i) && !view.getCheat()) {
+         */
         //Falls der Spieler am Zug ist, kann er die gerade ausgewählte Figur dadurch wieder ändern
         boolean status = false;
         for(int index : player.getHighlightedFiguresIndizes()){
@@ -65,7 +69,7 @@ public class PlayerClickListener extends ClickListener {
         }
         for(int i = 0; i < player.getFiguresPosition().size(); i++){
             if(player.getFiguresPosition().get(i).getColumn() == this.column && player.getFiguresPosition().get(i).getRow() == this.row){
-                if(!view.getPlayerMovesPossible().contains(i)) {
+                if(!view.getPlayerMovesPossible().contains(i) && !view.getCheatEnabled()) {
                     status = false;
                 }
                 else{

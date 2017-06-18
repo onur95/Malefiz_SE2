@@ -40,7 +40,6 @@ public class Board {
     private FieldPosition newPlayerPosition;
     private List<List<FieldPosition>> highlights;
 
-
     public Board(){
         this.highlights = new ArrayList<>();
         initHighlights();

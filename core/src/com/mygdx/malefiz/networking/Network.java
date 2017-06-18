@@ -45,4 +45,11 @@ public class Network {
         List<BoardUpdate> update;
     }
 
+    /**
+     * call in BoardToPlayboard.initCheaterMessage
+     */
+    public static class cheaterMessage{
+        public int cheater, player2, player3, player4;
+    }
+
 }
