@@ -148,7 +148,9 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	@Override
 	public void dispose () {
 		client.terminate();
-		client.getServer().stopServer();
+		if(client.getServer() != null) {
+			client.getServer().stopServer();
+		}
 		stage.dispose();
 	}
 

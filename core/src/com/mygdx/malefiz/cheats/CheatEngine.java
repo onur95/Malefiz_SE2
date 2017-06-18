@@ -21,20 +21,25 @@ public class CheatEngine {
     // Pseudo-Interface for calling right cheat.
     public void cheatCaller(String code) {
         // Call via ce in CheatEngineObserver
-        BoardToPlayboard.setCheatEnabled(true);
+        if(code == null || code.length() == 0){
+            return;
+        }
+
         if(code.equals("1")){
+            view.setCheatEnabled(true);
             setBlocks();
         }
         else if(code.equals("2")) {
+            view.setCheatEnabled(true);
             resetPlayer();
 
         }else if(code.equals("3")){
+            view.setCheatEnabled(true);
             moveToAnyField();
 
         }else if (code.equals("4")){
+            view.setCheatEnabled(true);
             instantWin();
-        }else{
-
         }
     }
 
@@ -71,9 +76,8 @@ public class CheatEngine {
      * Enable movement to any field wanted.
      */
     private void moveToAnyField(){
-        view.setPlayerFiguresHighlighted(true);
         dice.setShaked(true);
-
+        view.setPlayerFiguresHighlighted(true);
     }
 
     /**

@@ -55,10 +55,10 @@ public class BoardToPlayboard {
     private SoundManager soundManager;
     private List<Integer> playerMovesPossible;
     private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
-    private static boolean cheatEnabled = false;
+    private boolean cheatEnabled = false;
 
-    public static void setCheatEnabled(boolean val){
-        cheatEnabled = val;
+    public void setCheatEnabled(boolean val){
+        this.cheatEnabled = val;
     }
 
     public boolean getCheatEnabled(){
@@ -271,20 +271,20 @@ public class BoardToPlayboard {
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
      */
     public  void setPlayerFiguresHighlighted(boolean status){
-        if(status && !isMovePossible() && !cheatEnabled){
+        if(status && !cheatEnabled && !isMovePossible()){
             LOGGER.log(Level.INFO, "Client: No move possible");
             handler.sendMessage(player.getNumber());
         }
         else if(status){
             for (int i = 0; i< player.getHighlightedFiguresIndizes().size(); i++) {
-                if(playerMovesPossible.contains(i)) {
+                if(playerMovesPossible.contains(i) || cheatEnabled) {
                     setPlayerFigureHighlighted(player.getHighlightedFiguresIndizes().get(i), status);
                 }
             }
         }
         else {
             for (int index : player.getHighlightedFiguresIndizes()) {
-                if(cheatEnabled || playerMovesPossible.contains(index)){
+                if(playerMovesPossible.contains(index)){
                     setPlayerFigureHighlighted(index, status);
 
                 }
