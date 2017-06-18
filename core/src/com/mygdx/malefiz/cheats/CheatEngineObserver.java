@@ -50,8 +50,6 @@ public class CheatEngineObserver{
 
             if(event.getPropertyName().equals("Enabled Cheat = true")){
                 Gdx.app.log("CEO>>CheatListener", "Flag received & executed.");
-                ce.relayCheater(confirmedCheater);
-                // Finally execute the CheatCode
                 ce.cheatCaller(code);
             }
         }

@@ -92,8 +92,4 @@ public class GameClient {
     public UpdateHandler getHandler(){
         return this.handler;
     }
-
-    public void sendCheater(int confirmedCheater) {
-        client.sendTCP(confirmedCheater);
-    }
 }

@@ -25,13 +25,6 @@ public class GameServerListener extends Listener {
             // Parse Data to use it.
             Network.ClientMessage clientTransmission = (Network.ClientMessage) object;
             server.sendMessage(clientTransmission.update, clientTransmission.playerTurn, clientTransmission.cheated);            //message Senden mit clientTransmission
-        }else if(object instanceof Network.CheaterMessage){
-            // Received cheater >> Transmit to all clients
-            int confirmedCheater = (int) object;
-            server.sendCheater(confirmedCheater);
-
-
-
         }
     }
 

@@ -145,10 +145,4 @@ public class GameServer {
     public int adjustPlayerTurn(int playerTurn){
         return playerTurn > maxUsercount ? 1 : playerTurn;
     }
-
-    public void sendCheater(int confirmedCheater) {
-        LOGGER.log(Level.INFO, "Server: Transmitting Cheater. Number: "+confirmedCheater);
-        server.sendToAllTCP(confirmedCheater);
-    }
-
 }
