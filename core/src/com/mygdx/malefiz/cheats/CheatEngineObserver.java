@@ -1,8 +1,6 @@
 package com.mygdx.malefiz.cheats;
 
 import com.badlogic.gdx.Gdx;
-import com.mygdx.malefiz.networking.Network;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -11,10 +9,16 @@ public class CheatEngineObserver{
     private String code = "";
     private PropertyChangeSupport pcs;
     private CheatEngine ce;
+    int confirmedCheater;
 
     public CheatEngineObserver(CheatEngine ce){
         this.ce = ce;
         this.pcs = new PropertyChangeSupport(this);
+    }
+
+    ///**confirmedCheater = player.getNumber()
+    public void setConfirmedCheater(int confirmedCheater){
+        this.confirmedCheater = confirmedCheater;
     }
 
     public void setListener(CheatEngineObserver ceo) {
@@ -46,12 +50,7 @@ public class CheatEngineObserver{
 
             if(event.getPropertyName().equals("Enabled Cheat = true")){
                 Gdx.app.log("CEO>>CheatListener", "Flag received & executed.");
-
-                // Todo: Alert went off. Inform other players of cheating player
-                // #1 Register Message in Network
-                // #2 Create Message & Send it
-
-
+                ce.relayCheater(confirmedCheater);
                 // Finally execute the CheatCode
                 ce.cheatCaller(code);
             }

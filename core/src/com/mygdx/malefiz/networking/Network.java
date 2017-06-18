@@ -20,6 +20,7 @@ public class Network {
         kryo.register(StartClient.class);
         kryo.register(ArrayList.class); //sonst Exception beim Senden im Client (ArrayList not registered)
         kryo.register(BoardUpdate.class); //sonst Exception beim Senden im Client (BoardUpdate not registered)
+        kryo.register(CheaterMessage.class);
 
     }
 
@@ -27,6 +28,7 @@ public class Network {
     public static class ClientMessage {
         int playerTurn;
         List<BoardUpdate> update;
+        boolean cheated;
     }
 
     public static class PlayerDisconnected {
@@ -42,14 +44,12 @@ public class Network {
     public static class ServerEcho {
         int playerTurn;
         int playerTurnBefore;
+        boolean cheated;
         List<BoardUpdate> update;
     }
 
-    /**
-     * call in BoardToPlayboard.initCheaterMessage
-     */
-    public static class cheaterMessage{
-        public int cheater, player2, player3, player4;
+    public static class CheaterMessage {
+        public int cheater;
     }
 
 }

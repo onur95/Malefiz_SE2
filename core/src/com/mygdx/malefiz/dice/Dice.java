@@ -16,11 +16,24 @@ public class Dice {
     private DiceAnimation diceAnimation;
     private boolean renderRunning = false;
     private boolean playerSet = false;
+    private boolean cheatEnabled = false;
 
     public Dice(boolean shakedStatus, BoardToPlayboard view){
         this.diceAnimation = new DiceAnimation();
         this.shaked = shakedStatus;
         this.view = view;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public boolean getCheatEnabled() {
+        return cheatEnabled;
+    }
+
+    public void setCheatEnabled(boolean cheatEnabled) {
+        this.cheatEnabled = cheatEnabled;
     }
 
 

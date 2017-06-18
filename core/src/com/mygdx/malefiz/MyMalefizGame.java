@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.malefiz.screens.CheatAlertScreen;
 import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.dice.Dice;
@@ -34,36 +35,35 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	private Dice dice;
 
 	public MyMalefizGame (GameClient client, int playerCount) {
-		this.client = client;
-		//client besitzt das Game
-		this.stage = new Stage(new FitViewport(1500, 1500));
+        this.client = client;
+        //client besitzt das Game
+        this.stage = new Stage(new FitViewport(1500, 1500));
 
-		setSkin();
-		setGestures();
-		setPlayground();
-		setCamera();
+        setSkin();
+        setGestures();
+        setPlayground();
+        setCamera();
 
-		SoundManager soundManager = new SoundManager();
-		Player player = new Player(client.getPlayerNumber());
-		BoardToPlayboard view = new BoardToPlayboard();
-		Board board = new Board();
-
-
+        SoundManager soundManager = new SoundManager();
+        Player player = new Player(client.getPlayerNumber());
+        BoardToPlayboard view = new BoardToPlayboard();
+        Board board = new Board();
 
 
-		this.dice = new Dice(getShakeStatus(soundManager), view);
-		CheatEngine cheatEngine = new CheatEngine(view, board, dice);
-		GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine);
 
 
-		UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
-		view.init(handler, player, stage, board, dice, soundManager);
+        this.dice = new Dice(getShakeStatus(soundManager), view);
+        CheatEngine cheatEngine = new CheatEngine(view, board, dice);
+        GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine);
 
-		// Disable Menu/Exit-Buttons via Commenting here
-		stage.addActor(menu.createExit());
-		stage.addActor(menu.createMenu());
-		setYourTurnLabel();
 
+        UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
+        view.init(handler, player, stage, board, dice, soundManager);
+
+        // Disable Menu/Exit-Buttons via Commenting here
+        stage.addActor(menu.createExit());
+        stage.addActor(menu.createMenu());
+        setYourTurnLabel();
 	}
 
 	private void setCamera(){
@@ -152,9 +152,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	@Override
 	public void dispose () {
 		client.terminate();
-		if(client.getServer() != null) {
-			client.getServer().stopServer();
-		}
+		client.getServer().stopServer();
 		stage.dispose();
 	}
 

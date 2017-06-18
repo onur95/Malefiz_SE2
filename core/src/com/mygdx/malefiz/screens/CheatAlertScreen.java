@@ -2,23 +2,26 @@ package com.mygdx.malefiz.screens;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 public class CheatAlertScreen{
-    static int cheater;
     private Stage stage;
     private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
+    private static final Logger LOGGER = Logger.getLogger( CheatAlertScreen.class.getName() );
 
-    public CheatAlertScreen(int cheater, Stage stage) {
-        this.cheater = cheater;
+
+    public CheatAlertScreen(Stage stage) {
         this.stage = stage;
     }
 
-    public Actor createDisplay(){
+    public void createDisplay(){
         Dialog dialog = new Dialog("Cheating detected!", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
@@ -31,7 +34,7 @@ public class CheatAlertScreen{
         };
         dialog.button("Initiate Ragequit", 2L);
         dialog.button("Resume Game", 1L);
+        LOGGER.log(Level.INFO, "CheatAlertScreen: Creating.");
         dialog.show(stage);
-        return dialog;
     }
 }

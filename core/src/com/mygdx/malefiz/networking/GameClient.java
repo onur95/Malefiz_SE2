@@ -3,6 +3,7 @@ package com.mygdx.malefiz.networking;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.UpdateHandler;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,10 +72,10 @@ public class GameClient {
     // Create message sent to the server.
     // We can send virtually everything, if so: Adjust in Network.ClientMessage & register it as attributes above.
     // Data sent in transmission <=> Params processed in GameServerListener
-    public void sendData(List<BoardUpdate> update, int playerTurn){
-        Network.ClientMessage transmission = new Network.ClientMessage();
+    public void sendData(List<BoardUpdate> update, int playerTurn, boolean cheated){        Network.ClientMessage transmission = new Network.ClientMessage();
         transmission.update = update;
         transmission.playerTurn = playerTurn;
+        transmission.cheated = cheated;
 
         client.sendTCP(transmission);       // ** .. Send it to server
         LOGGER.log(Level.INFO, "Client: Transmitted Data to Server");
@@ -90,5 +91,9 @@ public class GameClient {
 
     public UpdateHandler getHandler(){
         return this.handler;
+    }
+
+    public void sendCheater(int confirmedCheater) {
+        client.sendTCP(confirmedCheater);
     }
 }

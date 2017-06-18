@@ -18,7 +18,6 @@ import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.Field;
 import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.field.FieldStates;
-import com.mygdx.malefiz.networking.Network;
 import com.mygdx.malefiz.screens.LosingScreen;
 import com.mygdx.malefiz.screens.WinningScreen;
 import com.mygdx.malefiz.sound.SoundManager;
@@ -56,15 +55,7 @@ public class BoardToPlayboard {
     private List<Integer> playerMovesPossible;
     private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
     private boolean cheatEnabled = false;
-
-    public void setCheatEnabled(boolean val){
-        this.cheatEnabled = val;
-    }
-
-    public boolean getCheatEnabled(){
-        return cheatEnabled;
-    }
-
+    private static int clientCheaterID;         // Var for sending me being clientCheaterID
 
     private void initPlayers(){
         players = new ArrayList<>();
@@ -86,6 +77,7 @@ public class BoardToPlayboard {
         helper = new CoordinateCalculation(this.stage);
         playerMovesPossible = new ArrayList<>();
         initPlayers();
+        setCheaterID();
         setImages();
         generate();
     }
@@ -548,9 +540,20 @@ public class BoardToPlayboard {
         return this.board;
     }
 
-    public void initCheaterMessage(){
-        Network.cheaterMessage cm = new Network.cheaterMessage();
-        cm.cheater = player.getNumber();
-
+    public UpdateHandler getUpdateHandler(){
+        return this.handler;
     }
+
+    public void setCheatEnabled(boolean val){
+        this.cheatEnabled = val;
+    }
+
+    public boolean getCheatEnabled(){
+        return cheatEnabled;
+    }
+
+    public void setCheaterID(){
+        clientCheaterID = player.getNumber();
+    }
+
 }

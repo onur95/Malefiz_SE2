@@ -1,9 +1,9 @@
 package com.mygdx.malefiz.cheats;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.field.FieldStates;
+import com.mygdx.malefiz.networking.Network;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
@@ -11,11 +11,21 @@ public class CheatEngine {
     private BoardToPlayboard view;
     private Board board;
     private Dice dice;
+    private UpdateHandler handler;
 
     public CheatEngine(BoardToPlayboard view, Board board, Dice dice){
         this.board = board;
         this.view = view;
         this.dice = dice;
+    }
+
+    public void getUpdateHandler(){
+
+    }
+
+    public void relayCheater(int confirmedCheater){
+        handler = view.getUpdateHandler();
+        handler.getClient().sendCheater(confirmedCheater);
     }
 
     // Pseudo-Interface for calling right cheat.
@@ -40,6 +50,10 @@ public class CheatEngine {
         }else if (code.equals("4")){
             view.setCheatEnabled(true);
             instantWin();
+        }else if (code.equals("5")) {
+            dice.setCheatEnabled(true);
+            dice.setResult(5); //testdata; user should enter number between 1 and 6
+            view.setPlayerFiguresHighlighted(true);
         }
     }
 

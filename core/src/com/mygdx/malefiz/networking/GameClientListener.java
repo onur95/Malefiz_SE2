@@ -1,9 +1,13 @@
 package com.mygdx.malefiz.networking;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.malefiz.MyMalefizGame;
+import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.playboard.BoardToPlayboard;
+import com.mygdx.malefiz.screens.CheatAlertScreen;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +34,7 @@ public class GameClientListener extends Listener {
             Network.ServerEcho serverEcho = (Network.ServerEcho) object;
 
             if(client.getPlayerNumber() != serverEcho.playerTurnBefore) {//Der Spieler der den Zug getätigt hat, wird nicht angepasst
-                client.getHandler().updatePlayboard(serverEcho.update, serverEcho.playerTurn);
+                client.getHandler().updatePlayboard(serverEcho.update, serverEcho.playerTurn, serverEcho.playerTurnBefore, serverEcho.cheated);
             }
         }
         else if(object instanceof Network.StartClient){
@@ -39,7 +43,6 @@ public class GameClientListener extends Listener {
             if(message != -1){
                 client.setPlayerNumber(message);
                 Gdx.app.postRunnable(new Runnable() {
-
                     @Override
                     public void run() {
                         client.getGame().setScreen(new MyMalefizGame(client, startClient.playerCount));
@@ -55,6 +58,7 @@ public class GameClientListener extends Listener {
             client.getHandler().playerDisconnected(((Network.PlayerDisconnected) object).player);
         }
     }
+
     @Override
     public void disconnected(Connection connection){
         client.terminate();

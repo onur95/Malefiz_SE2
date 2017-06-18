@@ -54,18 +54,22 @@ public class GameServer {
         leavedPlayers.clear();
     }
 
-    public void sendMessage(List<BoardUpdate> update, int playerturn){
+    public void sendMessage(List<BoardUpdate> update, int playerturn, boolean cheated){
+
         // Build Transmission from Server. Send @Par is necessary - Featured in Network.ServerEcho
         Network.ServerEcho transmission = new Network.ServerEcho();
 
         transmission.update = update;
         transmission.playerTurnBefore = playerturn;
+        transmission.cheated = cheated;
         int newPlayerturn = nextPlayer(playerturn);
 
         transmission.playerTurn = newPlayerturn;
         lastTurn = newPlayerturn;
 
         server.sendToAllTCP(transmission); // Sends created message to all connected devices.
+
+//        server.sendToAllTCP(transmission); // Sends created message to all connected devices.
         LOGGER.log(Level.INFO, "Server: Transmitted Data to Clients");
     }
 
@@ -122,7 +126,7 @@ public class GameServer {
         if(gameStarted && clientIndex != -1){
             leavedPlayers.add(clientIndex);
             if(lastTurn == clientIndex+1){
-                sendMessage(null,lastTurn);
+                sendMessage(null,lastTurn, false);
             }
         }
         else if(clientIndex != -1){ //Spiel noch nicht gestartet
@@ -141,4 +145,10 @@ public class GameServer {
     public int adjustPlayerTurn(int playerTurn){
         return playerTurn > maxUsercount ? 1 : playerTurn;
     }
+
+    public void sendCheater(int confirmedCheater) {
+        LOGGER.log(Level.INFO, "Server: Transmitting Cheater. Number: "+confirmedCheater);
+        server.sendToAllTCP(confirmedCheater);
+    }
+
 }

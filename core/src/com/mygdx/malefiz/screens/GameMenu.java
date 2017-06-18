@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mygdx.malefiz.Player;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.cheats.CheatEngineObserver;
 
@@ -89,8 +90,9 @@ public class GameMenu
         Dialog dialog = new Dialog("Cheat Menu", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
-                    ceo.setListener(ceo);                                      // Set Listener on ceo
-                    ceo.setCheat(cheatCodeEntry.getText());             // Fetch text & Execute
+                    ceo.setListener(ceo);
+//                    ceo.setConfirmedCheater(player.getNumber());
+                    ceo.setCheat(cheatCodeEntry.getText());
                 }
                 if(object.equals(2L)){
                     // Exit to mainmenu

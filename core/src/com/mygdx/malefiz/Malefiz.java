@@ -22,4 +22,5 @@ public class Malefiz extends Game {
         stage.dispose();
     }
 
+
 }

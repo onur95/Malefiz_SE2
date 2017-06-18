@@ -13,6 +13,7 @@ import com.mygdx.malefiz.networking.BoardUpdate;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
+import com.mygdx.malefiz.screens.CheatAlertScreen;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
 
@@ -49,7 +50,10 @@ public class UpdateHandler {
     public void sendMessage(int playerTurn){
         dice.setRenderRunning(false);
         dice.setPlayerSet(false);
-        client.sendData(update,playerTurn);
+
+        client.sendData(update,playerTurn, view.getCheatEnabled() || dice.getCheatEnabled());
+        view.setCheatEnabled(false);
+        dice.setCheatEnabled(false);
     }
 
     public int getPlayerCount(){
@@ -60,7 +64,7 @@ public class UpdateHandler {
         update.add(item);
     }
 
-    public void updatePlayboard(List<BoardUpdate> update, int playerTurn){
+    public void updatePlayboard(List<BoardUpdate> update, int playerTurn, int playerBefore, boolean cheated){
         if(update == null){
             LOGGER.log(Level.SEVERE, "Client: Error: update == null");
             return;
@@ -157,6 +161,12 @@ public class UpdateHandler {
             yourTurn.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
             soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
+        }
+        if(cheated){
+            LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
+
+            CheatAlertScreen cas = new CheatAlertScreen(stage);
+            cas.createDisplay();
         }
         LOGGER.log(Level.INFO, "Client: Message handled");
     }
