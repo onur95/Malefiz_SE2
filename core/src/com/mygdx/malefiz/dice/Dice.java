@@ -10,7 +10,7 @@ import java.util.Random;
  */
 
 public class Dice {
-    private int result = -1;  //fehler bzw. dfeault Wert
+    private int result = 1;  //dfeault Wert
     private boolean shaked;
     private BoardToPlayboard view;
     private DiceAnimation diceAnimation;

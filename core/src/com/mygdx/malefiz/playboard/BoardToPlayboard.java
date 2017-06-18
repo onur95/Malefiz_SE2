@@ -271,7 +271,7 @@ public class BoardToPlayboard {
      * @param status Wert, ob Highlight angezeigt oder versteckt wird
      */
     public  void setPlayerFiguresHighlighted(boolean status){
-        if(status && !cheatEnabled && !isMovePossible()){
+        if(status && !isMovePossible() && !cheatEnabled){
             LOGGER.log(Level.INFO, "Client: No move possible");
             handler.sendMessage(player.getNumber());
         }
@@ -284,10 +284,7 @@ public class BoardToPlayboard {
         }
         else {
             for (int index : player.getHighlightedFiguresIndizes()) {
-                if(playerMovesPossible.contains(index) || cheatEnabled){
-                    setPlayerFigureHighlighted(index, status);
-
-                }
+                setPlayerFigureHighlighted(index, status);
             }
         }
     }
