@@ -15,7 +15,7 @@ public class DiceTest {
     @Test
     public void test(){
         Dice dice = new Dice(true, null);
-        assertEquals(dice.getResultNumber(), -1);
+        assertEquals(dice.getResultNumber(), 1);
         for(int i = 0; i < 20; i++) {
             dice.randomNumber();
             assertEquals(dice.getResultNumber() >= 1 && dice.getResultNumber() <= 6, true);
