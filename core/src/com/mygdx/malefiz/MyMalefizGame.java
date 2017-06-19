@@ -20,6 +20,7 @@ import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
+import com.mygdx.malefiz.screens.CheatAlertScreen;
 import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
@@ -55,6 +56,9 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
         CheatEngine cheatEngine = new CheatEngine(view, board, dice);
         GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine, dice);
 
+		// Fixme Testdata
+		CheatAlertScreen cas = new CheatAlertScreen(stage);
+		cas.createCheatAlert();
 
         UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
         view.init(handler, player, stage, board, dice, soundManager);

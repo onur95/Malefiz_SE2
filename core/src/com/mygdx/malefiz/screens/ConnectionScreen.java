@@ -48,7 +48,6 @@ public class ConnectionScreen implements Screen {
         txtBackgroundMenu=new Texture("malefiz_mainmenu_background.jpg");
         imgBackgroundMenu=new Image(txtBackgroundMenu);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     /**
@@ -67,7 +66,6 @@ public class ConnectionScreen implements Screen {
 
 
         // Create connection-Button
-
         imageButtonConnect.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

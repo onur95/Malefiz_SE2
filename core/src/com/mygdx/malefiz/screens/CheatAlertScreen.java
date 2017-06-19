@@ -21,10 +21,10 @@ public class CheatAlertScreen{
 
 
     // fixme: Displays as black spot. Not sure how to fix
-    public void createDisplay(){
+    public void createCheatAlert(){
         LOGGER.log(Level.INFO, "CheatAlertScreen: Creating.");
 
-        Dialog dialog = new Dialog("CheatDisplay.png", defSkin){
+        Dialog dialog = new Dialog("Alert!", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
 
@@ -35,8 +35,8 @@ public class CheatAlertScreen{
             }
         };
 
-        dialog.button("Initiate Ragequit", 2L);
-        dialog.button("Resume Game", 1L);
+        dialog.button("Initiate Ragequit", 2L).setSize(dialog.getWidth()/2, dialog.getHeight()/2);
+        dialog.button("Resume Game", 1L).setSize(dialog.getWidth()/2, dialog.getHeight()/2);
         dialog.show(stage).setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
     }
 }
