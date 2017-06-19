@@ -19,6 +19,8 @@ public class CheatAlertScreen{
         this.stage = stage;
     }
 
+
+    // fixme: Displays as black spot. Not sure how to fix
     public void createDisplay(){
         LOGGER.log(Level.INFO, "CheatAlertScreen: Creating.");
 
@@ -35,6 +37,6 @@ public class CheatAlertScreen{
 
         dialog.button("Initiate Ragequit", 2L);
         dialog.button("Resume Game", 1L);
-        dialog.show(stage);
+        dialog.show(stage).setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
     }
 }

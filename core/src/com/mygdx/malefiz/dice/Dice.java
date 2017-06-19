@@ -71,6 +71,10 @@ public class Dice {
         shaked = status;
     }
 
+    public boolean getShaked(){
+        return this.shaked;
+    }
+
     public void setRenderRunning(boolean renderRunning){
         this.renderRunning = renderRunning;
     }

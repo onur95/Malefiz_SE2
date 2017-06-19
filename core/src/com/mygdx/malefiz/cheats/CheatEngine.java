@@ -16,8 +16,6 @@ public class CheatEngine {
     private UpdateHandler handler;
     private static final Logger LOGGER = Logger.getLogger( CheatEngine.class.getName() );
 
-
-
     public CheatEngine(BoardToPlayboard view, Board board, Dice dice){
         this.board = board;
         this.view = view;
@@ -74,9 +72,16 @@ public class CheatEngine {
     }
 
     /**
-     * Currently resets player 2.
+     * Enable movement to any field wanted.
      */
-    private void resetPlayer(int nr) {
+    private void moveToAnyField(){
+        dice.setShaked(true);
+        view.setPlayerFiguresHighlighted(true);
+    }
+
+
+    private void resetPlayer(int nr) { }
+    /* Fixme maybe.
         /*for(int x = 0; x < view.getBoard().getBoardArray().length; x++) {
             for (int y = 0; y < view.getBoard().getBoardArray()[x].length; y++) {
                 if(view.getBoard().getBoardArray()[x][y].getFieldState() == getFieldStateOfAffectedPlayer(nr)){
@@ -85,7 +90,7 @@ public class CheatEngine {
             }
         }
         // TODO: Send within message to clients
-        */
+
     }
 
     public FieldStates getFieldStateOfAffectedPlayer(int nr){
@@ -103,12 +108,5 @@ public class CheatEngine {
         }
         return null;
     }
-
-    /**
-     * Enable movement to any field wanted.
-     */
-    private void moveToAnyField(){
-        dice.setShaked(true);
-        view.setPlayerFiguresHighlighted(true);
-    }
+    */
 }
