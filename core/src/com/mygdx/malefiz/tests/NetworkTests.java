@@ -46,7 +46,7 @@ public class NetworkTests {
         server = new GameServer(tcpPort, udpPort, maxUserCount);
         server.startServer();
 
-        int testcases = 5;                                  //*** Absolutely horrifying when 100
+        int testcases = 10;                                  //*** Absolutely horrifying when 100
         GameClient[] clients = new GameClient[testcases];
 
         for (int i = 0; i < testcases; i++) {
@@ -54,7 +54,7 @@ public class NetworkTests {
             clients[i].connect("");
         }
 
-        for (int i = testcases - 1; i >= 0; i--) {
+        for (int i = 0; i < testcases; i++) {
             clients[i].terminate();
         }
             // stopServer Redundant: Once the last one disconnects, the server shuts down automatically
