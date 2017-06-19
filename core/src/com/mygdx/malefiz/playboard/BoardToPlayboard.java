@@ -355,7 +355,7 @@ public class BoardToPlayboard {
 
                 @Override
                 public void run() {
-                    game.setScreen(new WinningScreen(game,handler.getClient()));
+                    game.setScreen(new WinningScreen(game,handler.getClient(),soundManager));
                 }
             });
         }
@@ -364,7 +364,7 @@ public class BoardToPlayboard {
 
                 @Override
                 public void run() {
-                    game.setScreen(new LosingScreen(game,handler.getClient()));
+                    game.setScreen(new LosingScreen(game,handler.getClient(),soundManager));
                 }
             });
         }

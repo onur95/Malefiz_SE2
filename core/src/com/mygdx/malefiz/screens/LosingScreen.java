@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.sound.SoundManager;
+import com.mygdx.malefiz.sound.Sounds;
 
 /**
  * Created by Onur on 10.06.2017.
@@ -28,15 +30,18 @@ public class LosingScreen implements Screen {
     private ImageButton backtomenu;
     private ImageButton exitgame;
     private GameClient client;
+    private SoundManager soundManager;
 
     /**
      * Called once the screen is created
      * @param game
      * @param client
+     * @param soundManager
      */
-    public LosingScreen(final Malefiz game, GameClient client){
+    public LosingScreen(final Malefiz game, GameClient client, SoundManager soundManager){
         this.game=game;
         this.client=client;
+        this.soundManager=soundManager;
         stage = new Stage(new FillViewport(1024,670));
         txtBackground=new Texture("malefiz_mainmenu_background.jpg");
         imgBackground=new Image(txtBackground);
@@ -74,6 +79,7 @@ public class LosingScreen implements Screen {
         stage.addActor(imgLoser);
         stage.addActor(backtomenu);
         stage.addActor(exitgame);
+        soundManager.playSound(Sounds.LOSER);
     }
 
     private void stopServerAndClient(){

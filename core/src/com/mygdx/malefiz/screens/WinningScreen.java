@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
+import com.mygdx.malefiz.sound.SoundManager;
+import com.mygdx.malefiz.sound.Sounds;
 
 /**
  * Created by Onur on 10.06.2017.
@@ -28,15 +30,18 @@ public class WinningScreen implements Screen {
     private Texture txtWinner;
     private Image imgWinner;
     private GameClient client;
+    private SoundManager soundManager;
 
     /**
      * Called once the screen is created
      * @param game
      * @param client
+     * @param soundManager
      */
-    public WinningScreen(final Malefiz game,GameClient client){
+    public WinningScreen(final Malefiz game,GameClient client,SoundManager soundManager){
         this.game=game;
         this.client=client;
+        this.soundManager=soundManager;
         stage = new Stage(new FillViewport(1024,670));
         txtBackground=new Texture("malefiz_mainmenu_background.jpg");
         imgBackground=new Image(txtBackground);
@@ -74,6 +79,7 @@ public class WinningScreen implements Screen {
         stage.addActor(imgWinner);
         stage.addActor(backtomenu);
         stage.addActor(exitgame);
+        soundManager.playSound(Sounds.WINNER);
     }
 
     private void stopServerAndClient(){
