@@ -90,7 +90,7 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java"
-/*    apply plugin: "jacoco"
+    apply plugin: "jacoco"
     sourceSets.main.java.srcDirs += ["src/"]
     sourceSets.test.java.srcDirs += ["src"]
 
@@ -108,7 +108,7 @@ project(":core") {
             csv.enabled false
             html.destination "${buildDir}/jacocoHtml"
         }
-    }*/
+    }
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
