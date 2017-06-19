@@ -13,7 +13,6 @@ import com.mygdx.malefiz.networking.BoardUpdate;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
-import com.mygdx.malefiz.screens.CheatAlertScreen;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
 
@@ -35,7 +34,6 @@ public class UpdateHandler {
     private int playerCount;
     private SoundManager soundManager;
     private static final Logger LOGGER = Logger.getLogger( UpdateHandler.class.getName() );
-    private CheatAlertScreen cas;
 
     public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager, BoardToPlayboard view, Board board){
         client.setHandler(this);
@@ -46,10 +44,6 @@ public class UpdateHandler {
         this.soundManager = soundManager;
         this.view = view;
         this.board = board;
-    }
-
-    public void initCheatMessage(){
-        cas = new CheatAlertScreen(this.view.getStage());
     }
 
     public void sendMessage(int playerTurn){
@@ -169,7 +163,9 @@ public class UpdateHandler {
         }
         if(cheated){
             LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
-            cas.createCheatAlert();
+            Label cm=stage.getRoot().findActor("cm");
+            cm.setText("Player "+playerBefore+" cheated!");
+            cm.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
         }
         LOGGER.log(Level.INFO, "Client: Message handled");
     }

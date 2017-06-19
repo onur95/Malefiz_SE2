@@ -20,7 +20,6 @@ import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
-import com.mygdx.malefiz.screens.CheatAlertScreen;
 import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
@@ -63,12 +62,22 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
         stage.addActor(menu.createExit());
         stage.addActor(menu.createMenu());
         setYourTurnLabel();
-		handler.initCheatMessage();
+		setCheatLabel();
 	}
 
 	private void setCamera(){
 		camera=(OrthographicCamera)stage.getCamera();
 		currentZoom=camera.zoom;
+	}
+
+	private void setCheatLabel(){
+		Label cm=new Label("Cheat",skin);
+		cm.setName("cm");
+		cm.setColor(Color.RED);
+		cm.setBounds(100,500,600,200);
+		cm.setFontScale(4f);
+		cm.setVisible(false);
+		stage.addActor(cm);
 	}
 
 	private boolean getShakeStatus(SoundManager soundManager){
