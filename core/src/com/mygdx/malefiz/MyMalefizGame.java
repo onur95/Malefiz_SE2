@@ -63,6 +63,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
         stage.addActor(menu.createExit());
         stage.addActor(menu.createMenu());
         setYourTurnLabel();
+		handler.initCheatMessage();
 	}
 
 	private void setCamera(){

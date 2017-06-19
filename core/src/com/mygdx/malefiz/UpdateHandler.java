@@ -35,6 +35,7 @@ public class UpdateHandler {
     private int playerCount;
     private SoundManager soundManager;
     private static final Logger LOGGER = Logger.getLogger( UpdateHandler.class.getName() );
+    private CheatAlertScreen cas;
 
     public UpdateHandler(GameClient client, Dice dice, int playerCount, SoundManager soundManager, BoardToPlayboard view, Board board){
         client.setHandler(this);
@@ -45,6 +46,10 @@ public class UpdateHandler {
         this.soundManager = soundManager;
         this.view = view;
         this.board = board;
+    }
+
+    public void initCheatMessage(){
+        cas = new CheatAlertScreen(this.view.getStage());
     }
 
     public void sendMessage(int playerTurn){
@@ -164,8 +169,6 @@ public class UpdateHandler {
         }
         if(cheated){
             LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
-
-            CheatAlertScreen cas = new CheatAlertScreen(this.view.getStage());
             cas.createCheatAlert();
         }
         LOGGER.log(Level.INFO, "Client: Message handled");
