@@ -52,15 +52,14 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 
 
         this.dice = new Dice(getShakeStatus(soundManager), view);
-        CheatEngine cheatEngine = new CheatEngine(view, board, dice);
+        CheatEngine cheatEngine = new CheatEngine(view, dice);
         GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine, dice);
 
         UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
         view.init(handler, player, stage, board, dice, soundManager);
 
-        // Disable Menu/Exit-Buttons via Commenting here
-        stage.addActor(menu.createExit());
-        stage.addActor(menu.createMenu());
+        menu.createExit();
+        menu.createMenu();
         setYourTurnLabel();
 		setCheatLabel();
 	}
@@ -74,7 +73,7 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 		Label cm=new Label("Cheat",skin);
 		cm.setName("cm");
 		cm.setColor(Color.RED);
-		cm.setBounds(100,500,600,200);
+		cm.setBounds(600,500,300,200);
 		cm.setFontScale(4f);
 		cm.setVisible(false);
 		stage.addActor(cm);
@@ -161,7 +160,9 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
 	@Override
 	public void dispose () {
 		client.terminate();
-		client.getServer().stopServer();
+		if(client.getServer() != null) {
+			client.getServer().stopServer();
+		}
 		stage.dispose();
 	}
 

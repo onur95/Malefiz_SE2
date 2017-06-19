@@ -3,6 +3,7 @@ package com.mygdx.malefiz.playboard.clicklistener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.malefiz.Player;
+import com.mygdx.malefiz.field.FieldPosition;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 import java.util.logging.Level;
@@ -56,19 +57,16 @@ public class PlayerClickListener extends ClickListener {
     }
 
     private boolean isPlayersTurnHighlighted(){
-/*
-        im PlayerClickListener ändast in der Funktion isPlayersTurnHighlighted des zweite if in der
-        zweitn for-schleifm zu: if(!view.getPlayerMovesPossible().contains(i) && !view.getCheat()) {
-         */
         //Falls der Spieler am Zug ist, kann er die gerade ausgewählte Figur dadurch wieder ändern
         boolean status = false;
+        FieldPosition position = new FieldPosition(this.column, this.row);
         for(int index : player.getHighlightedFiguresIndizes()){
             if(view.getStage().getActors().get(index).isVisible()){
                 status = true;
             }
         }
         for(int i = 0; i < player.getFiguresPosition().size(); i++){
-            if(player.getFiguresPosition().get(i).getColumn() == this.column && player.getFiguresPosition().get(i).getRow() == this.row){
+            if(player.getFiguresPosition().get(i).equals(position)){
                 if(!view.getPlayerMovesPossible().contains(i) && !view.getCheatEnabled()) {
                     status = false;
                 }

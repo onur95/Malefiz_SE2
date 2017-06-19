@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.networking.GameServer;
+import com.mygdx.malefiz.screens.clicklistener.ConfigureStartClickListener;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,30 +72,10 @@ public class ConfigureScreen implements Screen {
         connectionInfo.setVisible(false);
         //Add listeners to buttons
 
-        imageButtonStartServer.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.input.setOnscreenKeyboardVisible(false);
-                if(playerNumber.getText().length() == 0){
-                    return;
-                }
-                server = new GameServer(44775, 44776, Integer.parseInt(playerNumber.getText()));
-                try{
-                    server.startServer();
-                    client = new GameClient(44775, 44776, 10000, game,server);
-                    connectionInfo.setVisible(true);
-                    connectionInfo.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1f),Actions.delay(2f),Actions.fadeIn(1f))));
-                    client.connect("");
-                    LOGGER.log(Level.INFO, "Server, Client: Successfully started and connected");
-                }catch(Exception e){
-                    server.stopServer();
-                    if(client != null){
-                        client.terminate();
-                    }
-                    LOGGER.log(Level.SEVERE, "Server: Failed to create Server on starting the main game", e);
-                }
-            }
-        });
+        server = new GameServer(44775, 44776, -1);
+        client = new GameClient(44775, 44776, 10000, game,server);
+
+        imageButtonStartServer.addListener(new ConfigureStartClickListener(playerNumber, server, client, connectionInfo));
 
         imageButtonReturn.addListener(new ClickListener(){
             @Override

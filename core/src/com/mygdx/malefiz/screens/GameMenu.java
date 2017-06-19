@@ -2,24 +2,15 @@ package com.mygdx.malefiz.screens;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.malefiz.Player;
 import com.mygdx.malefiz.cheats.CheatEngine;
-import com.mygdx.malefiz.cheats.CheatEngineObserver;
 import com.mygdx.malefiz.dice.Dice;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static com.mygdx.malefiz.screens.MainMenuScreen.createImageButton;
 
@@ -27,96 +18,33 @@ import static com.mygdx.malefiz.screens.MainMenuScreen.createImageButton;
 
 public class GameMenu
 {
-    private ImageButton exitButton;
-    private ImageButton menuButton;
     private Stage stage;
     private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
     private String serverIp;
     private Dice dice;
-
+    private Dialog menuDialog;
+    private Dialog exitDialog;
+    private Dialog cheatDialog;
+    private CheatEngine cheatEngine;
     // CodeEntry MUST REMAIN GLOBAL. Otherwise Bugs.
-    private CheatEngineObserver ceo;
     private TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
-
-    private static final Logger LOGGER = Logger.getLogger( CheatEngine.class.getName() );
 
     public GameMenu(Stage stage, String serverIp, CheatEngine cheatEngine, Dice dice){
         this.stage = stage;
         this.serverIp = serverIp;
         this.dice = dice;
-        this.ceo = new CheatEngineObserver(cheatEngine);
+        this.cheatEngine = cheatEngine;
+        setMenuDialog();
+        setExitDialog();
+        setCheatDialog();
     }
 
-    public Actor createExit(){
-        exitButton = createImageButton("ExitGame.png",125,875,330,215);
-        stage.addActor(exitButton);
-
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Dialog dialog = new Dialog("Confirm Exit", defSkin){
-                    public void result(Object object){
-                        if(object.equals(1L)){
-                        }
-                        if(object.equals(2L)){
-                            Gdx.app.exit();
-                        }
-                    }
-                };
-                dialog.button("Exit Game", 2L);
-                dialog.button("Resume Game", 1L);
-                dialog.show(stage);
-            }
-        });
-
-        return exitButton;
-    }
-
-    public Actor createMenu(){
-        menuButton = createImageButton("MenuButton.png",1025,900,330,215);
-        stage.addActor(menuButton);
-
-        menuButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // wenn des GameMenü aufgmocht weat, setz shaked vom dice auf true
-                if(dice.getShaked()){
-                    return;
-                }
-                dice.setShaked(true);
-                Dialog dialog = new Dialog("Game Menu", defSkin){
-                    public void result(Object object){
-                        if(object.equals(1L)){
-                            dice.setShaked(false);
-                        }
-                        if(object.equals(2L))
-                        {
-                            cheatMenu();
-                        }
-                    }
-                };
-                dialog.text(serverIp);
-                dialog.button("Cheat", 2L);
-                dialog.button("Resume", 1L);
-
-               // dialog.setBounds((stage.getHeight()-100)/2, (stage.getWidth()-100)/2, 400, 400);
-
-                dialog.show(stage).setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
-            }
-        });
-//
-        return menuButton;
-    }
-
-    public void cheatMenu(){
-        Dialog dialog = new Dialog("Cheat Menu.png", defSkin){
+    private void setCheatDialog(){
+        cheatDialog = new Dialog("Cheat Menu.png", defSkin){
 
             public void result(Object object){
-
                 if(object.equals(1L)){
-                    // Cheat used
-                    ceo.setListener(ceo);
-                    ceo.setCheat(cheatCodeEntry.getText());
+                    cheatEngine.cheatCaller(cheatCodeEntry.getText());
 
                 }
                 if(object.equals(2L)){
@@ -126,15 +54,71 @@ public class GameMenu
         };
 
         // Menu-Composition.
-        dialog.add(cheatCodeEntry);
-        dialog.button("Back to Game", 2L);
-        dialog.button("Confirm", 1L);
+        cheatDialog.add(cheatCodeEntry);
+        cheatDialog.button("Back to Game", 2L);
+        cheatDialog.button("Confirm", 1L);
+        cheatDialog.setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
+    }
 
-        //dialog.button("Back to Game", 2L).left().setSize(150,200);//.setBounds(dialog.getWidth()/2, dialog.getHeight()/2, 200, 200);
-        //dialog.button("Confirm", 1L).right().setSize(150, 200);//.setBounds(dialog.getWidth()/2, dialog.getHeight()/2, 200, 200);
-        //cheatCodeEntry.setSize(100, 100);
-        //dialog.add(cheatCodeEntry).top().center();
+    private void setExitDialog(){
+        exitDialog = new Dialog("Confirm Exit", defSkin){
+            public void result(Object object){
+                if(object.equals(2L)){
+                    Gdx.app.exit();
+                }
+            }
+        };
+        exitDialog.button("Exit Game", 2L);
+        exitDialog.button("Resume Game", 1L);
+    }
 
-        dialog.show(stage).setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
+    private void setMenuDialog(){
+        menuDialog = new Dialog("Game Menu", defSkin){
+            public void result(Object object){
+                if(object.equals(1L)){
+                    dice.setShaked(false);
+                }
+                if(object.equals(2L))
+                {
+                    cheatMenu();
+                }
+            }
+        };
+        menuDialog.text(serverIp);
+        menuDialog.button("Cheat", 2L);
+        menuDialog.button("Resume", 1L);
+        menuDialog.setBounds(stage.getHeight()/2, stage.getWidth()/2, 400, 150);
+    }
+
+    public void createExit(){
+        ImageButton exitButton = createImageButton("ExitGame.png",125,875,330,215);
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                exitDialog.show(stage);
+            }
+        });
+        stage.addActor(exitButton);
+
+    }
+
+    public void createMenu(){
+        ImageButton menuButton = createImageButton("MenuButton.png",1025,900,330,215);
+        menuButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // wenn des GameMenü aufgmocht weat, setz shaked vom dice auf true
+                if(dice.getShaked()){
+                    return;
+                }
+                dice.setShaked(true);
+                menuDialog.show(stage);
+            }
+        });
+        stage.addActor(menuButton);
+    }
+
+    public void cheatMenu(){
+        cheatDialog.show(stage);
     }
 }

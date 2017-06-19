@@ -36,14 +36,14 @@ public class GameServer {
 
     }
 
-    public void startServer(){
+    public void setMaxUsercount(int maxUsercount) {
+        this.maxUsercount = maxUsercount;
+    }
+
+    public void startServer() throws IOException{
         server.start();
         server.addListener(new GameServerListener(this));
-        try{
-            server.bind(tcpPort, udpPort);
-        }catch(IOException e){
-            LOGGER.log(Level.SEVERE, e.toString(), e);
-        }
+        server.bind(tcpPort, udpPort);
     }
 
 

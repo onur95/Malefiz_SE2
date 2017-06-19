@@ -290,7 +290,6 @@ public class BoardToPlayboard {
     private boolean isMovePossible(){
         playerMovesPossible = new ArrayList<>();
         board.initHighlights();
-        LOGGER.log(Level.INFO, "Move possible; dice: " +  String.valueOf(dice.getResultNumber()));
         for(int i =0; i< player.getFiguresPosition().size(); i++) {
             FieldStates playerFieldState = board.getBoardArray()[player.getFiguresPosition().get(i).getColumn()][player.getFiguresPosition().get(i).getRow()].getFieldState();
             board.setFieldActive(player.getFiguresPosition().get(i).getColumn(), player.getFiguresPosition().get(i).getRow());

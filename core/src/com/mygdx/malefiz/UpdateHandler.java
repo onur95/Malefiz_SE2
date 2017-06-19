@@ -72,8 +72,6 @@ public class UpdateHandler {
         Field[][] array =  board.getBoardArray();
         Stage stage = view.getStage();
 
-
-
         if(update.size() > 2){
             BoardUpdate move1 = update.get(0);
             BoardUpdate move2 = update.get(1);
@@ -82,92 +80,109 @@ public class UpdateHandler {
 
             boolean ownPlayerKicked = array[move2.getColumn()][move2.getRow()].getFieldState().ordinal() == client.getPlayerNumber();
             boolean isPlayer = board.isPlayer(move2.getColumn(),move2.getRow());
-            //Board anpassen
-            Field temp = array[move3.getColumn()][move3.getRow()];
-            array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
-            if(move3.getRow() == move1.getRow() && move3.getColumn() == move1.getColumn()) {
-                array[move2.getColumn()][move2.getRow()] = temp;
-            }
-            else{
-                array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-                array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
-            }
-
-
-
+            adjustBoard(array, move1, move2, move3);
 
             //View anpassen
+
             final Actor actor1 = stage.getActors().get(move1.getActorIndex());
             final Actor actor2 = stage.getActors().get(move2.getActorIndex());
-            Coordinates coordinates3 = view.getHelper().getCoordinatesOfField(move3.getColumn(), move3.getRow()); //Gibt die richtigen X und Y Koordinaten zurück
 
-            //move gekicktes Element
-            MoveToAction moveAction1 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
-            moveAction1.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
-            moveAction1.setDuration(1F);
+            Coordinates coordinates3 = view.getHelper().getCoordinatesOfField(move3.getColumn(), move3.getRow()); //Gibt die richtigen X und Y Koordinaten zurück
+            MoveToAction moveAction1 = getFirstMove(coordinates3);
             // actor2 mit moveAction1
 
             //move
-            MoveToAction moveAction2 = new MoveToAction();
-            moveAction2.setPosition(actor2.getX(), actor2.getY());
-            moveAction2.setDuration(1F);
+            MoveToAction moveAction2 = getSecondMove(actor2);
             // actor1 mit moveAction2
 
-            if(ownPlayerKicked) {
-                Actor actorPlayer = stage.getActors().get(move2.getActorIndex()+1); //ist der Kegel, +1 das Highlight des Kegels
-                MoveToAction moveAction3 = new MoveToAction();
-                moveAction3.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
-                moveAction3.setDuration(1F);
-                actorPlayer.addAction(moveAction3);
-
-                view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex());
-                view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(),move2.getActorIndex()+1);
-            }
-
+            adjustOwnPlayerKicked(ownPlayerKicked, move2, move3, coordinates3);
             move(actor1,actor2, moveAction1, moveAction2, isPlayer);
-
 
             //Aufpassen wenn gekickter Kegel der eigene ist (Highlight auch verschieben)
             //nicht jeder ActorIndex muss existieren! NO_FIELD zum Beispiel besitzt keinen ActorIndex
             //wenn drei beweget werden gibt es zwei ActorIndizes
-
-
         }
         else if(update.size() ==2){
             BoardUpdate move1 = update.get(0);
             BoardUpdate move2 = update.get(1);
 
             //Board anpassen
-            array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
-            array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
+            adjustBoard(array,move1,move2);
 
             //View anpassen
             Actor actor1 = stage.getActors().get(move1.getActorIndex());
             Coordinates coordinates2 = view.getHelper().getCoordinatesOfField(move2.getColumn(), move2.getRow());
 
-            MoveToAction moveAction1 = new MoveToAction();
-            moveAction1.setPosition(coordinates2.getxOffset(), coordinates2.getyOffset());
-            moveAction1.setDuration(1F);
-            actor1.addAction(moveAction1);
+            actor1.addAction(getFirstMove(coordinates2));
 
             soundManager.playSound(Sounds.MOVE);
 
             view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
         }
+        displayYourTurn(playerTurn);
+        displayCheat(cheated, playerBefore);
+        LOGGER.log(Level.INFO, "Client: Message handled");
+    }
 
+    private void displayCheat(boolean cheated, int playerBefore){
+        if(cheated){
+            LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
+            Label cm=view.getStage().getRoot().findActor("cm");
+            cm.setText("Player "+playerBefore+" cheated!");
+            cm.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
+        }
+    }
+
+    private void adjustOwnPlayerKicked(boolean kicked, BoardUpdate move2, BoardUpdate move3, Coordinates coordinates3){
+        if(kicked) {
+            Actor actorPlayer = view.getStage().getActors().get(move2.getActorIndex() + 1); //ist der Kegel, +1 das Highlight des Kegels
+            MoveToAction moveAction3 = getFirstMove(coordinates3);
+            actorPlayer.addAction(moveAction3);
+
+            view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(), move2.getActorIndex());
+            view.adjustPlayerClickListener(move3.getColumn(), move3.getRow(), move2.getActorIndex() + 1);
+        }
+    }
+
+    private void displayYourTurn(int playerTurn){
         if(playerTurn == client.getPlayerNumber()){
-            Label yourTurn=stage.getRoot().findActor("yourTurn");
+            Label yourTurn=view.getStage().getRoot().findActor("yourTurn");
             yourTurn.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
             soundManager.playSound(Sounds.PLAYERTURN);
             dice.setShaked(false);
         }
-        if(cheated){
-            LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
-            Label cm=stage.getRoot().findActor("cm");
-            cm.setText("Player "+playerBefore+" cheated!");
-            cm.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
+    }
+
+    private MoveToAction getFirstMove(Coordinates coordinates3){
+        //move gekicktes Element
+        MoveToAction moveAction1 = new MoveToAction(); //falls !ownPlayerKicked, dann ist das ein anderer Spieler oder ein Block, sonst ist es das Highlight des Spielers
+        moveAction1.setPosition(coordinates3.getxOffset(), coordinates3.getyOffset());
+        moveAction1.setDuration(1F);
+        return moveAction1;
+    }
+
+    private MoveToAction getSecondMove(Actor actor2){
+        MoveToAction moveAction2 = new MoveToAction();
+        moveAction2.setPosition(actor2.getX(), actor2.getY());
+        moveAction2.setDuration(1F);
+        return moveAction2;
+    }
+
+    private void adjustBoard(Field[][] array, BoardUpdate move1, BoardUpdate move2){
+        array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
+        array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
+    }
+
+    private void adjustBoard(Field[][] array, BoardUpdate move1, BoardUpdate move2, BoardUpdate move3){
+        Field temp = array[move3.getColumn()][move3.getRow()];
+        array[move3.getColumn()][move3.getRow()] = array[move2.getColumn()][move2.getRow()];
+        if(move3.getRow() == move1.getRow() && move3.getColumn() == move1.getColumn()) {
+            array[move2.getColumn()][move2.getRow()] = temp;
         }
-        LOGGER.log(Level.INFO, "Client: Message handled");
+        else{
+            array[move2.getColumn()][move2.getRow()] = array[move1.getColumn()][move1.getRow()];
+            array[move1.getColumn()][move1.getRow()] = move1.getColumn() <= 2 ? new Field('.') : new Field('o');
+        }
     }
 
     private void move(Actor actor1,final Actor actor2, final MoveToAction moveAction1, MoveToAction moveAction2, final boolean playerKicked){

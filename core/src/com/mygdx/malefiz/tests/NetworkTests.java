@@ -8,6 +8,10 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.io.IOException;
+
+import static org.testng.Assert.assertEquals;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NetworkTests {
     private int tcpPort = 45455;
@@ -20,40 +24,66 @@ public class NetworkTests {
 
     @Test
     public void createAndStopServer(){
-        server = new GameServer(tcpPort, udpPort, maxUserCount);
-        server.startServer();
-        server.stopServer();
+        boolean valid;
+        try {
+            server = new GameServer(tcpPort, udpPort, maxUserCount);
+            server.startServer();
+            server.stopServer();
+            valid = true;
+        }
+        catch (Exception ex){
+            valid = false;
+        }
+        assertEquals(valid, true);
     }
 
     @Test
-    public void createClientAndConnect(){
-        server = new GameServer(tcpPort, udpPort, maxUserCount);
-        server.startServer();
+    public void createClientAndConnect() {
+        boolean valid;
+        try {
+            server = new GameServer(tcpPort, udpPort, maxUserCount);
+            server.startServer();
 
-        client = new GameClient(tcpPort, udpPort, timeout,game,server);
-        client.connect("");
+            client = new GameClient(tcpPort, udpPort, timeout, game, server);
+            client.connect("");
 
-        client.terminate();
-        server.stopServer();
+            client.terminate();
+            server.stopServer();
+            valid = true;
+        }
+        catch (Exception ex){
+            valid = false;
+        }
+        assertEquals(valid, true);
+
     }
 
     @Test
     public void maximumConnectionCount(){
-        server = new GameServer(tcpPort, udpPort, maxUserCount);
-        server.startServer();
+        boolean valid;
+        try {
+            server = new GameServer(tcpPort, udpPort, maxUserCount);
+            server.startServer();
 
-        int testcases = 5;                                  //*** Absolutely horrifying when 100
-        GameClient[] clients = new GameClient[testcases];
+            int testcases = 5;                                  //*** Absolutely horrifying when 100
+            GameClient[] clients = new GameClient[testcases];
 
-        for(int i = 0; i < testcases; i++){
-            clients[i] = new GameClient(tcpPort, udpPort, timeout, game,server);
-            clients[i].connect("");
+            for (int i = 0; i < testcases; i++) {
+                clients[i] = new GameClient(tcpPort, udpPort, timeout, game, server);
+                clients[i].connect("");
+            }
+
+            for (int i = testcases - 1; i >= 0; i--) {
+                clients[i].terminate();
+            }
+            valid = true;
+            // stopServer Redundant: Once the last one disconnects, the server shuts down automatically
         }
-
-        for(int i = testcases-1; i >= 0; i--){
-            clients[i].terminate();
+        catch (Exception ex){
+            valid = false;
         }
-        // stopServer Redundant: Once the last one disconnects, the server shuts down automatically
+        assertEquals(valid, true);
+
     }
 
 }

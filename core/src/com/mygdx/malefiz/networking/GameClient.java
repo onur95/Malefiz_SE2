@@ -32,18 +32,12 @@ public class GameClient {
         Network.registerKryoClasses(client);
     }
 
-    public void connect(String serverIP){
-        try{
-            //Starts Client
-            client.start();
-            client.connect(timeout, serverIP, tcpPort, udpPort);
-
-            client.addListener(new GameClientListener(this));
-
-            this.serverIp = serverIP;
-        }catch(IOException e){
-            LOGGER.log(Level.SEVERE, e.toString(), e);
-        }
+    public void connect(String serverIP) throws IOException{
+        client.start();
+        client.connect(timeout, serverIP, tcpPort, udpPort);
+        client.addListener(new GameClientListener(this));
+        this.serverIp = serverIP;
+        LOGGER.log(Level.INFO, "Client: Successfully started and connected");
     }
 
     public String getServerIp(){
