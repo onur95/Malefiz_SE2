@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,13 +15,14 @@ public class CheatAlertScreen{
     private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
     private static final Logger LOGGER = Logger.getLogger( CheatAlertScreen.class.getName() );
 
-
     public CheatAlertScreen(Stage stage) {
         this.stage = stage;
     }
 
     public void createDisplay(){
-        Dialog dialog = new Dialog("Cheating detected!", defSkin){
+        LOGGER.log(Level.INFO, "CheatAlertScreen: Creating.");
+
+        Dialog dialog = new Dialog("CheatDisplay.png", defSkin){
             public void result(Object object){
                 if(object.equals(1L)){
 
@@ -32,9 +32,9 @@ public class CheatAlertScreen{
                 }
             }
         };
+
         dialog.button("Initiate Ragequit", 2L);
         dialog.button("Resume Game", 1L);
-        LOGGER.log(Level.INFO, "CheatAlertScreen: Creating.");
         dialog.show(stage);
     }
 }

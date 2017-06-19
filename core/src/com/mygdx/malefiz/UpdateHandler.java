@@ -165,7 +165,7 @@ public class UpdateHandler {
         if(cheated){
             LOGGER.log(Level.INFO, "updatePlayboard: Cheating deteced.");
 
-            CheatAlertScreen cas = new CheatAlertScreen(stage);
+            CheatAlertScreen cas = new CheatAlertScreen(this.view.getStage());
             cas.createDisplay();
         }
         LOGGER.log(Level.INFO, "Client: Message handled");
