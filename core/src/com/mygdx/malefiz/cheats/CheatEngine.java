@@ -1,8 +1,6 @@
 package com.mygdx.malefiz.cheats;
 
-import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.dice.Dice;
-import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 import java.util.logging.Level;
@@ -25,7 +23,7 @@ public class CheatEngine {
             return;
         }
         boolean cheated = true;
-        if("freedom".equals(code.toLowerCase())){
+        if("freedom".equalsIgnoreCase(code)){
                 moveToAnyField();
         }
         else if(code.matches("^[wW][1-6]$")) {

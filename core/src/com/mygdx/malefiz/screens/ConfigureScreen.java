@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,9 +19,6 @@ import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.networking.GameServer;
 import com.mygdx.malefiz.screens.clicklistener.ConfigureStartClickListener;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConfigureScreen implements Screen {
     
@@ -36,7 +32,6 @@ public class ConfigureScreen implements Screen {
     private final Malefiz game;
     private GameClient client;
     private GameServer server;
-    private static final Logger LOGGER = Logger.getLogger( ConfigureScreen.class.getName() );
 
     /**
      * Called once the screen is created

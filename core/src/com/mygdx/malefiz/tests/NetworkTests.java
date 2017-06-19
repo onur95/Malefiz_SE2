@@ -23,67 +23,41 @@ public class NetworkTests {
     private Malefiz game = new Malefiz();
 
     @Test
-    public void createAndStopServer(){
-        boolean valid;
-        try {
-            server = new GameServer(tcpPort, udpPort, maxUserCount);
-            server.startServer();
-            server.stopServer();
-            valid = true;
-        }
-        catch (Exception ex){
-            valid = false;
-        }
-        assertEquals(valid, true);
+    public void createAndStopServer() throws IOException{
+        server = new GameServer(tcpPort, udpPort, maxUserCount);
+        server.startServer();
+        server.stopServer();
     }
 
     @Test
-    public void createClientAndConnect() {
-        boolean valid;
-        try {
-            server = new GameServer(tcpPort, udpPort, maxUserCount);
-            server.startServer();
+    public void createClientAndConnect() throws IOException{
+        server = new GameServer(tcpPort, udpPort, maxUserCount);
+        server.startServer();
 
-            client = new GameClient(tcpPort, udpPort, timeout, game, server);
-            client.connect("");
+        client = new GameClient(tcpPort, udpPort, timeout, game, server);
+        client.connect("");
 
-            client.terminate();
-            server.stopServer();
-            valid = true;
-        }
-        catch (Exception ex){
-            valid = false;
-        }
-        assertEquals(valid, true);
-
+        client.terminate();
+        server.stopServer();
     }
 
     @Test
-    public void maximumConnectionCount(){
-        boolean valid;
-        try {
-            server = new GameServer(tcpPort, udpPort, maxUserCount);
-            server.startServer();
+    public void maximumConnectionCount() throws IOException{
+        server = new GameServer(tcpPort, udpPort, maxUserCount);
+        server.startServer();
 
-            int testcases = 5;                                  //*** Absolutely horrifying when 100
-            GameClient[] clients = new GameClient[testcases];
+        int testcases = 5;                                  //*** Absolutely horrifying when 100
+        GameClient[] clients = new GameClient[testcases];
 
-            for (int i = 0; i < testcases; i++) {
-                clients[i] = new GameClient(tcpPort, udpPort, timeout, game, server);
-                clients[i].connect("");
-            }
+        for (int i = 0; i < testcases; i++) {
+            clients[i] = new GameClient(tcpPort, udpPort, timeout, game, server);
+            clients[i].connect("");
+        }
 
-            for (int i = testcases - 1; i >= 0; i--) {
-                clients[i].terminate();
-            }
-            valid = true;
+        for (int i = testcases - 1; i >= 0; i--) {
+            clients[i].terminate();
+        }
             // stopServer Redundant: Once the last one disconnects, the server shuts down automatically
-        }
-        catch (Exception ex){
-            valid = false;
-        }
-        assertEquals(valid, true);
-
     }
 
 }
