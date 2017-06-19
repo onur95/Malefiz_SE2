@@ -40,7 +40,7 @@ public class GameMenu
     }
 
     private void setCheatDialog(){
-        cheatDialog = new Dialog("Cheat Menu.png", defSkin){
+        cheatDialog = new Dialog("Cheat Menu", defSkin){
 
             public void result(Object object){
                 if(object.equals(1L)){
