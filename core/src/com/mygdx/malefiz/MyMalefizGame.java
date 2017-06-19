@@ -56,10 +56,6 @@ public class MyMalefizGame implements Screen, GestureDetector.GestureListener {
         CheatEngine cheatEngine = new CheatEngine(view, board, dice);
         GameMenu menu = new GameMenu(stage, client.getServerIp(), cheatEngine, dice);
 
-		// Fixme Testdata
-		CheatAlertScreen cas = new CheatAlertScreen(stage);
-		cas.createCheatAlert();
-
         UpdateHandler handler = new UpdateHandler(client, dice, playerCount, soundManager, view, board);
         view.init(handler, player, stage, board, dice, soundManager);
 

@@ -24,9 +24,10 @@ public class CheatEngine {
     // Pseudo-Interface for calling right cheat.
     public int cheatCaller(String code) {
         if(code == null || code.length() == 0){
+            dice.setShaked(false);
             return 0;
         }
-
+        boolean cheated = true;
         if(code.toLowerCase().equals("blocks")){
             LOGGER.log(Level.SEVERE, "CheatEngine: Blocks");
             view.setCheatEnabled(true);
@@ -50,10 +51,15 @@ public class CheatEngine {
             LOGGER.log(Level.SEVERE, "CheatEngine: Set dice to"+code.charAt(1));
             // Samples: W4, w3, W2, W1
             dice.setCheatEnabled(true);
-            dice.setResult(code.charAt(1));
+            dice.setResult(Character.getNumericValue(code.charAt(1)));
             view.setPlayerFiguresHighlighted(true);
             return 4;
         }
+        else{
+            cheated = false;
+        }
+        dice.setShaked(cheated);
+
         return 0;
     }
 

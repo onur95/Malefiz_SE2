@@ -54,18 +54,9 @@ public class GameMenu
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                final boolean shakedBefore = dice.getShaked();
-                dice.setShaked(true);
                 Dialog dialog = new Dialog("Confirm Exit", defSkin){
                     public void result(Object object){
                         if(object.equals(1L)){
-                            if(shakedBefore){
-                                // do nothing.
-                            }else{
-                                // reset shaked
-                                dice.setShaked(false);
-                            }
-
                         }
                         if(object.equals(2L)){
                             Gdx.app.exit();
@@ -89,28 +80,18 @@ public class GameMenu
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // wenn des GameMenü aufgmocht weat, setz shaked vom dice auf true
-                final boolean shakedBefore = dice.getShaked();
+                if(dice.getShaked()){
+                    return;
+                }
                 dice.setShaked(true);
                 Dialog dialog = new Dialog("Game Menu", defSkin){
                     public void result(Object object){
                         if(object.equals(1L)){
-                            if(shakedBefore){
-                                // do nothing
-                            }else{
-                                // reset
-                                dice.setShaked(false);
-                            }
+                            dice.setShaked(false);
                         }
                         if(object.equals(2L))
                         {
-                            if(shakedBefore){
-                                // Ignore command & carry on without reset
-                            }else{
-                                // did'nt shake -> display cheatconsole
-                                // Temporarily reset dice
-                                dice.setShaked(false);
-                                cheatMenu();
-                            }
+                            cheatMenu();
                         }
                     }
                 };
@@ -129,8 +110,6 @@ public class GameMenu
 
     public void cheatMenu(){
         Dialog dialog = new Dialog("Cheat Menu.png", defSkin){
-            // We can only enter this when passed @MenuButton
-            final boolean shakedBefore = dice.getShaked();
 
             public void result(Object object){
 
@@ -141,13 +120,7 @@ public class GameMenu
 
                 }
                 if(object.equals(2L)){
-                    // No cheat used
-                    if(shakedBefore){
-                        dice.setShaked(true);
-                    }else{
-                        dice.setShaked(false);
-                        // Dice has been shaked already. Do not allow a second time.
-                    }
+                    dice.setShaked(false);
                 }
             }
         };

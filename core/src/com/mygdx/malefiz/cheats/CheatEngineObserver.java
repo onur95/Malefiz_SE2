@@ -17,11 +17,6 @@ public class CheatEngineObserver{
         this.pcs = new PropertyChangeSupport(this);
     }
 
-    ///**confirmedCheater = player.getNumber()
-    public void setConfirmedCheater(int confirmedCheater){
-        this.confirmedCheater = confirmedCheater;
-    }
-
     public void setListener(CheatEngineObserver ceo) {
         CheatListener ecl = new CheatListener();
         ceo.addPropertyChangeListener(ecl);
