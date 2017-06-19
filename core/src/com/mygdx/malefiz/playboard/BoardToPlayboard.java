@@ -47,7 +47,7 @@ public class BoardToPlayboard {
     private int playerCount;
     private UpdateHandler handler;
     private Player player;
-    protected Board board;
+    private Board board;
     private Dice dice;
     private List<List<Integer>> players;
     private CoordinateCalculation helper;
@@ -55,7 +55,6 @@ public class BoardToPlayboard {
     private List<Integer> playerMovesPossible;
     private static final Logger LOGGER = Logger.getLogger( BoardToPlayboard.class.getName() );
     private boolean cheatEnabled = false;
-    private static int clientCheaterID;         // Var for sending me being clientCheaterID
 
     private void initPlayers(){
         players = new ArrayList<>();
@@ -77,7 +76,6 @@ public class BoardToPlayboard {
         helper = new CoordinateCalculation(this.stage);
         playerMovesPossible = new ArrayList<>();
         initPlayers();
-        setCheaterID();
         setImages();
         generate();
     }
@@ -540,20 +538,12 @@ public class BoardToPlayboard {
         return this.board;
     }
 
-    public UpdateHandler getUpdateHandler(){
-        return this.handler;
-    }
-
     public void setCheatEnabled(boolean val){
         this.cheatEnabled = val;
     }
 
     public boolean getCheatEnabled(){
-        return cheatEnabled;
-    }
-
-    public void setCheaterID(){
-        clientCheaterID = player.getNumber();
+        return this.cheatEnabled;
     }
 
 }

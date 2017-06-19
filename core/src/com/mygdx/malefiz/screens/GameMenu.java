@@ -6,19 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.mygdx.malefiz.Player;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.cheats.CheatEngineObserver;
 import com.mygdx.malefiz.dice.Dice;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.mygdx.malefiz.screens.MainMenuScreen.createImageButton;
@@ -29,20 +24,18 @@ public class GameMenu
 {
     private ImageButton exitButton;
     private ImageButton menuButton;
-    protected Stage stage;
+    private Stage stage;
     private Skin defSkin = new Skin(Gdx.files.internal("uiskin.json"));
     private String serverIp;
     private Dice dice;
 
     // CodeEntry MUST REMAIN GLOBAL. Otherwise Bugs.
-    public CheatEngineObserver ceo;
-    TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
+    private CheatEngineObserver ceo;
+    private TextField cheatCodeEntry = new TextField("Enter Code here", defSkin);
 
     private static final Logger LOGGER = Logger.getLogger( CheatEngine.class.getName() );
 
-    public GameMenu(){ /* Smella */}
-
-        public GameMenu(Stage stage, String serverIp, CheatEngine cheatEngine, Dice dice){
+    public GameMenu(Stage stage, String serverIp, CheatEngine cheatEngine, Dice dice){
         this.stage = stage;
         this.serverIp = serverIp;
         this.dice = dice;

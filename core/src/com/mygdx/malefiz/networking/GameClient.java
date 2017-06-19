@@ -3,7 +3,6 @@ package com.mygdx.malefiz.networking;
 import com.esotericsoftware.kryonet.Client;
 import com.mygdx.malefiz.Malefiz;
 import com.mygdx.malefiz.UpdateHandler;
-import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
 import java.io.IOException;
 import java.util.List;

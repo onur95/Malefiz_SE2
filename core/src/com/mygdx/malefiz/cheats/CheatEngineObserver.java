@@ -1,6 +1,7 @@
 package com.mygdx.malefiz.cheats;
 
 import com.badlogic.gdx.Gdx;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

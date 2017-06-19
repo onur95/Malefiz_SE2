@@ -15,13 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.malefiz.screens.CheatAlertScreen;
-import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.cheats.CheatEngine;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.networking.GameClient;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
+import com.mygdx.malefiz.screens.GameMenu;
 import com.mygdx.malefiz.sound.SoundManager;
 import com.mygdx.malefiz.sound.Sounds;
 

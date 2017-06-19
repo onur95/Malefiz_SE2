@@ -2,7 +2,6 @@ package com.mygdx.malefiz.cheats;
 
 import com.mygdx.malefiz.UpdateHandler;
 import com.mygdx.malefiz.dice.Dice;
-import com.mygdx.malefiz.field.FieldStates;
 import com.mygdx.malefiz.playboard.Board;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 

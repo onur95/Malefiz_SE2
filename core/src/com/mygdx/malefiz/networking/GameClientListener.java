@@ -1,13 +1,9 @@
 package com.mygdx.malefiz.networking;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.mygdx.malefiz.MyMalefizGame;
-import com.mygdx.malefiz.Player;
-import com.mygdx.malefiz.playboard.BoardToPlayboard;
-import com.mygdx.malefiz.screens.CheatAlertScreen;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

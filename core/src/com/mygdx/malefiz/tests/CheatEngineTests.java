@@ -13,9 +13,6 @@ import org.testng.Assert;
 
 import javax.swing.text.View;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
-
 /**
  * Created by tom on 19.06.17.
  */
