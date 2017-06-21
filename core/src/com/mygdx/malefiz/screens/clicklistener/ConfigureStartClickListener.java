@@ -36,7 +36,11 @@ public class ConfigureStartClickListener extends ClickListener {
         if(playerNumber.getText().length() == 0){
             return;
         }
-        server.setMaxUsercount(Integer.parseInt(playerNumber.getText()));
+        int playerCount=Integer.parseInt(playerNumber.getText());
+        if(playerCount<2 || playerCount>4){
+            return;
+        }
+        server.setMaxUsercount(playerCount);
         try{
             server.startServer();
             showConnectionInfo(connectionInfo);
