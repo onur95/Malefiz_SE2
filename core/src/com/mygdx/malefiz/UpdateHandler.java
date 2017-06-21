@@ -69,10 +69,12 @@ public class UpdateHandler {
             return;
         }
         this.update.clear();
+        float delay = 2F;
         Field[][] array =  board.getBoardArray();
         Stage stage = view.getStage();
 
         if(update.size() > 2){
+            delay = 4F;
             BoardUpdate move1 = update.get(0);
             BoardUpdate move2 = update.get(1);
             BoardUpdate move3 = update.get(2);
@@ -119,7 +121,7 @@ public class UpdateHandler {
 
             view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
         }
-        displayYourTurn(playerTurn);
+        displayYourTurn(playerTurn, delay);
         displayCheat(cheated, playerBefore);
         LOGGER.log(Level.INFO, "Client: Message handled");
     }
@@ -144,13 +146,23 @@ public class UpdateHandler {
         }
     }
 
-    private void displayYourTurn(int playerTurn){
+    private void displayYourTurn(int playerTurn, float delay){
         if(playerTurn == client.getPlayerNumber()){
+            Action yourTurnAction = new Action(){
+                @Override
+                public boolean act(float delta){
+                    yourTurn();
+                    return true;
+                }
+            };
             Label yourTurn=view.getStage().getRoot().findActor("yourTurn");
-            yourTurn.addAction(Actions.sequence(Actions.visible(true),Actions.delay(2f),Actions.visible(false)));
-            soundManager.playSound(Sounds.PLAYERTURN);
-            dice.setShaked(false);
+            yourTurn.addAction(Actions.sequence(Actions.delay(delay),Actions.visible(true), yourTurnAction,Actions.delay(2f),Actions.visible(false)));
         }
+    }
+
+    private void yourTurn(){
+        soundManager.playSound(Sounds.PLAYERTURN);
+        dice.setShaked(false);
     }
 
     private MoveToAction getFirstMove(Coordinates coordinates3){
