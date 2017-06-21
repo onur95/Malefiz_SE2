@@ -1,5 +1,6 @@
 package com.mygdx.malefiz.cheats;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.malefiz.dice.Dice;
 import com.mygdx.malefiz.playboard.BoardToPlayboard;
 
@@ -18,6 +19,7 @@ public class CheatEngine {
 
     // Pseudo-Interface for calling right cheat.
     public void cheatCaller(String code) {
+        Gdx.input.setOnscreenKeyboardVisible(false);
         if(code == null || code.length() == 0){
             dice.setShaked(false);
             return;

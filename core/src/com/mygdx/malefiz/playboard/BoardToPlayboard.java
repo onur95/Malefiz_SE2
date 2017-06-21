@@ -347,11 +347,20 @@ public class BoardToPlayboard {
         actorActive = -1;
     }
 
-    public void setWinningLosingScreen(int column, int row,boolean isWinner){
-        final Malefiz game=handler.getClient().getGame();
+    public boolean setWinningLosingScreen(int column, int row, final boolean isWinner){
+        boolean status = true;
         if(new Field(board.getBoardMeta()[column].charAt(row)).getFieldState()!= FieldStates.GOAL){
-            return;
+            status = false;
         }
+        if(status) {
+            setScreen(isWinner);
+        }
+        return status;
+    }
+
+    private void setScreen(boolean isWinner){
+        final Malefiz game=handler.getClient().getGame();
+        LOGGER.log(Level.INFO, "setScreen function");
         if(isWinner){
             Gdx.app.postRunnable(new Runnable() {
 

@@ -72,6 +72,7 @@ public class UpdateHandler {
         float delay = 2F;
         Field[][] array =  board.getBoardArray();
         Stage stage = view.getStage();
+        boolean gameFinished = false;
 
         if(update.size() > 2){
             delay = 4F;
@@ -119,10 +120,12 @@ public class UpdateHandler {
 
             soundManager.playSound(Sounds.MOVE);
 
-            view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
+            gameFinished = view.setWinningLosingScreen(move2.getColumn(),move2.getRow(),false);
         }
-        displayYourTurn(playerTurn, delay);
-        displayCheat(cheated, playerBefore);
+        if(!gameFinished) {
+            displayYourTurn(playerTurn, delay);
+            displayCheat(cheated, playerBefore);
+        }
         LOGGER.log(Level.INFO, "Client: Message handled");
     }
 
