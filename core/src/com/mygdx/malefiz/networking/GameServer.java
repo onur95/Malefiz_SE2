@@ -76,6 +76,7 @@ public class GameServer {
     public void sendMessage(int player){
         Network.PlayerDisconnected playerDisconnected = new Network.PlayerDisconnected();
         playerDisconnected.player = player;
+        System.out.println("Send Message disconnected");
         server.sendToAllTCP(playerDisconnected);
     }
 
